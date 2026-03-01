@@ -5,8 +5,8 @@ in {
   packages = [
     nixpkgs.alejandra
     nixpkgs.nodePackages.prettier
-    nixpkgs.nodePackages.prettier-plugin-toml
     nixpkgs.shfmt
+    nixpkgs.taplo
   ];
 
   data = {
@@ -17,7 +17,7 @@ in {
       };
       prettier = {
         command = lib.getExe nixpkgs.nodePackages.prettier;
-        options = ["--plugin" "${nixpkgs.nodePackages.prettier-plugin-toml}/lib/node_modules/prettier-plugin-toml/lib/index.js" "--write"];
+        options = ["--write"];
         includes = [
           "*.css"
           "*.html"
@@ -29,12 +29,25 @@ in {
           "*.scss"
           "*.ts"
           "*.yaml"
-          "*.toml"
         ];
+      };
+      taplo = {
+        command = lib.getExe nixpkgs.taplo;
+        options = [
+          "format"
+          "--colors"
+          "never"
+        ];
+        includes = ["*.toml"];
       };
       shell = {
         command = lib.getExe nixpkgs.shfmt;
-        options = ["-i" "2" "-s" "-w"];
+        options = [
+          "-i"
+          "2"
+          "-s"
+          "-w"
+        ];
         includes = ["*.sh"];
       };
     };

@@ -43,16 +43,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1686862774,
-        "narHash": "sha256-ojGtRQ9pIOUrxsQEuEPerUkqIJEuod9hIflfNkY+9CE=",
+        "lastModified": 1698340621,
+        "narHash": "sha256-SFrpyBVYaBVu4kaEm6O9O5P+ZKASMEa2EOQSlC33/Ok=",
         "owner": "divnix",
         "repo": "dmerge",
-        "rev": "9f7f7a8349d33d7bd02e0f2b484b1f076e503a96",
+        "rev": "7e528814b0da207ea12ab3f62f2a928b7b8fe9c6",
         "type": "github"
       },
       "original": {
         "owner": "divnix",
-        "ref": "0.2.1",
         "repo": "dmerge",
         "type": "github"
       }
@@ -64,16 +63,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1685133229,
-        "narHash": "sha256-FePm/Gi9PBSNwiDFq3N+DWdfxFq0UKsVVTJS3cQPn94=",
+        "lastModified": 1771957919,
+        "narHash": "sha256-mTZj/qntKYRTQk/p2lYQkRhuNPuRU1AjSScRRBnNuok=",
         "owner": "nix-community",
         "repo": "haumea",
-        "rev": "34dd58385092a23018748b50f9b23de6266dffc2",
+        "rev": "6006638de0f991dc33d0590819f58d09bec27379",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
-        "ref": "v0.2.2",
         "repo": "haumea",
         "type": "github"
       }
@@ -100,11 +98,11 @@
     },
     "lib": {
       "locked": {
-        "lastModified": 1722128034,
-        "narHash": "sha256-L8rwzYPsLo/TYtydPJoQyYOfetuiyQYnTWYcyB8UE/s=",
+        "lastModified": 1772328832,
+        "narHash": "sha256-e+/T/pmEkLP6BHhYjx6GmwP5ivonQQn0bJdH9YrRB+Q=",
         "owner": "nix-community",
         "repo": "nixpkgs.lib",
-        "rev": "d15f6f6021693898fcd2c6a9bb13707383da9bbc",
+        "rev": "c185c7a5e5dd8f9add5b2f8ebeff00888b070742",
         "type": "github"
       },
       "original": {
@@ -115,16 +113,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1720535198,
-        "narHash": "sha256-zwVvxrdIzralnSbcpghA92tWu2DV2lwv89xZc8MTrbg=",
+        "lastModified": 1772198003,
+        "narHash": "sha256-I45esRSssFtJ8p/gLHUZ1OUaaTaVLluNkABkk6arQwE=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "205fd4226592cc83fd4c0885a3e4c9c400efabb5",
+        "rev": "dd9b079222d43e1943b6ebd802f04fd959dc8e61",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "release-23.11",
+        "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -165,7 +163,6 @@
       },
       "original": {
         "owner": "paisano-nix",
-        "ref": "0.2.0",
         "repo": "core",
         "type": "github"
       }
@@ -173,16 +170,15 @@
     "paisano-tui": {
       "flake": false,
       "locked": {
-        "lastModified": 1708637035,
-        "narHash": "sha256-R19YURSK+MY/Rw6FZnojQS9zuDh+OoTAyngQAjjoubc=",
+        "lastModified": 1708637039,
+        "narHash": "sha256-EFDb8jfv2SH57a6CfDo0WU4XjDihhgvVnKKw20yqksc=",
         "owner": "paisano-nix",
         "repo": "tui",
-        "rev": "231761b260587a64817e4ffae3afc15defaa15db",
+        "rev": "6461b31e4458dbce655fa1db6d266f666dbdfc4e",
         "type": "github"
       },
       "original": {
         "owner": "paisano-nix",
-        "ref": "v0.5.0",
         "repo": "tui",
         "type": "github"
       }

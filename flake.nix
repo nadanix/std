@@ -5,14 +5,14 @@
 {
   description = "The Nix Flakes framework for perfectionists with deadlines";
   # override downstream with inputs.std.inputs.nixpkgs.follows = ...
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/release-23.11";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
   inputs.lib.url = "github:nix-community/nixpkgs.lib";
   inputs = {
-    paisano.url = "github:paisano-nix/core/0.2.0";
+    paisano.url = "github:paisano-nix/core";
     paisano.inputs.nixpkgs.follows = "nixpkgs";
     paisano.inputs.yants.follows = "yants";
     paisano-tui = {
-      url = "github:paisano-nix/tui/v0.5.0";
+      url = "github:paisano-nix/tui";
       flake = false; # we're after the source code, only
     };
   };
@@ -22,13 +22,13 @@
     inputs.nixpkgs.follows = "lib";
   };
   inputs.dmerge = {
-    url = "github:divnix/dmerge/0.2.1";
+    url = "github:divnix/dmerge";
     inputs.haumea.follows = "haumea";
     inputs.yants.follows = "yants";
     inputs.nixlib.follows = "lib";
   };
   inputs.haumea = {
-    url = "github:nix-community/haumea/v0.2.2";
+    url = "github:nix-community/haumea";
     inputs.nixpkgs.follows = "lib";
   };
   inputs.incl = {

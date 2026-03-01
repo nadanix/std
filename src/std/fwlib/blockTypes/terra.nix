@@ -47,10 +47,12 @@ in
       terraformConfiguration = builtins.toFile "config.tf.json" (builtins.toJSON
         (terraEval {
           inherit pkgs; # only effectively required for `pkgs.lib`
-          terranix_config = {
-            _file = fragmentRelPath;
-            imports = [target];
-          };
+          modules = [
+            {
+              _file = fragmentRelPath;
+              imports = [target];
+            }
+          ];
           strip_nulls = true;
         })
         .config);
@@ -84,18 +86,17 @@ in
            --state ${git.state} \
            terraform ${cmd} "$@" \
            ${pkgs.lib.optionalString (cmd == "plan") ''
-             -lock=false -no-color | tee "$PRJ_CACHE_HOME/tf.console.txt"
-           ''}
+          -lock=false -no-color | tee "$PRJ_CACHE_HOME/tf.console.txt"
+        ''}
 
         # Pass output to the snippet
         ${pkgs.lib.optionalString (cmd == "plan") ''
           output=$(cat "$PRJ_CACHE_HOME/tf.console.txt")
           summary_plan=$(tac "$PRJ_CACHE_HOME/tf.console.txt" | grep -m 1 -E '^(Error:|Plan:|Apply complete!|No changes.|Success)' | tac || echo "View output.")
-          summary="<code>std ${fragmentRelPath}:${cmd}</code>: $summary_plan" 
+          summary="<code>std ${fragmentRelPath}:${cmd}</code>: $summary_plan"
           ${postDiffToGitHubSnippet "${fragmentRelPath}:${cmd}" "$output" "$summary"}
         ''}
       '';
-      
     in [
       (mkCommand currentSystem "init" "tf init" [pkgs.jq pkgs.terraform pkgs.terraform-backend-git] (wrap "init") {})
       (mkCommand currentSystem "plan" "tf plan" [pkgs.jq pkgs.terraform pkgs.terraform-backend-git] (wrap "plan") {})

@@ -10,7 +10,7 @@ let
 in
   module:
     nixosSystem {
-      system = nixpkgs.stdenv.hostPlatform.system;
+      inherit (nixpkgs.stdenv.hostPlatform) system;
       modules = [
         # for declarative MicroVM management
         microvm.nixosModules.host

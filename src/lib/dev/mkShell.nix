@@ -6,7 +6,7 @@ let
   l = inputs.nixpkgs.lib // builtins;
 
   pkgs = import inputs.nixpkgs {
-    system = inputs.nixpkgs.stdenv.hostPlatform.system;
+    inherit (inputs.nixpkgs.stdenv.hostPlatform) system;
     overlays = [devshell.overlays.default];
   };
 in

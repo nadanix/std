@@ -7,13 +7,13 @@ in
     extends (
       _: _: {
         inherit inputs;
-        inherit (nixpkgs) system;
+        system = nixpkgs.stdenv.hostPlatform.system;
         __nixpkgs__ = nixpkgs;
         __nixpkgsSrc__ = nixpkgs.path;
       }
     )
     (
-      import (makes + /src/args/agnostic.nix) {inherit (nixpkgs) system;}
+      import (makes + /src/args/agnostic.nix) {system = nixpkgs.stdenv.hostPlatform.system;}
     )
     .__unfix__
   ))

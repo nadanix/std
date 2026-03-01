@@ -69,8 +69,11 @@
     removeAttrs ({
         terra = f n "myrepo";
       }
-      .${n}
-      or (f n)) ["__functor"];
+      .${
+        n
+      }
+      or (f
+        n)) ["__functor"];
   # fake snapshot compliance across systems
   FakeActionsForOtherSystems = let
     fakeDrv = name:
@@ -106,7 +109,7 @@ in
           actions = let
             actions' = bt.actions {
               inherit inputs;
-              currentSystem = inputs.nixpkgs.system;
+              currentSystem = inputs.nixpkgs.stdenv.hostPlatform.system;
               fragment = "f.r.a.g.m.e.n.t";
               fragmentRelPath = "x86/f/r/a/g/m/e/n/t";
               target = TargetsExtraData.${n} or {};
@@ -115,7 +118,9 @@ in
               (
                 dmerge {${n} = actions';} FakeActionsForOtherSystems
               )
-              .${n};
+              .${
+                n
+              };
           in
             pipe r [
               (map trimProvisoPath)

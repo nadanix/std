@@ -106,7 +106,7 @@ in
           actions = let
             actions' = bt.actions {
               inherit inputs;
-              currentSystem = inputs.nixpkgs.system;
+              currentSystem = inputs.nixpkgs.stdenv.hostPlatform.system;
               fragment = "f.r.a.g.m.e.n.t";
               fragmentRelPath = "x86/f/r/a/g/m/e/n/t";
               target = TargetsExtraData.${n} or {};

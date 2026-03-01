@@ -15,7 +15,10 @@ in {
   };
   treefmt = (mkNixago configs.treefmt) {
     data = {
-      global.excludes = ["src/std/templates/**"];
+      global.excludes = [
+        "src/std/templates/**"
+        "tests/bt-blocktypes/expr.nix"
+      ];
       formatter = {
         go = {
           command = "gofmt";

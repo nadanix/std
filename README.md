@@ -37,7 +37,6 @@ quality vertical DevOps tooling crafted by the [Nix Ecosystem][ecosystem].
 [![DMerge](https://img.shields.io/badge/DivNix-DMerge-yellow?style=for-the-badge&logo=NixOS)](https://github.com/divnix/data-merge)
 [![NoSys](https://img.shields.io/badge/DivNix-NoSys-orange?style=for-the-badge&logo=NixOS)](https://github.com/divnix/nosys)
 [![Blank](https://img.shields.io/badge/DivNix-Blank-grey?style=for-the-badge&logo=NixOS)](https://github.com/divnix/blank)
-[![Incl](https://img.shields.io/badge/DivNix-Incl-blue?style=for-the-badge&logo=NixOS)](https://github.com/divnix/incl)
 [![Paisano](https://img.shields.io/badge/DivNix-Paisano-red?style=for-the-badge&logo=NixOS)](https://github.com/divnix/paisano)
 
 ###### Integrations

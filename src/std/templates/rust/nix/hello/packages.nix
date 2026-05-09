@@ -2,16 +2,17 @@
   inputs,
   cell,
 }: let
-  inherit (inputs) std self cells;
+  inherit (inputs) std cells;
 
   crane = inputs.crane.lib.overrideToolchain cells.repo.rust.toolchain;
+  root = ../..;
 in {
   # sane default for a binary package
   default = crane.buildPackage {
-    src = std.incl self [
-      "${self}/Cargo.lock"
-      "${self}/Cargo.toml"
-      "${self}/src"
+    src = std.fileset.include root [
+      (root + /Cargo.lock)
+      (root + /Cargo.toml)
+      (root + /src)
     ];
   };
 }

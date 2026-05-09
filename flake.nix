@@ -31,10 +31,6 @@
     url = "github:nix-community/haumea";
     inputs.nixpkgs.follows = "lib";
   };
-  inputs.incl = {
-    url = "github:divnix/incl";
-    inputs.nixlib.follows = "lib";
-  };
   /*
   Auxiliar inputs used in builtin libraries or for the dev environment.
   */
@@ -57,17 +53,19 @@
     };
     # load fwlib again through the framework
     # to enable input overloading for blocktypes
+    fileset = fwlib.fileset;
     fwlib' = inputs.paisano.pick (fwlib.grow {
       inherit inputs;
-      cellsFrom = inputs.incl ./src ["std"];
+      cellsFrom = fileset.include ./src [./src/std];
       cellBlocks = [(fwlib.blockTypes.functions "fwlib")];
     }) ["std" "fwlib"];
 
     std = {
       # the framework's basic top-level tools
-      inherit (inputs) yants dmerge incl;
+      inherit (inputs) yants dmerge;
       inherit (inputs.paisano) pick harvest winnow;
-      inherit (fwlib') blockTypes actions dataWith flakeModule grow growOn findTargets;
+      inherit (fwlib') blockTypes actions dataWith fileset flakeModule grow growOn findTargets;
+      inherit (fwlib'.fileset) incl;
     };
   in
     assert inputs.nixpkgs.lib.assertMsg ((builtins.compareVersions builtins.nixVersion "2.13") >= 0) "The truth is: you'll need a newer nix version to use Standard (minimum: v2.13).";

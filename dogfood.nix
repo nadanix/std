@@ -1,10 +1,13 @@
 inputs: let
-  inherit (inputs) incl std;
+  inherit (inputs) std;
   inherit (inputs.paisano) pick harvest;
 in
   std.growOn {
     inherit inputs;
-    cellsFrom = incl ./src ["local" "tests"];
+    cellsFrom = std.fileset.include ./src [
+      ./src/local
+      ./src/tests
+    ];
     nixpkgsConfig = {allowUnfree = true;};
     cellBlocks = with std.blockTypes; [
       ## For local use in the Standard repository
@@ -21,7 +24,11 @@ in
   }
   (std.grow {
     inherit inputs;
-    cellsFrom = incl ./src ["std" "lib" "data"];
+    cellsFrom = std.fileset.include ./src [
+      ./src/std
+      ./src/lib
+      ./src/data
+    ];
     cellBlocks = with std.blockTypes; [
       ## For downstream use
 

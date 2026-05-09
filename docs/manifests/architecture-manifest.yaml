@@ -1,0 +1,130 @@
+manifest_version: 1
+area: std-architecture
+map: docs/architecture/00-map.md
+entries:
+  - path: docs/architecture/std-domain-model.md
+    title: std Domain Model
+    canonical: true
+    summary: Defines the ubiquitous language, aggregate sketch, Paisano supplier component view, and core invariants for std.
+    load_when:
+      - modeling std concepts
+      - mapping Paisano importer, registry, soil, or CLI/TUI components into std
+      - changing public framework vocabulary
+      - reviewing agent-facing architecture docs
+    tags:
+      - domain-model
+      - ubiquitous-language
+      - registry
+      - paisano
+      - supplier-components
+    next_reads:
+      - docs/architecture/bounded-contexts.md
+      - docs/architecture/workflows.md
+
+  - path: docs/architecture/bounded-contexts.md
+    title: std Bounded Contexts
+    canonical: true
+    summary: Defines ownership boundaries for Paisano, std facade, Block Types, action runtime, integrations, CLI/TUI, consumers, and dogfood.
+    load_when:
+      - changing ownership boundaries
+      - reviewing dependency seams
+      - deciding where a behavior belongs
+    tags:
+      - bounded-contexts
+      - ownership
+      - seams
+    next_reads:
+      - docs/architecture/dependency-contracts.md
+      - docs/architecture/block-type-catalog.md
+
+  - path: docs/architecture/dependency-contracts.md
+    title: Dependency Contracts
+    canonical: true
+    summary: Documents direct flake inputs, tool compatibility pins, and their contract roles.
+    load_when:
+      - changing flake inputs
+      - changing pinned documentation/build tools
+      - changing optional integrations
+      - reviewing Paisano or Divnix dependency boundaries
+    tags:
+      - dependencies
+      - contracts
+      - input-overloading
+    next_reads:
+      - docs/manifests/dependency-contracts-manifest.yaml
+
+  - path: docs/architecture/workflows.md
+    title: std Workflows
+    canonical: true
+    summary: Describes grow, harvest, action invocation, optional integration, and knowledge update workflows, including Paisano component flow.
+    load_when:
+      - changing framework behavior
+      - modeling Paisano importer, soil, or CLI/TUI execution flow
+      - modeling action execution
+      - updating agent-facing docs
+    tags:
+      - workflows
+      - paisano
+      - actions
+      - harvest
+    next_reads:
+      - docs/architecture/action-runtime.md
+
+  - path: docs/architecture/action-runtime.md
+    title: Action Runtime
+    canonical: true
+    summary: Defines mkCommand, action execution, and failure taxonomy.
+    load_when:
+      - changing actions
+      - changing mkCommand
+      - reviewing shell/runtime behavior
+    tags:
+      - actions
+      - failure-envelope
+      - prj-env
+    next_reads:
+      - docs/architecture/block-type-catalog.md
+
+  - path: docs/architecture/block-type-catalog.md
+    title: Built-in Block Type Catalog
+    canonical: true
+    summary: Catalogs built-in Block Types and stable actions.
+    load_when:
+      - adding or renaming Block Types
+      - reviewing action surfaces
+      - updating generated Block Type inventory
+    tags:
+      - block-types
+      - catalog
+      - actions
+    next_reads:
+      - docs/generated/block-types.md
+
+  - path: docs/architecture/invariants.md
+    title: Architecture and Taste Invariants
+    canonical: true
+    summary: Defines architecture and agent-legibility invariants that should become mechanical checks when stable.
+    load_when:
+      - reviewing architecture drift
+      - encoding recurring feedback
+      - changing agent harness behavior
+    tags:
+      - invariants
+      - agent-legibility
+      - checks
+    next_reads:
+      - docs/agent/validation-harness.md
+
+  - path: docs/architecture/quality-score.md
+    title: Architecture Knowledge Quality Score
+    canonical: true
+    summary: Lightweight quality snapshot for agent-facing architecture knowledge.
+    load_when:
+      - reviewing documentation quality
+      - planning doc-gardening work
+    tags:
+      - quality
+      - review
+      - documentation
+    next_reads:
+      - docs/agent/doc-gardening.md

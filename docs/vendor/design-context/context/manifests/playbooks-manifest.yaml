@@ -1,0 +1,168 @@
+manifest_version: 1
+area: playbooks
+map: context/playbooks/00-map.md
+status: active
+
+entries:
+  - path: context/playbooks/01-domain-modeling-playbook.md
+    title: Domain Modeling Playbook
+    canonical: true
+    summary: Guides the discovery of language, events, invariants, and candidate boundaries.
+    load_when:
+      - starting a new domain model
+      - clarifying a vague capability
+      - preparing a bounded context definition
+    tags:
+      - playbook
+      - domain-modeling
+      - ddd
+    next_reads:
+      - context/playbooks/08-business-event-discovery-and-event-catalog-playbook.md
+      - context/playbooks/02-bounded-context-definition-playbook.md
+      - context/playbooks/05-trusted-and-untrusted-representations-playbook.md
+
+  - path: context/playbooks/02-bounded-context-definition-playbook.md
+    title: Bounded Context Definition Playbook
+    canonical: true
+    summary: Guides the definition of a bounded context, its responsibilities, and its seam contracts.
+    load_when:
+      - defining a new bounded context
+      - reviewing context leakage
+      - documenting ownership boundaries
+    tags:
+      - playbook
+      - bounded-contexts
+      - boundaries
+    next_reads:
+      - context/playbooks/10-cross-context-contract-and-anti-corruption-playbook.md
+      - context/playbooks/06-entity-value-object-and-aggregate-design-playbook.md
+      - context/review/02-architecture-review-checklist.md
+
+  - path: context/playbooks/03-workflow-and-state-modeling-playbook.md
+    title: Workflow and State Modeling Playbook
+    canonical: true
+    summary: Guides the description of triggers, transitions, invariants, failure modes, and edge effects.
+    load_when:
+      - modeling a workflow
+      - documenting state transitions
+      - clarifying long-running behavior
+    tags:
+      - playbook
+      - workflows
+      - state
+    next_reads:
+      - context/playbooks/09-domain-error-and-failure-taxonomy-playbook.md
+      - context/principles/09-workflow-pipelines-effects-and-dependencies.md
+      - context/review/02-architecture-review-checklist.md
+
+  - path: context/playbooks/04-adr-writing-playbook.md
+    title: ADR Writing Playbook
+    canonical: true
+    summary: Guides the capture of structural decisions, rationale, alternatives, and consequences.
+    load_when:
+      - recording architectural decisions
+      - resolving recurring ambiguities
+      - changing structural policies
+    tags:
+      - playbook
+      - adr
+      - governance
+    next_reads:
+      - docs/adr/0001-information-architecture-and-manifests.md
+      - context/review/01-quality-gates.md
+
+  - path: context/playbooks/05-trusted-and-untrusted-representations-playbook.md
+    title: Trusted and Untrusted Representations Playbook
+    canonical: true
+    summary: Guides the explicit transition from raw inputs to trusted domain representations.
+    load_when:
+      - modeling input trust boundaries
+      - reducing repeated validation
+      - clarifying trusted construction rules
+    tags:
+      - playbook
+      - validation
+      - trusted-data
+    next_reads:
+      - context/principles/07-type-shaped-models-and-illegal-states.md
+      - context/principles/05-errors-and-edge-responsibilities.md
+
+  - path: context/playbooks/06-entity-value-object-and-aggregate-design-playbook.md
+    title: Entity, Value Object, and Aggregate Design Playbook
+    canonical: true
+    summary: Guides identity decisions, value-object identification, and aggregate boundary selection.
+    load_when:
+      - classifying concepts
+      - deciding aggregate boundaries
+      - reviewing invariant ownership
+    tags:
+      - playbook
+      - entities
+      - aggregates
+    next_reads:
+      - context/principles/08-entities-value-objects-and-aggregates.md
+      - context/principles/03-bounded-contexts-and-boundaries.md
+
+  - path: context/playbooks/07-persistence-and-mapping-boundaries-playbook.md
+    title: Persistence and Mapping Boundaries Playbook
+    canonical: true
+    summary: Guides the separation of domain shapes from storage and wire shapes and clarifies data ownership.
+    load_when:
+      - defining persistence boundaries
+      - adding mapping logic
+      - reviewing storage-first distortions
+    tags:
+      - playbook
+      - persistence
+      - mapping
+    next_reads:
+      - context/playbooks/10-cross-context-contract-and-anti-corruption-playbook.md
+      - context/principles/10-serialization-persistence-and-data-ownership.md
+
+  - path: context/playbooks/08-business-event-discovery-and-event-catalog-playbook.md
+    title: Business Event Discovery and Event Catalog Playbook
+    canonical: true
+    summary: Guides the extraction of business events from narratives and the creation of compact event catalogs.
+    load_when:
+      - discovering business events
+      - building an event catalog
+      - clarifying workflow handoffs
+    tags:
+      - playbook
+      - events
+      - event-catalog
+    next_reads:
+      - context/principles/04-workflows-invariants-and-state.md
+      - context/playbooks/10-cross-context-contract-and-anti-corruption-playbook.md
+
+  - path: context/playbooks/09-domain-error-and-failure-taxonomy-playbook.md
+    title: Domain Error and Failure Taxonomy Playbook
+    canonical: true
+    summary: Guides the classification of failures by meaning and the design of stable failure envelopes.
+    load_when:
+      - defining workflow failures
+      - reviewing error surfaces
+      - separating domain and operational concerns
+    tags:
+      - playbook
+      - errors
+      - failure-taxonomy
+    next_reads:
+      - context/principles/05-errors-and-edge-responsibilities.md
+      - context/patterns/03-error-and-edge-translation-patterns.md
+
+  - path: context/playbooks/10-cross-context-contract-and-anti-corruption-playbook.md
+    title: Cross-Context Contract and Anti-Corruption Playbook
+    canonical: true
+    summary: Guides the design of explicit seam contracts, translation boundaries, and ownership notes between contexts.
+    load_when:
+      - defining context-to-context communication
+      - documenting anti-corruption seams
+      - reviewing translated interactions
+    tags:
+      - playbook
+      - contracts
+      - anti-corruption
+    next_reads:
+      - context/principles/03-bounded-contexts-and-boundaries.md
+      - context/principles/10-serialization-persistence-and-data-ownership.md

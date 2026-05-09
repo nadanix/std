@@ -1,0 +1,179 @@
+manifest_version: 1
+area: principles
+map: context/principles/00-map.md
+status: active
+
+entries:
+  - path: context/principles/01-information-architecture-and-manifests.md
+    title: Information Architecture and Manifest Conventions
+    canonical: true
+    summary: Defines layer responsibilities, load order, size budgets, and manifest rules.
+    load_when:
+      - shaping repository structure
+      - adding a new context area
+      - deciding where a new document belongs
+    tags:
+      - information-architecture
+      - manifests
+      - retrieval
+    next_reads:
+      - context/principles/06-deep-modules-and-information-hiding.md
+
+  - path: context/principles/02-ubiquitous-language-and-naming.md
+    title: Ubiquitous Language and Naming
+    canonical: true
+    summary: Defines vocabulary-first design and naming rules for canonical artifacts.
+    load_when:
+      - introducing or renaming concepts
+      - reviewing vocabulary drift
+      - authoring glossary entries
+    tags:
+      - ubiquitous-language
+      - naming
+      - glossary
+    next_reads:
+      - context/principles/07-type-shaped-models-and-illegal-states.md
+      - context/principles/03-bounded-contexts-and-boundaries.md
+
+  - path: context/principles/03-bounded-contexts-and-boundaries.md
+    title: Bounded Contexts and Boundaries
+    canonical: true
+    summary: Explains how to partition models, define seams, and manage translation between contexts.
+    load_when:
+      - decomposing a domain
+      - defining boundaries
+      - reviewing context leakage
+    tags:
+      - bounded-contexts
+      - boundaries
+      - decomposition
+    next_reads:
+      - context/principles/08-entities-value-objects-and-aggregates.md
+      - context/principles/10-serialization-persistence-and-data-ownership.md
+
+  - path: context/principles/04-workflows-invariants-and-state.md
+    title: Workflows, Invariants, and State
+    canonical: true
+    summary: Shows how to describe behavior, transitions, constraints, and long-running flows.
+    load_when:
+      - designing workflows
+      - documenting lifecycle behavior
+      - making invariants explicit
+    tags:
+      - workflows
+      - invariants
+      - state
+    next_reads:
+      - context/principles/09-workflow-pipelines-effects-and-dependencies.md
+      - context/principles/05-errors-and-edge-responsibilities.md
+
+  - path: context/principles/05-errors-and-edge-responsibilities.md
+    title: Errors and Edge Responsibilities
+    canonical: true
+    summary: Separates domain-significant failures from edge and operational concerns.
+    load_when:
+      - modeling errors
+      - defining integration seams
+      - reviewing core/edge purity
+    tags:
+      - errors
+      - boundaries
+      - edge-concerns
+    next_reads:
+      - context/principles/09-workflow-pipelines-effects-and-dependencies.md
+      - context/principles/10-serialization-persistence-and-data-ownership.md
+
+  - path: context/principles/06-deep-modules-and-information-hiding.md
+    title: Deep Modules and Information Hiding
+    canonical: true
+    summary: Defines structure rules that keep the knowledge base compact, deep, and low-duplication.
+    load_when:
+      - refactoring structure
+      - reducing retrieval cost
+      - reviewing duplication and abstraction leakage
+    tags:
+      - deep-modules
+      - information-hiding
+      - complexity
+    next_reads:
+      - context/principles/01-information-architecture-and-manifests.md
+
+  - path: context/principles/07-type-shaped-models-and-illegal-states.md
+    title: Type-Shaped Models and Illegal States
+    canonical: true
+    summary: Explains how narrow trusted representations and explicit construction rules preserve domain meaning.
+    load_when:
+      - designing trusted domain representations
+      - reducing repeated validation
+      - distinguishing raw input from trusted data
+    tags:
+      - types
+      - invariants
+      - validation
+    next_reads:
+      - context/principles/08-entities-value-objects-and-aggregates.md
+      - context/principles/09-workflow-pipelines-effects-and-dependencies.md
+
+  - path: context/principles/08-entities-value-objects-and-aggregates.md
+    title: Entities, Value Objects, and Aggregates
+    canonical: true
+    summary: Explains how to distinguish identity, value, and consistency boundaries in the model.
+    load_when:
+      - deciding identity vs value semantics
+      - defining aggregate boundaries
+      - reviewing invariant ownership
+    tags:
+      - entities
+      - value-objects
+      - aggregates
+    next_reads:
+      - context/principles/03-bounded-contexts-and-boundaries.md
+      - context/principles/11-evolving-models-through-change.md
+
+  - path: context/principles/09-workflow-pipelines-effects-and-dependencies.md
+    title: Workflow Pipelines, Effects, and Dependencies
+    canonical: true
+    summary: Explains how to assemble workflows from explicit steps, effect surfaces, error results, and dependencies.
+    load_when:
+      - turning workflows into executable designs
+      - exposing dependency assembly
+      - clarifying effect surfaces
+    tags:
+      - workflows
+      - effects
+      - dependencies
+    next_reads:
+      - context/principles/10-serialization-persistence-and-data-ownership.md
+      - context/principles/11-evolving-models-through-change.md
+
+  - path: context/principles/10-serialization-persistence-and-data-ownership.md
+    title: Serialization, Persistence, and Data Ownership
+    canonical: true
+    summary: Explains how to keep storage and wire shapes from owning the domain model and how bounded contexts own data meaning.
+    load_when:
+      - designing persistence mappings
+      - reviewing storage-first distortions
+      - defining data ownership boundaries
+    tags:
+      - persistence
+      - serialization
+      - data-ownership
+    next_reads:
+      - context/principles/03-bounded-contexts-and-boundaries.md
+      - context/principles/11-evolving-models-through-change.md
+
+  - path: context/principles/11-evolving-models-through-change.md
+    title: Evolving Models Through Change
+    canonical: true
+    summary: Explains how to revisit the model first when requirements change and how to trace semantic ripple before implementation ripple.
+    load_when:
+      - adapting the model to new requirements
+      - tracing change impact
+      - avoiding patchwork growth
+    tags:
+      - evolution
+      - change
+      - refactoring
+    next_reads:
+      - context/playbooks/04-adr-writing-playbook.md
+      - context/review/01-quality-gates.md

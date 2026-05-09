@@ -1,0 +1,82 @@
+manifest_version: 1
+area: review
+map: context/review/00-map.md
+status: active
+
+entries:
+  - path: context/review/01-quality-gates.md
+    title: Quality Gates
+    canonical: true
+    summary: Defines repo-wide acceptance checks for canonical changes.
+    load_when:
+      - reviewing canonical docs
+      - deciding whether a change is ready
+    tags:
+      - review
+      - quality-gates
+      - governance
+    next_reads:
+      - context/review/02-architecture-review-checklist.md
+      - context/review/03-documentation-quality-checklist.md
+
+  - path: context/review/02-architecture-review-checklist.md
+    title: Architecture Review Checklist
+    canonical: true
+    summary: Evaluates boundaries, workflows, errors, contracts, and retrieval structure.
+    load_when:
+      - auditing context packs
+      - checking design quality
+      - reviewing bounded context documentation
+    tags:
+      - review
+      - architecture
+      - checklist
+    next_reads:
+      - context/review/05-event-and-contract-artifact-checklist.md
+      - context/principles/00-map.md
+
+  - path: context/review/03-documentation-quality-checklist.md
+    title: Documentation Quality Checklist
+    canonical: true
+    summary: Evaluates clarity, scope, discoverability, and maintainability of docs.
+    load_when:
+      - reviewing new markdown docs
+      - deciding whether a doc should be split or refined
+    tags:
+      - review
+      - documentation
+      - checklist
+    next_reads:
+      - context/review/04-vocabulary-drift-checklist.md
+
+  - path: context/review/04-vocabulary-drift-checklist.md
+    title: Vocabulary Drift Checklist
+    canonical: true
+    summary: Evaluates naming consistency and protects term stability across artifacts.
+    load_when:
+      - introducing new terms
+      - renaming canonical artifacts
+      - reviewing ambiguous areas
+    tags:
+      - review
+      - glossary
+      - naming
+    next_reads:
+      - context/glossary/01-framework-glossary.md
+      - context/glossary/02-naming-and-term-introduction.md
+
+  - path: context/review/05-event-and-contract-artifact-checklist.md
+    title: Event and Contract Artifact Checklist
+    canonical: true
+    summary: Evaluates event catalogs, trust-boundary notes, and cross-context contract artifacts.
+    load_when:
+      - reviewing event catalogs
+      - reviewing trust boundaries
+      - reviewing context-to-context contracts
+    tags:
+      - review
+      - events
+      - contracts
+    next_reads:
+      - context/playbooks/08-business-event-discovery-and-event-catalog-playbook.md
+      - context/playbooks/10-cross-context-contract-and-anti-corruption-playbook.md

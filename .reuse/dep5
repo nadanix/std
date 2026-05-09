@@ -3,6 +3,23 @@ Upstream-Name: Standard
 Upstream-Contact: The Standard Authors
 Source: https://github.com/divnix/std
 
+Files: .devcontainer.json .editorconfig .envrc .gitattributes
+Copyright: 2022 The Standard Authors
+License: Unlicense
+
+Files: AGENTS.md ARCHITECTURE.md CHANGELOG.md COMPARE.md PITCH.md ROADMAP.md
+ VERSION deprecation.nix dogfood.nix namaka.toml
+Copyright: 2022 The Standard Authors
+License: Unlicense
+
+Files: artwork/components.svg artwork/sdlc.svg
+Copyright: 2022 The Standard Authors
+License: Unlicense
+
+Files: tests/*
+Copyright: 2022 The Standard Authors
+License: Unlicense
+
 Files: src/*
 Copyright: 2022 The Standard Authors
 License: Unlicense
@@ -10,6 +27,14 @@ License: Unlicense
 Files: docs/*
 Copyright: 2022 The Standard Authors
 License: Unlicense
+
+Files: docs/theme/highlight.js
+Copyright: 2006-2020 Ivan Sagalaev
+License: BSD-3-Clause
+
+Files: docs/vendor/design-context/*
+Copyright: 2026 Juanjo Presa
+License: MIT
 
 Files: cells/*
 Copyright: 2022 The Standard Authors

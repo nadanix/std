@@ -40,7 +40,10 @@ in
             category = "cli-dev";
           }
           {
-            package = nixpkgs.gopls;
+            # gotools and gopls both ship `modernize` in newer nixpkgs; prefer
+            # gotools' copy because gopls' standalone `modernize` command is
+            # deprecated upstream while keeping the `gopls` binary available.
+            package = nixpkgs.lib.lowPrio nixpkgs.gopls;
             category = "cli-dev";
           }
           {

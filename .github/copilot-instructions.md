@@ -7,6 +7,7 @@ Standard is a Nix Flakes-based DevOps framework that organizes your development 
 ## Working Effectively
 
 ### Prerequisites and Installation
+
 - **CRITICAL**: Install Nix package manager first:
   ```bash
   curl -L https://nixos.org/nix/install | sh
@@ -26,6 +27,7 @@ Standard is a Nix Flakes-based DevOps framework that organizes your development 
   ```
 
 ### Environment Setup and Entry
+
 - **ALWAYS** start by entering the development environment:
   ```bash
   direnv allow
@@ -46,6 +48,7 @@ Standard is a Nix Flakes-based DevOps framework that organizes your development 
   ```
 
 ### Build Commands
+
 - **Build the entire project** - NEVER CANCEL: Build takes 10-30 minutes. Set timeout to 45+ minutes:
   ```bash
   nix build
@@ -66,6 +69,7 @@ Standard is a Nix Flakes-based DevOps framework that organizes your development 
   ```
 
 ### Testing
+
 - **Run snapshot tests** - NEVER CANCEL: Tests take 5-15 minutes. Set timeout to 30+ minutes:
   ```bash
   namaka check
@@ -79,6 +83,7 @@ Standard is a Nix Flakes-based DevOps framework that organizes your development 
   **Takes 15-45 minutes** - NEVER CANCEL. Set timeout to 60+ minutes.
 
 ### Formatting and Linting
+
 - **ALWAYS run formatting before committing** (CI will fail otherwise):
   ```bash
   treefmt
@@ -95,25 +100,30 @@ Standard is a Nix Flakes-based DevOps framework that organizes your development 
 ## Validation
 
 ### Manual Validation Requirements
+
 **ALWAYS run these validation steps after making changes:**
 
 1. **Environment validation**: Verify the development environment loads correctly:
+
    ```bash
    direnv reload && echo "Environment loaded successfully"
    ```
 
 2. **Build validation**: Ensure the project builds successfully:
+
    ```bash
    nix build && echo "Build completed successfully"
    ```
 
 3. **Standard CLI validation**: Test the CLI functionality:
+
    ```bash
    std --help  # Should show help without errors
    std  # Should launch TUI - exit with 'q'
    ```
 
 4. **Test validation**: Run the test suite:
+
    ```bash
    namaka check && echo "All tests passed"
    ```
@@ -125,24 +135,28 @@ Standard is a Nix Flakes-based DevOps framework that organizes your development 
    **Takes 2-5 minutes** - do not cancel.
 
 ### Critical Validation Scenarios
+
 After making code changes, ALWAYS test these complete workflows:
 
 1. **Fresh environment setup** (simulates new contributor):
+
    ```bash
    direnv disallow && direnv allow
    # Should complete without errors in 5-15 minutes
    ```
 
 2. **Full development cycle**:
+
    ```bash
    # Make a trivial change, then:
    treefmt                    # Format code
-   nix build                  # Build project  
+   nix build                  # Build project
    namaka check               # Run tests
    reuse lint                 # Check licenses
    ```
 
 3. **Template functionality** (if templates were modified):
+
    ```bash
    nix flake init -t .#minimal /tmp/test-project
    cd /tmp/test-project && direnv allow
@@ -159,10 +173,11 @@ After making code changes, ALWAYS test these complete workflows:
 ## Common Tasks
 
 ### Repository Structure
+
 ```
 .
 ├── .envrc                  # direnv configuration - auto-loads dev environment
-├── flake.nix              # Main Nix flake definition - project entry point  
+├── flake.nix              # Main Nix flake definition - project entry point
 ├── dogfood.nix            # Project self-configuration - how std uses itself
 ├── src/
 │   ├── local/             # Local development environment
@@ -177,7 +192,7 @@ After making code changes, ALWAYS test these complete workflows:
 │   │   └── templates/     # Project templates
 │   └── tests/             # Test suites - snapshot tests
 ├── docs/                  # Documentation source (mdbook)
-│   ├── explain/           # Why Nix? Why Standard? 
+│   ├── explain/           # Why Nix? Why Standard?
 │   ├── tutorials/         # Step-by-step guides
 │   ├── guides/            # How-to guides
 │   └── reference/         # API documentation
@@ -185,27 +200,30 @@ After making code changes, ALWAYS test these complete workflows:
 ```
 
 ### Frequently Modified Files
+
 - `src/local/shells.nix` - Add tools, modify dev environment
 - `src/local/configs.nix` - Configure treefmt, linting, nixago tools
 - `src/std/fwlib/blockTypes/` - Extend Standard with new block types
-- `src/std/templates/` - Add/modify project templates  
+- `src/std/templates/` - Add/modify project templates
 - `docs/` - Documentation updates
 - `flake.nix` - Project inputs and core configuration
 
 ### Standard Framework Concepts
+
 - **Cells**: Folders that group related functionality (e.g., `local`, `std`, `tests`)
 - **Cell Blocks**: Nix files that define outputs (e.g., `shells.nix`, `packages.nix`)
 - **Targets**: Individual functions/packages within Cell Blocks
 - **Actions**: Operations you can perform on targets (build, run, etc.)
 
 ### Key Commands Reference
+
 ```bash
 # Environment
 direnv allow              # Enter dev environment (5-15 min first time)
 direnv reload            # Reload after changes
 nix develop             # Alternative environment entry
 
-# Building  
+# Building
 nix build               # Build everything (10-30 min, NEVER CANCEL)
 std                     # Launch TUI to see targets
 std //local/shells:default  # Build specific target
@@ -224,11 +242,13 @@ mdbook serve            # Serve docs locally at localhost:3000
 ```
 
 ### File Watching and Live Reload
+
 - The `.envrc` file automatically watches relevant Nix files for changes
 - When you modify shell configurations, direnv will prompt to reload
 - Documentation can be live-reloaded: `mdbook serve`
 
 ### Troubleshooting
+
 - **"command not found: std"**: Run `direnv reload` or `nix develop -c "$SHELL"`
 - **Build failures**: Check `nix log` output for specific errors; try `nix build --show-trace` for more details
 - **Slow builds**: This is normal for Nix - do not cancel, builds are cached after first success
@@ -239,6 +259,7 @@ mdbook serve            # Serve docs locally at localhost:3000
 - **Out of disk space**: Nix store can get large; run `nix-collect-garbage` to clean up
 
 ### Performance Notes
+
 - **First-time setup**: Expect 5-15 minutes for initial environment build
 - **Subsequent environment loads**: Usually under 30 seconds due to Nix caching
 - **Full builds**: 10-30 minutes depending on what changed
@@ -246,12 +267,14 @@ mdbook serve            # Serve docs locally at localhost:3000
 - **CI builds**: 15-45 minutes for full CI pipeline
 
 **CRITICAL TIMING REMINDERS:**
+
 - **NEVER CANCEL** any nix build, test, or environment setup commands
 - Always set timeouts to at least 2x the expected time
 - Use `timeout` values of 60+ minutes for builds and 30+ minutes for tests
 - If a command appears stuck, wait at least 15 minutes before investigating
 
 ### Integration with CI
+
 - All formatting and linting must pass for CI to succeed
 - CI uses the same Standard framework via `divnix/std-action`
 - Local validation with `nix flake check` mirrors CI exactly
@@ -261,24 +284,28 @@ mdbook serve            # Serve docs locally at localhost:3000
 ### Common Development Patterns
 
 #### Adding a new tool to the development environment:
-1. Edit `src/local/shells.nix` 
+
+1. Edit `src/local/shells.nix`
 2. Add package to `commands` list with appropriate category
 3. Run `direnv reload` to update environment
 4. Test with the new tool available
 
 #### Modifying Standard framework behavior:
-1. Core logic in `src/std/fwlib/` 
+
+1. Core logic in `src/std/fwlib/`
 2. Block types in `src/std/fwlib/blockTypes/`
 3. Actions in `src/std/fwlib/actions/`
 4. Always run full test suite after changes
 
 #### Working with documentation:
+
 1. Source in `docs/` using mdbook format
 2. Live preview: `mdbook serve` at localhost:3000
 3. Build: `mdbook build` outputs to `docs/book/`
 4. Documentation includes auto-generated API docs via paisano-preprocessor
 
 #### Template development:
+
 1. Templates in `src/std/templates/`
 2. Test with: `nix flake init -t .#<template-name> /tmp/test`
 3. Verify template works: `cd /tmp/test && direnv allow`

@@ -4,7 +4,7 @@ let
 in {
   packages = [
     nixpkgs.alejandra
-    nixpkgs.nodePackages.prettier
+    nixpkgs.prettier
     nixpkgs.shfmt
     nixpkgs.taplo
   ];
@@ -16,7 +16,7 @@ in {
         includes = ["*.nix"];
       };
       prettier = {
-        command = lib.getExe nixpkgs.nodePackages.prettier;
+        command = lib.getExe nixpkgs.prettier;
         options = ["--write"];
         includes = [
           "*.css"

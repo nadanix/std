@@ -1,25 +1,43 @@
-# Include Filter
+# Source Filters
 
-It is very common that you want to filter your source code in order
-to avoid unnecessary rebuilds and increase your cache hits.
+It is common to filter source code before passing it to a build tool. This avoids
+unnecessary rebuilds and improves cache hits because only the files that are
+actual build inputs affect the source hash.
 
-This is so common that `std` includes a tool for this:
+`std.incl` used to provide this behavior through `divnix/incl`. It is now a
+compatibility shim and is deprecated. Prefer native `lib.fileset` functions, or
+`std.fileset.include` for the common “root plus selected paths” case.
+
+## Preferred pattern
 
 ```nix
 {
   inputs,
   cell,
 }: let
-  inherit (inputs) nixpkgs;
-  inherit (inputs) std;
+  inherit (inputs) nixpkgs std;
+  root = ./backend;
 in {
   backend = nixpkgs.mkYarnPackage {
     name = "backend";
-    src = std.incl (inputs.self + /src/backend) [
-      (inputs.self + /src/backend/app.js)
-      (inputs.self + /src/backend/config/config.js)
-      /* ... */
+    src = std.fileset.include root [
+      (root + /app.js)
+      (root + /config/config.js)
+      # ...
     ];
   };
 }
 ```
+
+`std.fileset.include root paths` is equivalent to:
+
+```nix
+nixpkgs.lib.fileset.toSource {
+  root = root;
+  fileset = nixpkgs.lib.fileset.unions paths;
+}
+```
+
+Use path values, not stringified paths. `lib.fileset.toSource` intentionally
+rejects string roots such as `inputs.self.outPath`; use a path literal relative
+to the Nix file instead.

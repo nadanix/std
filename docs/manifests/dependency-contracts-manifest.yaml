@@ -1,0 +1,165 @@
+manifest_version: 1
+area: dependency-contracts
+map: docs/architecture/dependency-contracts.md
+entries:
+  - input: paisano
+    upstream: paisano-nix/core
+    relationship: supplier-owned-contract
+    std_surface:
+      - growOn
+      - harvest
+      - pick
+      - winnow
+      - registry
+    status: active
+
+  - input: paisano-tui
+    upstream: paisano-nix/tui
+    relationship: registry-consumer-packaged-by-std
+    std_surface:
+      - src/std/cli.nix
+      - package std
+    status: active
+
+  - input: yants
+    upstream: divnix/yants
+    relationship: validation-dependency
+    std_surface:
+      - framework type checks
+    status: active
+
+  - input: dmerge
+    upstream: divnix/dmerge
+    relationship: merge-policy-utility
+    std_surface:
+      - std.dmerge
+      - std.lib.dev.mkNixago
+      - config pebbles
+    status: active
+
+  - input: nixpkgs.lib.fileset
+    upstream: nixos/nixpkgs/lib/fileset
+    relationship: native-source-boundary-helper
+    std_surface:
+      - std.fileset.include
+      - cellsFrom filtering
+      - bootstrap filtering
+    status: active
+
+  - input: incl
+    upstream: divnix/incl
+    relationship: deprecated-source-boundary-helper
+    std_surface:
+      - std.incl compatibility shim
+    status: deprecated
+
+  - input: blank
+    upstream: divnix/blank
+    relationship: optional-input-sentinel
+    std_surface:
+      - input overloading defaults
+      - requireInput failure envelope
+    status: active
+
+  - input: haumea
+    upstream: nix-community/haumea
+    relationship: loader-infrastructure
+    std_surface:
+      - src/std/fwlib.nix
+    status: active
+
+  - input: lib
+    upstream: nix-community/nixpkgs.lib
+    relationship: library-substrate
+    std_surface:
+      - system-independent lib usage
+    status: active
+
+  - input: nixpkgs
+    upstream: nixos/nixpkgs
+    relationship: build-and-package-substrate
+    std_surface:
+      - packages
+      - lib
+      - stdenv
+      - action dependencies
+    status: active
+
+  - input: devshell
+    upstream: numtide/devshell
+    relationship: optional-vertical-tool-integration
+    std_surface:
+      - std.lib.dev.mkShell
+      - devshells Block Type
+    status: optional
+
+  - input: nixago
+    upstream: nix-community/nixago
+    relationship: optional-vertical-tool-integration
+    std_surface:
+      - std.lib.dev.mkNixago
+      - nixago Block Type
+      - cfg pebbles
+    status: optional
+
+  - input: n2c
+    upstream: nlewo/nix2container
+    relationship: optional-vertical-tool-integration
+    std_surface:
+      - containers Block Type
+      - std.lib.ops.mkOCI
+      - std.lib.ops.mkDevOCI
+      - std.lib.ops.mkStandardOCI
+    status: optional
+
+  - input: terranix
+    upstream: terranix/terranix
+    relationship: optional-vertical-tool-integration
+    std_surface:
+      - terra Block Type
+    status: optional
+
+  - input: microvm
+    upstream: astro/microvm.nix
+    relationship: optional-vertical-tool-integration
+    std_surface:
+      - microvms Block Type
+      - std.lib.ops.mkMicrovm
+    status: optional
+
+  - input: makes
+    upstream: fluidattacks/makes
+    relationship: optional-vertical-tool-integration
+    std_surface:
+      - std.lib.dev.mkMakes
+    status: optional
+
+  - input: arion
+    upstream: hercules-ci/arion
+    relationship: optional-vertical-tool-integration
+    std_surface:
+      - arion Block Type
+      - std.lib.dev.mkArion
+    status: optional
+
+  - input: namaka
+    upstream: nix-community/namaka
+    relationship: optional-test-tool-integration
+    std_surface:
+      - namaka Block Type
+      - snapshot checks
+    status: optional
+
+  - input: mdbook-paisano-preprocessor
+    upstream: paisano-nix/mdbook-paisano-preprocessor
+    relationship: docs-edge-adapter
+    std_surface:
+      - mdBook generated API docs
+    status: data-subflake
+
+  - input: flake-parts
+    upstream: hercules-ci/flake-parts
+    relationship: compatibility-test-dependency
+    std_surface:
+      - flakeModule tests and examples
+    status: test-subflake

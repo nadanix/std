@@ -1,0 +1,171 @@
+repo:
+  name: design-context
+  status: v0.3.0-released
+  purpose: >-
+    A reusable, language-agnostic AI agent context framework optimized for
+    progressive loading under limited context windows.
+
+entrypoints:
+  - README.md
+  - context/00-map.md
+  - context/manifests/project-manifest.yaml
+
+loading_order:
+  - README.md
+  - context/00-map.md
+  - context/manifests/project-manifest.yaml
+  - nearest area map or manifest
+  - smallest relevant canonical leaf docs
+  - docs/adr/*.md as needed
+
+consumption:
+  default_pack:
+    description: Core context pack for third-party vendoring.
+    preferred_location: docs/vendor/design-context
+    fallback_locations:
+      - vendor/design-context
+      - third_party/design-context
+    include:
+      - LICENSE
+      - README.md
+      - AGENTS.md
+      - VENDORING.md
+      - context/**
+      - docs/adr/**
+    exclude_by_default:
+      - .git/**
+      - .github/**
+      - .pi/**
+      - tooling/**
+      - CONTRIBUTING.md
+      - vision.md
+      - docs/research/**
+      - docs/repository-plan.md
+      - docs/publication-and-maintenance.md
+      - '*.epub'
+    guide: VENDORING.md
+    adr: docs/adr/0005-core-context-pack-and-vendoring-boundary.md
+
+areas:
+  - path: context/principles
+    role: canonical-rules
+    map: context/principles/00-map.md
+    manifest: context/manifests/principles-manifest.yaml
+    status: active
+
+  - path: context/patterns
+    role: reusable-structures
+    map: context/patterns/00-map.md
+    manifest: context/manifests/patterns-manifest.yaml
+    status: active
+
+  - path: context/glossary
+    role: vocabulary
+    map: context/glossary/00-map.md
+    manifest: context/manifests/glossary-manifest.yaml
+    status: active
+
+  - path: context/playbooks
+    role: task-guidance
+    map: context/playbooks/00-map.md
+    manifest: context/manifests/playbooks-manifest.yaml
+    status: active
+
+  - path: context/review
+    role: checklists-and-gates
+    map: context/review/00-map.md
+    manifest: context/manifests/review-manifest.yaml
+    status: active
+
+  - path: context/manifests
+    role: retrieval-metadata
+    status: active
+
+canonical_documents:
+  - path: VENDORING.md
+    topic: vendoring-and-consumption
+  - path: context/principles/01-information-architecture-and-manifests.md
+    topic: information-architecture
+  - path: context/principles/02-ubiquitous-language-and-naming.md
+    topic: ubiquitous-language
+  - path: context/principles/03-bounded-contexts-and-boundaries.md
+    topic: bounded-contexts
+  - path: context/principles/04-workflows-invariants-and-state.md
+    topic: workflows
+  - path: context/principles/05-errors-and-edge-responsibilities.md
+    topic: errors-and-edges
+  - path: context/principles/06-deep-modules-and-information-hiding.md
+    topic: complexity-and-structure
+  - path: context/principles/07-type-shaped-models-and-illegal-states.md
+    topic: type-shaped-models
+  - path: context/principles/08-entities-value-objects-and-aggregates.md
+    topic: entities-values-aggregates
+  - path: context/principles/09-workflow-pipelines-effects-and-dependencies.md
+    topic: workflow-pipelines-and-effects
+  - path: context/principles/10-serialization-persistence-and-data-ownership.md
+    topic: persistence-and-data-ownership
+  - path: context/principles/11-evolving-models-through-change.md
+    topic: model-evolution
+  - path: context/patterns/01-boundary-and-decomposition-patterns.md
+    topic: boundary-patterns
+  - path: context/patterns/02-workflow-and-state-transition-patterns.md
+    topic: workflow-patterns
+  - path: context/patterns/03-error-and-edge-translation-patterns.md
+    topic: error-patterns
+  - path: context/glossary/01-framework-glossary.md
+    topic: framework-vocabulary
+  - path: context/glossary/02-naming-and-term-introduction.md
+    topic: naming-and-term-governance
+  - path: context/playbooks/01-domain-modeling-playbook.md
+    topic: domain-modeling-playbook
+  - path: context/playbooks/02-bounded-context-definition-playbook.md
+    topic: bounded-context-playbook
+  - path: context/playbooks/03-workflow-and-state-modeling-playbook.md
+    topic: workflow-playbook
+  - path: context/playbooks/04-adr-writing-playbook.md
+    topic: adr-playbook
+  - path: context/playbooks/05-trusted-and-untrusted-representations-playbook.md
+    topic: trusted-untrusted-playbook
+  - path: context/playbooks/06-entity-value-object-and-aggregate-design-playbook.md
+    topic: aggregate-design-playbook
+  - path: context/playbooks/07-persistence-and-mapping-boundaries-playbook.md
+    topic: persistence-mapping-playbook
+  - path: context/playbooks/08-business-event-discovery-and-event-catalog-playbook.md
+    topic: event-discovery-playbook
+  - path: context/playbooks/09-domain-error-and-failure-taxonomy-playbook.md
+    topic: failure-taxonomy-playbook
+  - path: context/playbooks/10-cross-context-contract-and-anti-corruption-playbook.md
+    topic: cross-context-contract-playbook
+  - path: context/review/01-quality-gates.md
+    topic: quality-gates
+  - path: context/review/02-architecture-review-checklist.md
+    topic: architecture-review
+  - path: context/review/03-documentation-quality-checklist.md
+    topic: documentation-review
+  - path: context/review/04-vocabulary-drift-checklist.md
+    topic: vocabulary-review
+  - path: context/review/05-event-and-contract-artifact-checklist.md
+    topic: event-and-contract-review
+  - path: docs/adr/0001-information-architecture-and-manifests.md
+    topic: structure-decision
+  - path: docs/adr/0002-lightweight-validation-before-agent-exports.md
+    topic: lightweight-tooling-strategy
+  - path: docs/adr/0003-v0-name-and-publication-baseline.md
+    topic: v0-publication-baseline
+  - path: docs/adr/0004-license-choice.md
+    topic: license-choice
+  - path: docs/adr/0005-core-context-pack-and-vendoring-boundary.md
+    topic: vendoring-boundary
+
+size_budgets:
+  root_docs_max_lines: 200
+  map_docs_max_lines: 150
+  leaf_docs_target_lines: 80-220
+
+policies:
+  language_agnostic_core: true
+  manifests_required_for_major_areas: true
+  link_instead_of_duplicate: true
+  update_maps_and_manifests_with_canonical_changes: true
+  lightweight_validation_before_heavy_exports: true
+  default_vendoring_uses_core_context_pack: true

@@ -16,6 +16,7 @@ in {
   treefmt = (mkNixago configs.treefmt) {
     data = {
       global.excludes = [
+        "docs/vendor/design-context/**"
         "src/std/templates/**"
         "tests/bt-blocktypes/expr.nix"
       ];

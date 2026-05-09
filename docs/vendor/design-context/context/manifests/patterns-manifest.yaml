@@ -1,0 +1,50 @@
+manifest_version: 1
+area: patterns
+map: context/patterns/00-map.md
+status: active
+
+entries:
+  - path: context/patterns/01-boundary-and-decomposition-patterns.md
+    title: Boundary and Decomposition Patterns
+    canonical: true
+    summary: Reusable ways to partition ownership, language, change pressure, and translation seams.
+    load_when:
+      - comparing decomposition choices
+      - deciding where translation seams belong
+      - reviewing context leakage
+    tags:
+      - patterns
+      - boundaries
+      - decomposition
+    next_reads:
+      - context/playbooks/02-bounded-context-definition-playbook.md
+
+  - path: context/patterns/02-workflow-and-state-transition-patterns.md
+    title: Workflow and State Transition Patterns
+    canonical: true
+    summary: Reusable workflow, state, and long-running behavior shapes.
+    load_when:
+      - comparing workflow modeling options
+      - deciding how to represent state transitions
+      - designing long-running flows
+    tags:
+      - patterns
+      - workflows
+      - state
+    next_reads:
+      - context/playbooks/03-workflow-and-state-modeling-playbook.md
+
+  - path: context/patterns/03-error-and-edge-translation-patterns.md
+    title: Error and Edge Translation Patterns
+    canonical: true
+    summary: Reusable ways to classify failures, translate edge details, and isolate operational concerns.
+    load_when:
+      - defining failure surfaces
+      - deciding where retries or translations belong
+      - reviewing edge leakage
+    tags:
+      - patterns
+      - errors
+      - edges
+    next_reads:
+      - context/principles/05-errors-and-edge-responsibilities.md

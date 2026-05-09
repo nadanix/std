@@ -15,6 +15,29 @@ This file is for agentic coding agents working in this checkout.
 - Copilot rules: `.github/copilot-instructions.md` (authoritative).
 - Cursor rules: none (`.cursor/rules/` and `.cursorrules` are absent).
 
+## Agent-Facing Repo Knowledge
+
+Treat `AGENTS.md` as a map, not a handbook. For repo-local architecture and
+agent harness guidance, read:
+
+1. `docs/00-map.md`
+2. `docs/architecture/00-map.md`
+3. `docs/agent/validation-harness.md`
+
+## Vendored Design Context
+
+For reusable architecture/domain-modeling guidance, read:
+
+1. `docs/vendor/design-context/README.md`
+2. `docs/vendor/design-context/context/00-map.md`
+3. `docs/vendor/design-context/context/manifests/project-manifest.yaml`
+
+Load only the smallest relevant leaf docs for the task. Do not recursively
+follow every related link or manifest `next_reads` entry. Project-specific docs
+under `docs/` override generic vendored guidance when they conflict. Do not edit
+`docs/vendor/design-context/` unless explicitly asked to update the vendored
+pack.
+
 ## Layout (What Lives Where)
 
 - `flake.nix`: top-level flake (bootstraps fwlib, then dogfoods).

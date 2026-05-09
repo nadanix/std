@@ -6,6 +6,26 @@
 [Comparisions](./COMPARE.md)
 [Roadmap](./ROADMAP.md)
 
+# Agent-First Knowledge
+
+- [Knowledge Map](00-map.md)
+- [Architecture Map](architecture/00-map.md)
+- [std Domain Model](architecture/std-domain-model.md)
+- [Bounded Contexts](architecture/bounded-contexts.md)
+- [Dependency Contracts](architecture/dependency-contracts.md)
+- [Workflows](architecture/workflows.md)
+- [Action Runtime](architecture/action-runtime.md)
+- [Block Type Catalog](architecture/block-type-catalog.md)
+- [Architecture Invariants](architecture/invariants.md)
+- [Quality Score](architecture/quality-score.md)
+- [Agent Harness Map](agent/00-map.md)
+- [Validation Harness](agent/validation-harness.md)
+- [Doc Gardening](agent/doc-gardening.md)
+- [Review and Merge Philosophy](agent/review-and-merge-philosophy.md)
+- [Technical Debt Tracker](plans/tech-debt.md)
+- [Generated Block Types](generated/block-types.md)
+- [Generated std Registry](generated/std-registry.md)
+
 # Tutorials
 
 - [A walk in the park](tutorials/walk-in-the-park.md)
@@ -15,7 +35,7 @@
 # How-To Guides
 
 - [Growing Cells](guides/growing-cells.md)
-- [Include Filter](guides/incl.md)
+- [Source Filters](guides/incl.md)
 - [Setup `.envrc`](guides/envrc.md)
 
 # Explanation

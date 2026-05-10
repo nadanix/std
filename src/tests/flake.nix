@@ -16,8 +16,6 @@
     namaka.url = "github:nix-community/namaka";
     namaka.inputs.haumea.follows = "std/haumea";
     namaka.inputs.nixpkgs.follows = "std/nixpkgs";
-    makes.url = "github:fluidattacks/makes";
-    makes.inputs.nixpkgs.follows = "std/nixpkgs";
     arion.url = "github:hercules-ci/arion";
     arion.inputs.nixpkgs.follows = "std/nixpkgs";
     microvm.url = "github:astro/microvm.nix";
@@ -31,7 +29,6 @@
       inputs.devshell.follows = "devshell";
       inputs.nixago.follows = "nixago";
       inputs.n2c.follows = "n2c";
-      inputs.makes.follows = "makes";
       inputs.arion.follows = "arion";
       inputs.microvm.follows = "microvm";
     };

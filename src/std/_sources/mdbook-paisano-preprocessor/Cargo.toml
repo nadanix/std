@@ -17,9 +17,9 @@ serde_json = { version = "1.0.81", features = ["std"] }
 toml = "0.7.2"
 askama = "0.11.1"
 toml_edit = { version = "0.19.3", optional = true }
-env_logger = { version = "0.10.0", default_features = false, optional = true }
+env_logger = { version = "0.10.0", default-features = false, optional = true }
 log = { version = "0.4.17", optional = true }
-clap = { version = "4.1.1", default_features = false, features = [
+clap = { version = "4.1.1", default-features = false, features = [
   "std",
   "derive",
 ], optional = true }

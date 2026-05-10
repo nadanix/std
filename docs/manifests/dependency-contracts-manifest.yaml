@@ -141,13 +141,6 @@ entries:
       - std.lib.ops.mkMicrovm
     status: optional
 
-  - input: makes
-    upstream: fluidattacks/makes
-    relationship: optional-vertical-tool-integration
-    std_surface:
-      - std.lib.dev.mkMakes
-    status: optional
-
   - input: arion
     upstream: hercules-ci/arion
     relationship: optional-vertical-tool-integration

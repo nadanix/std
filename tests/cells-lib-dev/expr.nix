@@ -7,7 +7,6 @@ in
       {
         mkShell = f {name = "Test";};
         mkNixago = (f cfg.conform).configFile;
-        mkMakes = f ./__mkMakes.nix {};
         mkArion =
           (f {
             project.name = "Test";

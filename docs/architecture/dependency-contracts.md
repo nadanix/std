@@ -3,8 +3,8 @@
 ## Summary
 
 - Treat flake inputs as context contracts, not as a flat dependency list.
-- Paisano-family inputs own the artifact importer, registry, and CLI/TUI base.
-- Divnix-family inputs mostly provide small semantic utilities used by `std`.
+- Paisano-derived importer, registry, CLI/TUI, and mdBook preprocessor code is being absorbed into this repo.
+- Divnix-family inputs mostly provide small semantic utilities or temporary implementation helpers used by `std`.
 - Vertical tool inputs are optional edge integrations and should be shielded
   behind Block Types or `std.lib.*`.
 - If a dependency is not legible to agents from this repo, document the contract
@@ -14,30 +14,32 @@
 
 ### Paisano family
 
-| Input                             | Relationship                            | std consumes                                                               | std owns                                                |
-| --------------------------------- | --------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------- |
-| `paisano` (`paisano-nix/core`)    | Supplier-owned contract.                | `growOn`, `harvest`, `pick`, `winnow`, registry and artifact abstractions. | Public std facade, defaults, curated Block Types.       |
-| `paisano-tui` (`paisano-nix/tui`) | Registry consumer packaged by std.      | Go source for CLI/TUI.                                                     | Binary name `std`, version/branding flags, completions. |
-| `mdbook-paisano-preprocessor`     | Docs edge adapter in the data subflake. | mdBook preprocessing from Paisano/std metadata.                            | Documentation layout and inclusion policy.              |
+| Input                                                                        | Relationship                                | std consumes                                                                                | std owns                                                |
+| ---------------------------------------------------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| Paisano core (`src/std/_sources/paisano-core`)                               | Absorbed internal framework component.      | Local source for `growOn`, `harvest`, `pick`, `winnow`, registry and artifact abstractions. | Public std facade, defaults, curated Block Types.       |
+| Paisano TUI (`src/std/_sources/paisano-tui`)                                 | Absorbed registry consumer packaged by std. | Local Go source for CLI/TUI.                                                                | Binary name `std`, version/branding flags, completions. |
+| mdBook Paisano preprocessor (`src/std/_sources/mdbook-paisano-preprocessor`) | Absorbed docs edge adapter.                 | Local Rust source for mdBook preprocessing from `#__std.init`.                              | Documentation layout and inclusion policy.              |
 
 ### Documentation tool compatibility pins
 
-| Source                                | Relationship                        | Purpose in std                                    | Boundary note                                                            |
-| ------------------------------------- | ----------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------ |
-| `nixpkgs/nixos-25.05#mdbook`          | Tool protocol compatibility pin.    | Provides mdBook 0.4 for `std.lib.cfg.mdbook`.     | Required until `mdbook-paisano-preprocessor` supports mdBook 0.5+ input. |
-| `mdbook-paisano-preprocessor` package | Paisano documentation edge adapter. | Generates Cell reference docs from `#__std.init`. | Keep paired with a compatible mdBook preprocessor protocol.              |
+| Source                                      | Relationship                                 | Purpose in std                                    | Boundary note                                                            |
+| ------------------------------------------- | -------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------ |
+| `nixpkgs/nixos-25.05#mdbook`                | Tool protocol compatibility pin.             | Provides mdBook 0.4 for `std.lib.cfg.mdbook`.     | Required until `mdbook-paisano-preprocessor` supports mdBook 0.5+ input. |
+| local `mdbook-paisano-preprocessor` package | Absorbed Paisano documentation edge adapter. | Generates Cell reference docs from `#__std.init`. | Keep paired with a compatible mdBook preprocessor protocol.              |
 
 ### Divnix and Nix ecosystem core
 
-| Input                 | Relationship                 | Purpose in std                                        | Boundary note                                            |
-| --------------------- | ---------------------------- | ----------------------------------------------------- | -------------------------------------------------------- |
-| `yants`               | Validation dependency.       | Type checks for framework contracts.                  | Keep checks close to public contract surfaces.           |
-| `dmerge`              | Policy utility.              | Merge config data and Nixago pebbles.                 | Avoid turning merge behavior into hidden global policy.  |
-| `blank`               | Optional-input sentinel.     | Placeholder for integrations not loaded by default.   | Missing integrations should fail through `requireInput`. |
-| `haumea`              | Loader infrastructure.       | Load framework library files.                         | Internal implementation detail.                          |
-| `lib` (`nixpkgs.lib`) | Library substrate.           | System-independent Nix library.                       | Prefer this when full `nixpkgs` is not required.         |
-| `nixpkgs`             | Build and package substrate. | Packages, shell tooling, lib, stdenv.                 | Special, but not a license to add hidden global context. |
-| `nixpkgs.lib.fileset` | Source boundary helper.      | Filter source trees for `cellsFrom` and package srcs. | Prefer native file sets; `std.incl` is deprecated.       |
+| Input                 | Relationship                     | Purpose in std                                          | Boundary note                                            |
+| --------------------- | -------------------------------- | ------------------------------------------------------- | -------------------------------------------------------- |
+| `yants`               | Validation dependency.           | Type checks for framework contracts.                    | Keep checks close to public contract surfaces.           |
+| `dmerge`              | Policy utility.                  | Merge config data and Nixago pebbles.                   | Avoid turning merge behavior into hidden global policy.  |
+| `blank`               | Optional-input sentinel.         | Placeholder for integrations not loaded by default.     | Missing integrations should fail through `requireInput`. |
+| `call-flake`          | Temporary importer helper.       | Load per-Cell `flake.nix` inputs for input overloading. | Keep isolated behind the absorbed Paisano core adapter.  |
+| `nosys`               | Temporary de-systemizing helper. | Hide system scope from Cell Block inputs.               | Keep isolated behind the absorbed Paisano core adapter.  |
+| `haumea`              | Loader infrastructure.           | Load framework library files.                           | Internal implementation detail.                          |
+| `lib` (`nixpkgs.lib`) | Library substrate.               | System-independent Nix library.                         | Prefer this when full `nixpkgs` is not required.         |
+| `nixpkgs`             | Build and package substrate.     | Packages, shell tooling, lib, stdenv.                   | Special, but not a license to add hidden global context. |
+| `nixpkgs.lib.fileset` | Source boundary helper.          | Filter source trees for `cellsFrom` and package srcs.   | Prefer native file sets; `std.incl` is deprecated.       |
 
 ### Optional vertical tool integrations
 

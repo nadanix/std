@@ -2,6 +2,7 @@
 {
   arion = "/nix/store/jq98iqdcqyyfarjmkbnzjnk50rdvlpja-source";
   blank = "/nix/store/scflkbbsqxlzxvja3gm4xf1y2kvsww32-source";
+  call-flake = "/nix/store/l4502km53p7kfd313bqk89lzrqpkd35v-source";
   cells = "no .outPath";
   devshell = "/nix/store/hh6i9rnxx1v6azzva6dc3ivglh9bxnzg-source";
   dmerge = "/nix/store/4r3508sr7qd336wkq83g1ams9zqvhkja-source";
@@ -14,8 +15,7 @@
   namaka = "/nix/store/i2kjhqjz9ywmriq21gnk0as2ih1rxl2p-source";
   nixago = "/nix/store/6pb5g5b93dg3fvcys8pq9b0baj4k11mj-source";
   nixpkgs = "/nix/store/h9wn92hv33sizprch7fcp16lfs1k3w5j-source";
-  paisano = "/nix/store/4v8nn2z2vl74yz1557n1dha3l7rzzbgs-source";
-  paisano-tui = "/nix/store/jx9ncd0daa8v8yqcpgdiz6c45hm36k3i-source";
+  nosys = "/nix/store/f58y18ga8br03fgd8g03vvcadarg4w3v-source";
   terranix = "/nix/store/q3wc2bjfl4phl1lvhy6ha7n1vc8b0gyc-source";
   yants = "/nix/store/np6pvhkza8grv26qypzpibwrrg7kqxkc-source";
 }

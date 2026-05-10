@@ -14,7 +14,7 @@ This directory is the agent-facing architecture surface for `std`.
 
 | Document                  | Load when                                                                                       |
 | ------------------------- | ----------------------------------------------------------------------------------------------- |
-| `std-domain-model.md`     | You need the ubiquitous language, aggregate shape, or Paisano supplier component view of `std`. |
+| `std-domain-model.md`     | You need the ubiquitous language, aggregate shape, or absorbed Paisano component view of `std`. |
 | `bounded-contexts.md`     | You are changing ownership boundaries or deciding where behavior belongs.                       |
 | `dependency-contracts.md` | You touch flake inputs, Paisano/Divnix dependencies, or vertical tool integrations.             |
 | `workflows.md`            | You change `grow`, harvesting, action invocation, optional integrations, or docs generation.    |

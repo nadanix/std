@@ -4,35 +4,35 @@
 
 - `std` is best understood as several semantic contexts around one artifact
   model.
-- Paisano owns the low-level artifact importer and registry abstractions.
-- `std` owns curated DevOps semantics, built-in Block Types, action runtime, and
-  integration adapters.
+- `std` owns the absorbed Paisano-derived importer and registry abstractions.
+- `std` also owns curated DevOps semantics, built-in Block Types, action runtime,
+  and integration adapters.
 - The repo dogfoods `std`, but dogfood automation is not the same context as the
   downstream framework surface.
 
 ## Context cards
 
-### Paisano Artifact Model
+### Absorbed Paisano Artifact Model
 
 | Field          | Description                                                               |
 | -------------- | ------------------------------------------------------------------------- |
 | Purpose        | Import repo structure into typed artifacts and expose a registry.         |
-| Strategic role | Core supplier dependency.                                                 |
+| Strategic role | Internal core framework component.                                        |
 | Vocabulary     | Cell, Cell Block, Block Type, Target, Registry.                           |
 | Owns           | Importer behavior, registry shape, `growOn`, `harvest`, `pick`, `winnow`. |
 | Does not own   | `std`'s curated SDLC defaults or built-in Block Type catalog.             |
-| Relationship   | Supplier-owned contract consumed by `std`.                                |
+| Relationship   | Internal contract behind the public `std` facade.                         |
 
 ### Standard Framework Facade
 
-| Field          | Description                                                                  |
-| -------------- | ---------------------------------------------------------------------------- |
-| Purpose        | Present the public `std` API and keep downstream flakes small and legible.   |
-| Strategic role | Core differentiator.                                                         |
-| Vocabulary     | `grow`, `growOn`, `blockTypes`, `actions`, `dataWith`, `flakeModule`.        |
-| Owns           | Defaults, public exports, bootstrap/dogfood layering, compatibility surface. |
-| Does not own   | Paisano internals or vertical tool semantics.                                |
-| Relationship   | Translation seam between Paisano, Nix flakes, and downstream users.          |
+| Field          | Description                                                                             |
+| -------------- | --------------------------------------------------------------------------------------- |
+| Purpose        | Present the public `std` API and keep downstream flakes small and legible.              |
+| Strategic role | Core differentiator.                                                                    |
+| Vocabulary     | `grow`, `growOn`, `blockTypes`, `actions`, `dataWith`, `flakeModule`.                   |
+| Owns           | Defaults, public exports, bootstrap/dogfood layering, compatibility surface.            |
+| Does not own   | Vertical tool semantics.                                                                |
+| Relationship   | Translation seam between absorbed importer mechanics, Nix flakes, and downstream users. |
 
 ### Block Type Catalog
 
@@ -74,8 +74,8 @@
 | Purpose        | Let humans and agents discover and run repo actions from the registry. |
 | Strategic role | Core user experience.                                                  |
 | Vocabulary     | selector, action, target, registry, completion.                        |
-| Owns           | Packaging `paisano-tui` as `std`, branding, shell completions.         |
-| Does not own   | Registry production.                                                   |
+| Owns           | Absorbed TUI source, packaging as `std`, branding, shell completions.  |
+| Does not own   | Registry production details beyond the public `#__std` contract.       |
 | Relationship   | Consumer of registry outcomes.                                         |
 
 ### Consumer Project Model
@@ -102,7 +102,7 @@
 
 ## Boundary rules
 
-- Do not leak Paisano implementation details into downstream std docs unless the
+- Do not leak absorbed Paisano implementation details into downstream std docs unless the
   contract requires it.
 - Do not let vertical tool vocabulary replace std's artifact vocabulary.
 - Keep dogfood-only concerns out of the downstream framework API.
@@ -111,9 +111,9 @@
 ## Review questions
 
 - Which context owns the decision being changed?
-- Is the seam supplier-owned, shared vocabulary, or anti-corruption?
+- Is the seam internal, shared vocabulary, or anti-corruption?
 - Could a downstream repo understand the change without reading dogfood code?
-- Could Paisano evolve internally without forcing std docs to change?
+- Could absorbed Paisano-derived internals evolve without forcing downstream docs to change?
 
 ## Related docs
 

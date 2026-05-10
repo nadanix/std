@@ -1,6 +1,14 @@
 let
   inherit (inputs) nixpkgs;
-  inherit (inputs.mdbook-paisano-preprocessor.app.package) mdbook-paisano-preprocessor;
+  inherit (nixpkgs) lib stdenv;
+
+  mdbook-paisano-preprocessor = nixpkgs.rustPlatform.buildRustPackage {
+    pname = "mdbook-paisano-preprocessor";
+    version = "0.4.0";
+    src = inputs.self + /src/std/_sources/mdbook-paisano-preprocessor;
+    cargoHash = "sha256-zKOPn1388k42c5FA6+A8I6J+4MFnFn7W/QH/ccqr99g=";
+    buildInputs = lib.optionals stdenv.hostPlatform.isDarwin [nixpkgs.libiconv];
+  };
 in {
   hook.mode = "copy"; # let CI pick it up outside of devshell
   packages = [

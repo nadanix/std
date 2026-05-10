@@ -40,8 +40,8 @@ Invariants:
 - Block Type declarations define which blocks are import candidates.
 - Missing declared blocks are skipped; undeclared blocks are not part of the
   model.
-- Paisano owns config normalization, path discovery, import signatures, target
-  extraction, and registry lane construction.
+- The absorbed Paisano core owns config normalization, path discovery, import
+  signatures, target extraction, and registry lane construction.
 - The public output must remain discoverable through the registry.
 
 ## Workflow: harvest outputs
@@ -56,7 +56,7 @@ Invariants:
 Steps:
 
 1. Choose target paths in the std graph.
-2. Apply the Paisano soil translator (`harvest`, `pick`, or `winnow`).
+2. Apply the absorbed Paisano soil translator (`harvest`, `pick`, or `winnow`).
 3. Preserve or remove system scope according to the target function.
 4. Publish the translated output under the expected flake key.
 

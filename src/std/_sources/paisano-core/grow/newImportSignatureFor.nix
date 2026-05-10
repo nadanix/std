@@ -5,7 +5,11 @@ This file implements the unique import signature of each block.
   l,
   deSystemize,
 }: cfg: let
-  self = cfg.inputs.self.sourceInfo // {rev = cfg.inputs.self.sourceInfo.rev or "not-a-commit";};
+  sourceRoot = cfg.sourceRoot or null;
+  self =
+    cfg.inputs.self.sourceInfo
+    // {rev = cfg.inputs.self.sourceInfo.rev or "not-a-commit";}
+    // l.optionalAttrs (sourceRoot != null) {inherit sourceRoot;};
   instantiateNixpkgsWith = system: nixpkgs:
     (
       if cfg.nixpkgsConfig != {}

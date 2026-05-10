@@ -31,17 +31,17 @@
 
 ### Divnix and Nix ecosystem core
 
-| Input                 | Relationship                     | Purpose in std                                          | Boundary note                                            |
-| --------------------- | -------------------------------- | ------------------------------------------------------- | -------------------------------------------------------- |
-| `yants`               | Validation dependency.           | Type checks for framework contracts.                    | Keep checks close to public contract surfaces.           |
-| `dmerge`              | Policy utility.                  | Merge config data and Nixago pebbles.                   | Avoid turning merge behavior into hidden global policy.  |
-| `blank`               | Optional-input sentinel.         | Placeholder for integrations not loaded by default.     | Missing integrations should fail through `requireInput`. |
-| `call-flake`          | Temporary importer helper.       | Load per-Cell `flake.nix` inputs for input overloading. | Keep isolated behind the absorbed Paisano core adapter.  |
-| `nosys`               | Temporary de-systemizing helper. | Hide system scope from Cell Block inputs.               | Keep isolated behind the absorbed Paisano core adapter.  |
-| `haumea`              | Loader infrastructure.           | Load framework library files.                           | Internal implementation detail.                          |
-| `lib` (`nixpkgs.lib`) | Library substrate.               | System-independent Nix library.                         | Prefer this when full `nixpkgs` is not required.         |
-| `nixpkgs`             | Build and package substrate.     | Packages, shell tooling, lib, stdenv.                   | Special, but not a license to add hidden global context. |
-| `nixpkgs.lib.fileset` | Source boundary helper.          | Filter source trees for `cellsFrom` and package srcs.   | Prefer native file sets or `std.fileset.include`.        |
+| Input                 | Relationship                     | Purpose in std                                          | Boundary note                                                                                                              |
+| --------------------- | -------------------------------- | ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `yants`               | Validation dependency.           | Type checks for framework contracts.                    | Keep checks close to public contract surfaces.                                                                             |
+| `dmerge`              | Policy utility.                  | Merge config data and Nixago pebbles.                   | Avoid turning merge behavior into hidden global policy.                                                                    |
+| `blank`               | Optional-input sentinel.         | Placeholder for integrations not loaded by default.     | Missing integrations should fail through `requireInput`.                                                                   |
+| `call-flake`          | Temporary importer helper.       | Load per-Cell `flake.nix` inputs for input overloading. | Keep isolated behind the absorbed Paisano core adapter.                                                                    |
+| `nosys`               | Temporary de-systemizing helper. | Hide system scope from Cell Block inputs.               | Keep isolated behind the absorbed Paisano core adapter.                                                                    |
+| `haumea`              | Loader infrastructure.           | Load framework library files.                           | Internal implementation detail.                                                                                            |
+| `lib` (`nixpkgs.lib`) | Library substrate.               | System-independent Nix library.                         | Prefer this when full `nixpkgs` is not required.                                                                           |
+| `nixpkgs`             | Build and package substrate.     | Packages, shell tooling, lib, stdenv.                   | Special, but not a license to add hidden global context.                                                                   |
+| `nixpkgs.lib.fileset` | Source boundary helper.          | Filter source trees for `cellsFrom` and package srcs.   | Prefer native file sets or `std.fileset.include`; use explicit `sourceRoot` paths when Cell Blocks need repo-root sources. |
 
 ### Optional vertical tool integrations
 

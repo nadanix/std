@@ -42,6 +42,7 @@ entries:
     relationship: native-source-boundary-helper
     std_surface:
       - std.fileset.include
+      - optional sourceRoot import-signature path
       - cellsFrom filtering
       - bootstrap filtering
     status: active

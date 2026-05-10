@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/divnix/std/main/registry.schema.json",
+  "$id": "https://raw.githubusercontent.com/nadanix/std/main/registry.schema.json",
   "title": "Standard Registry",
   "description": "The json schema to be found when serializing .#__std of a Standardized repository with Nix to json.",
   "type": "object",

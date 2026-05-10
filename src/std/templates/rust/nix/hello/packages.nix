@@ -5,7 +5,7 @@
   inherit (inputs) std cells;
 
   crane = inputs.crane.lib.overrideToolchain cells.repo.rust.toolchain;
-  root = ../..;
+  root = inputs.self.sourceRoot;
 in {
   # sane default for a binary package
   default = crane.buildPackage {

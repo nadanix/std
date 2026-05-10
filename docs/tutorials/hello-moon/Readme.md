@@ -141,7 +141,7 @@ In this case, invoking `$SHELL` correctly is taken care for you by the Block Typ
 
 ```bash
 # fetch `std`
-$ nix shell github:divnix/std
+$ nix shell github:nadanix/std
 $ std //local/devshells/default:enter
 ```
 
@@ -157,7 +157,7 @@ You can also explore the nixago configuration via the Nixago Block Type's `explo
 
 ```bash
 # fetch `std`
-$ nix shell github:divnix/std
+$ nix shell github:nadanix/std
 $ std //local/nixago/treefmt:explore
 ```
 
@@ -193,7 +193,7 @@ Because I use these commands so often, I've set: `alias d="direnv"` in my shell'
 [direnv-how-to]: ../../guides/envrc.md
 [blocktypes-devshells]: ../../reference/blocktypes/devshells-blocktype.md
 [blocktypes-nixago]: ../../reference/blocktypess/nixago-blocktype.md
-[lib-cfg]: https://github.com/divnix/std/blob/main/cells/lib/cfg.nix
+[lib-cfg]: https://github.com/nadanix/std/blob/main/cells/lib/cfg.nix
 [direnv]: #direnv
 [hello-world]: ../hello-world
 [devshell-wrapper]: ../../reference/lib/dev/mkShell.md

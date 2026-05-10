@@ -18,7 +18,7 @@ It is used to automatically set up file watches on files that could modify the
 current devshell, discoverable through these or similar logs during loading:
 
 ```console
-direnv: loading https://raw.githubusercontent.com/divnix/std/...
+direnv: loading https://raw.githubusercontent.com/nadanix/std/...
 direnv: using std cells //local/shells:default
 direnv: Watching: cells/local/shells.nix
 direnv: Watching: cells/local/shells (recursively)

@@ -17,7 +17,7 @@ It's a variadic function and takes an unlimited number of "soil layers".
 
 ```nix
 {
-  inputs.std.url = "github:divnix/std";
+  inputs.std.url = "github:nadanix/std";
 
   outputs = {std, ...} @ inputs:
     std.growOn {

@@ -1,7 +1,7 @@
 {
   description = "CONFIGURE-ME";
 
-  inputs.std.url = "github:divnix/std";
+  inputs.std.url = "github:nadanix/std";
   inputs.nixpkgs.follows = "std/nixpkgs";
   inputs.std.inputs.devshell.url = "github:numtide/devshell";
   inputs.std.inputs.nixago.url = "github:nix-community/nixago";

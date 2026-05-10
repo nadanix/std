@@ -6,7 +6,7 @@ SPDX-License-Identifier: Unlicense
 -->
 
 <div align="center">
-  <img src="https://github.com/divnix/std/raw/main/artwork/logo.png" width="250" />
+  <img src="https://github.com/nadanix/std/raw/main/artwork/logo.png" width="250" />
   <h1>Standard</h1>
   <p>Ship today.</span>
 </div>
@@ -89,7 +89,7 @@ But hey! It means: we can progress together!
   description = "Description for the project";
 
   inputs = {
-    std.url = "github:divnix/std";
+    std.url = "github:nadanix/std";
     nixpkgs.follows = "std/nixpkgs";
   };
 
@@ -107,7 +107,7 @@ But hey! It means: we can progress together!
       (devshells "shells" {ci.build = true;})
     ];
   }
-  # 4. Run 'nix run github:divnix/std'
+  # 4. Run 'nix run github:nadanix/std'
   # 'growOn' ... Soil:
   #  - here, compat for the Nix CLI
   #  - but can use anything that produces flake outputs (e.g. flake-parts or flake-utils)
@@ -143,7 +143,7 @@ _That's it. `std.grow` is a "smart" importer of your `nix` code and is designed 
 
 > **TIP:**
 >
-> 1. Clone this repo `git clone https://github.com/divnix/std.git`
+> 1. Clone this repo `git clone https://github.com/nadanix/std.git`
 > 2. Install `direnv` & inside the repo, do: `direnv allow` (first time takes a little longer)
 > 3. Run the TUI by entering `std` (first time takes a little longer)
 >
@@ -188,15 +188,15 @@ _And the usual copies? &rarr; [`./LICENSES`][licenses]._
 
 ---
 
-[cells]: https://github.com/divnix/std/tree/main/cells
+[cells]: https://github.com/nadanix/std/tree/main/cells
 [documentation]: https://std.divnix.com
 [book]: https://jmgilman.github.io/std-book/
-[licensing]: https://github.com/divnix/std/blob/main/.reuse/dep5
-[licenses]: https://github.com/divnix/std/tree/main/LICENSES
-[blocktypes]: https://github.com/divnix/std/blob/main/src/blocktypes.nix
+[licensing]: https://github.com/nadanix/std/blob/main/.reuse/dep5
+[licenses]: https://github.com/nadanix/std/tree/main/LICENSES
+[blocktypes]: https://github.com/nadanix/std/blob/main/src/blocktypes.nix
 [nix-flakes]: https://nixos.wiki/wiki/Flakes
 [nix]: https://nixos.org/manual/nix/unstable
-[std]: https://github.com/divnix/std
+[std]: https://github.com/nadanix/std
 [why-std]: https://std.divnix.com/explain/why-std.html
 [why-nix]: https://std.divnix.com/explain/why-nix.html
 [ecosystem]: https://discourse.nixos.org

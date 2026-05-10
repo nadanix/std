@@ -34,7 +34,7 @@ in
 ```nix
 # ./flake.nix
 {
-  inputs.std.url = "github:divnix/std";
+  inputs.std.url = "github:nadanix/std";
 
   outputs = inputs:
     inputs.std.growOn {

@@ -45,7 +45,7 @@ Per our [architectural overview](./ARCHITECTURE.md), we distinguish these proces
 
 ## Milestone v1
 
-With the above in mind, the [issue backlog](https://github.com/divnix/std/issues) will be regularly groomed and prioritized.
+With the above in mind, the [issue backlog](https://github.com/nadanix/std/issues) will be regularly groomed and prioritized.
 This is an aid for the core contributors, but it may also provide the necessary orientation to get new contributors set up.
 
 Welcome!

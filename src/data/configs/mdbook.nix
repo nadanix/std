@@ -2,10 +2,15 @@ let
   inherit (inputs) nixpkgs;
   inherit (nixpkgs) lib stdenv;
 
+  mdbookPaisanoPreprocessorSrc = lib.fileset.toSource {
+    root = ../../std/_sources/mdbook-paisano-preprocessor;
+    fileset = ../../std/_sources/mdbook-paisano-preprocessor;
+  };
+
   mdbook-paisano-preprocessor = nixpkgs.rustPlatform.buildRustPackage {
     pname = "mdbook-paisano-preprocessor";
     version = "0.4.0";
-    src = inputs.self + /src/std/_sources/mdbook-paisano-preprocessor;
+    src = mdbookPaisanoPreprocessorSrc;
     cargoHash = "sha256-zKOPn1388k42c5FA6+A8I6J+4MFnFn7W/QH/ccqr99g=";
     buildInputs = lib.optionals stdenv.hostPlatform.isDarwin [nixpkgs.libiconv];
   };

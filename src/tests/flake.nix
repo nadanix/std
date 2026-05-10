@@ -10,9 +10,6 @@
     n2c.inputs.nixpkgs.follows = "std/nixpkgs";
     terranix.url = "github:terranix/terranix";
     terranix.inputs.nixpkgs.follows = "std/nixpkgs";
-    terranix.inputs.terranix-examples.follows = "";
-    terranix.inputs.bats-support.follows = "";
-    terranix.inputs.bats-assert.follows = "";
     namaka.url = "github:nix-community/namaka";
     namaka.inputs.haumea.follows = "std/haumea";
     namaka.inputs.nixpkgs.follows = "std/nixpkgs";

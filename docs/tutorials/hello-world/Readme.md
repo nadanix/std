@@ -62,7 +62,6 @@ This example consumes the following defaults or builtins:
   systems ? [
     "x86_64-linux"
     "aarch64-linux"
-    "x86_64-darwin"
     "aarch64-darwin"
   ],
   ...

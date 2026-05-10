@@ -23,16 +23,6 @@
           };
         };
       };
-      x86_64-darwin = {
-        local = {
-          shells = {
-            default = {
-              build = <derivation build>;
-              enter = <derivation enter>;
-            };
-          };
-        };
-      };
       x86_64-linux = {
         local = {
           shells = {
@@ -48,7 +38,6 @@
     ci = {
       aarch64-darwin = [ ];
       aarch64-linux = [ ];
-      x86_64-darwin = [ ];
       x86_64-linux = [ ];
     };
     init = {
@@ -81,34 +70,6 @@
         }
       ];
       aarch64-linux = [
-        {
-          cell = "local";
-          cellBlocks = [
-            {
-              blockType = "devshells";
-              cellBlock = "shells";
-              targets = [
-                {
-                  actions = [
-                    {
-                      description = "build it";
-                      name = "build";
-                      requiresArgs = false;
-                    }
-                    {
-                      description = "enter this devshell";
-                      name = "enter";
-                      requiresArgs = false;
-                    }
-                  ];
-                  name = "default";
-                }
-              ];
-            }
-          ];
-        }
-      ];
-      x86_64-darwin = [
         {
           cell = "local";
           cellBlocks = [
@@ -183,13 +144,11 @@
   apps = {
     aarch64-darwin = { };
     aarch64-linux = { };
-    x86_64-darwin = { };
     x86_64-linux = { };
   };
   checks = {
     aarch64-darwin = { };
     aarch64-linux = { };
-    x86_64-darwin = { };
     x86_64-linux = { };
   };
   devShells = {
@@ -197,9 +156,6 @@
       default = <derivation test-shell>;
     };
     aarch64-linux = {
-      default = <derivation test-shell>;
-    };
-    x86_64-darwin = {
       default = <derivation test-shell>;
     };
     x86_64-linux = {
@@ -210,7 +166,6 @@
   legacyPackages = {
     aarch64-darwin = { };
     aarch64-linux = { };
-    x86_64-darwin = { };
     x86_64-linux = { };
   };
   nixosConfigurations = { };
@@ -219,15 +174,7 @@
   packages = {
     aarch64-darwin = { };
     aarch64-linux = { };
-    x86_64-darwin = { };
     x86_64-linux = { };
-  };
-  x86_64-darwin = {
-    local = {
-      shells = {
-        default = <derivation test-shell>;
-      };
-    };
   };
   x86_64-linux = {
     local = {

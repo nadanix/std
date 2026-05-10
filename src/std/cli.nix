@@ -3,7 +3,12 @@ let
   version = nixpkgs.lib.fileContents (inputs.self + /VERSION);
 
   inherit (inputs) nixpkgs;
-  inherit (nixpkgs.lib) licenses;
+  inherit (nixpkgs.lib) fileset licenses;
+
+  paisanoTuiSrc = fileset.toSource {
+    root = ./_sources/paisano-tui;
+    fileset = ./_sources/paisano-tui;
+  };
 in {
   default = cell.cli.std;
 
@@ -16,7 +21,7 @@ in {
       homepage = "https://github.com/divnix/std";
     };
 
-    src = inputs.self + /src/std/_sources/paisano-tui;
+    src = paisanoTuiSrc;
 
     vendorHash = "sha256-S1oPselqHRIPcqDSsvdIkCwu1siQGRDHOkxWtYwa+g4=";
 

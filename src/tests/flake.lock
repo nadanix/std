@@ -230,27 +230,6 @@
         "type": "github"
       }
     },
-    "makes": {
-      "inputs": {
-        "nixpkgs": [
-          "std",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1753906051,
-        "narHash": "sha256-86UR4dRNR9WGnWV/r2MR8X+3NC5gwROlX6+yqxbbXjA=",
-        "owner": "fluidattacks",
-        "repo": "makes",
-        "rev": "9123a55ab84b57fe08bb33379b92fe3922e71408",
-        "type": "github"
-      },
-      "original": {
-        "owner": "fluidattacks",
-        "repo": "makes",
-        "type": "github"
-      }
-    },
     "microvm": {
       "inputs": {
         "nixpkgs": [
@@ -393,7 +372,6 @@
         "arion": "arion",
         "devshell": "devshell",
         "flake-parts": "flake-parts_2",
-        "makes": "makes",
         "microvm": "microvm",
         "n2c": "n2c",
         "namaka": "namaka",
@@ -431,9 +409,6 @@
         "dmerge": "dmerge",
         "haumea": "haumea",
         "lib": "lib",
-        "makes": [
-          "makes"
-        ],
         "microvm": [
           "microvm"
         ],
@@ -453,12 +428,12 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-dsdNwyp1MLlcPwCckODsorC6UTBVXJ5lSLbhorCUs0E=",
-        "path": "/nix/store/mz1ald38sqvazkkpzczhjz5n407fcs39-source",
+        "narHash": "sha256-c8DdHg56sJ/yLAWvWbO9VI3lVe19dXSFdXASIcbVVoY=",
+        "path": "/nix/store/k2nismlgmjkwqx4v7426sjjvn94bww8h-source",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/mz1ald38sqvazkkpzczhjz5n407fcs39-source",
+        "path": "/nix/store/k2nismlgmjkwqx4v7426sjjvn94bww8h-source",
         "type": "path"
       }
     },

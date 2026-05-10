@@ -10,7 +10,7 @@ let
     repo = "nixpkgs";
     rev = "ac62194c3917d5f474c1a844b6fd6da2db95077d";
     narHash = "sha256-16KkgfdYqjaeRGBaYsNrhPRRENs0qzkQVUooNHtoy2w=";
-  }) {inherit (nixpkgs) system;};
+  }) {inherit (nixpkgs.stdenv.hostPlatform) system;};
   mdbook =
     if nixpkgs.lib.versionAtLeast nixpkgs.mdbook.version "0.5"
     then mdbookCompatPkgs.mdbook

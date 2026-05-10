@@ -50,16 +50,15 @@
 | `n2c`      | Shielded OCI integration.                     | `containers` Block Type, `std.lib.ops.mkOCI`, `mkDevOCI`, `mkStandardOCI`. | `requireInput "n2c" ...`                          |
 | `terranix` | Terraform config generator.                   | `terra` Block Type.                                                        | Action should surface missing tool/input clearly. |
 | `microvm`  | MicroVM integration.                          | `microvms` Block Type, `std.lib.ops.mkMicrovm`.                            | `requireInput "microvm" ...`                      |
-| `makes`    | Fluidattacks Makes integration.               | `std.lib.dev.mkMakes`.                                                     | `requireInput "makes" ...`                        |
 | `arion`    | Compose/orchestration integration.            | `arion` Block Type, `std.lib.dev.mkArion`.                                 | `requireInput "arion" ...`                        |
 | `namaka`   | Snapshot testing integration.                 | `namaka` Block Type and this repo's tests.                                 | Missing input breaks snapshot actions.            |
 
 ### Test and downstream compatibility inputs
 
-| Input                                                  | Scope                                    | Note                                                                             |
-| ------------------------------------------------------ | ---------------------------------------- | -------------------------------------------------------------------------------- |
-| `flake-parts`                                          | Test subflake / compatibility examples.  | Used to validate flake-parts integration, not as the core std composition model. |
-| `arion`, `microvm`, `makes`, `terranix` in `src/tests` | Test coverage for optional integrations. | Keep these scoped to tests unless they become required framework inputs.         |
+| Input                                         | Scope                                    | Note                                                                             |
+| --------------------------------------------- | ---------------------------------------- | -------------------------------------------------------------------------------- |
+| `flake-parts`                                 | Test subflake / compatibility examples.  | Used to validate flake-parts integration, not as the core std composition model. |
+| `arion`, `microvm`, `terranix` in `src/tests` | Test coverage for optional integrations. | Keep these scoped to tests unless they become required framework inputs.         |
 
 ## Boundary policies
 

@@ -254,10 +254,6 @@
         "dmerge": "dmerge",
         "haumea": "haumea",
         "lib": "lib",
-        "makes": [
-          "std",
-          "blank"
-        ],
         "microvm": [
           "std",
           "blank"
@@ -278,12 +274,12 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-ZEH2v90rDBGjYfi6BoxsRdfEgN9EOrw3jH00obAO7d8=",
-        "path": "/nix/store/fyi4c6msmp2an4z50qfzbhbn3829n8p2-source",
+        "narHash": "sha256-x7qOB1Xp8wLYn4D91ae3Vm70sFiZ330JZlMm4D6ZZYM=",
+        "path": "/nix/store/cbaja1v5mldbr3g91k7psihym46aaq5w-source",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/fyi4c6msmp2an4z50qfzbhbn3829n8p2-source",
+        "path": "/nix/store/cbaja1v5mldbr3g91k7psihym46aaq5w-source",
         "type": "path"
       }
     },

@@ -6,7 +6,7 @@ You can make use of them through the Nix CLI, via:
 
 ```bash
 cd my-new-project
-nix flake init -t github:divnix/std#<template-name>
+nix flake init -t github:nadanix/std#<template-name>
 ```
 
 Please consult the template section in the [docs][docs] for an overview.

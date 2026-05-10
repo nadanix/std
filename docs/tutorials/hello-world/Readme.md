@@ -29,7 +29,7 @@ the inputs of your project.
 $ cd /tmp/play-with-std/hello-world/
 $ git init && git add . && git commit -m"nix flakes only can see files under version control"
 # fetch `std`
-$ nix shell github:divnix/std
+$ nix shell github:nadanix/std
 $ std //hello/apps/default:run
 Hello, world!
 ```
@@ -70,5 +70,5 @@ This example consumes the following defaults or builtins:
 
 ---
 
-[std]: https://github.com/divnix/std
-[here]: https://github.com/divnix/std/tree/main/docs/tutorials/hello-world
+[std]: https://github.com/nadanix/std
+[here]: https://github.com/nadanix/std/tree/main/docs/tutorials/hello-world

@@ -18,7 +18,7 @@ in {
     meta = {
       inherit (import (inputs.self + /flake.nix)) description;
       license = licenses.unlicense;
-      homepage = "https://github.com/divnix/std";
+      homepage = "https://github.com/nadanix/std";
     };
 
     src = paisanoTuiSrc;

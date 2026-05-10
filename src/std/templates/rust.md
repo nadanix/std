@@ -18,7 +18,7 @@ mkdir my-project
 cd my-project
 
 # grab the template
-nix flake init -t github:divnix/std#rust
+nix flake init -t github:nadanix/std#rust
 
 # do some inititialization
 git init && git add .
@@ -33,7 +33,7 @@ cargo build # to generate Cargo.lock
 git add . && git commit -m "init"
 ```
 
-[std]: https://github.com/divnix/std#readme
+[std]: https://github.com/nadanix/std#readme
 [nix]: https://nixos.org
 [fenix]: https://github.com/nix-community/fenix#readme
 [crane]: https://github.com/ipetkov/crane#readme

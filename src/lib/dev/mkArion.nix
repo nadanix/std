@@ -8,7 +8,7 @@ let
   arionEvalComposition = arion + /src/nix/eval-composition.nix;
 
   disabledNotice = ''
-    divnix/std disabled arion's nixos instrumentation.
+    nadanix/std disabled arion's nixos instrumentation.
 
     Standard being the horizontal integration layer it would be a layer violation
     to delegate integration to a commissioned tool.

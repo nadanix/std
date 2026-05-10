@@ -1,7 +1,7 @@
 {
   description = "A very basic flake for Rust development";
 
-  inputs.std.url = "github:divnix/std";
+  inputs.std.url = "github:nadanix/std";
   inputs.std.inputs.nixpkgs.follows = "nixpkgs";
 
   inputs.fenix.url = "github:nix-community/fenix";
@@ -21,6 +21,7 @@
       inherit inputs;
       systems = ["x86_64-linux"];
       cellsFrom = ./nix;
+      sourceRoot = ./.;
       cellBlocks = with std.blockTypes; [
         (installables "packages")
         # Contribution Environment

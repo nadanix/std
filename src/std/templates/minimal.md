@@ -22,7 +22,7 @@ mkdir my-project
 cd my-project
 
 # grab the template
-nix flake init -t github:divnix/std#minimal
+nix flake init -t github:nadanix/std#minimal
 
 # see which values to change
 grep -r --include=\*.nix 'CONFIGURE-ME' .

@@ -4,9 +4,8 @@ It is common to filter source code before passing it to a build tool. This avoid
 unnecessary rebuilds and improves cache hits because only the files that are
 actual build inputs affect the source hash.
 
-`std.incl` used to provide this behavior through `divnix/incl`. It is now a
-compatibility shim and is deprecated. Prefer native `lib.fileset` functions, or
-`std.fileset.include` for the common “root plus selected paths” case.
+Prefer native `lib.fileset` functions. `std.fileset.include` is a small
+convenience helper for the common “root plus selected paths” case.
 
 ## Preferred pattern
 

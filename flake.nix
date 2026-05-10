@@ -59,7 +59,6 @@
       inherit (inputs) yants dmerge;
       inherit (fwlib'.paisano) pick harvest winnow;
       inherit (fwlib') blockTypes actions dataWith fileset flakeModule grow growOn findTargets;
-      inherit (fwlib'.fileset) incl;
     };
   in
     assert inputs.nixpkgs.lib.assertMsg ((builtins.compareVersions builtins.nixVersion "2.13") >= 0) "The truth is: you'll need a newer nix version to use Standard (minimum: v2.13).";

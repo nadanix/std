@@ -42,6 +42,7 @@ narrative in root `ARCHITECTURE.md`.
 | pick                   | Select std outputs while removing system scope where appropriate.                           | Useful for system-agnostic outputs such as templates.                                 |
 | winnow                 | Select std outputs with predicates.                                                         | Used when filtering targets from the std graph.                                       |
 | Soil                   | Compatibility layer around the std graph.                                                   | Keeps downstream Nix CLI or flake-parts expectations outside the core model.          |
+| Source root            | Optional caller-provided path exposed as `inputs.self.sourceRoot` inside Cell Blocks.       | Used when native `lib.fileset` source filtering needs the project root.               |
 | Input overloading      | Replacing default `blank` inputs with real vertical-tool integrations.                      | Missing integrations should fail through `requireInput`.                              |
 | Dogfood input manifest | A self-hosting subflake that declares private repo-local inputs without depending on `std`. | The root flake loads these manifests and injects a dogfood `std` instance explicitly. |
 | PRJ env                | Runtime environment satisfying prj-spec variables such as `PRJ_ROOT`.                       | Required by Block Type actions.                                                       |
@@ -104,6 +105,7 @@ PaisanoTui
 - `CurrentSystem`
 - `InputContract`
 - `ImportSignature`
+- `SourceRoot`
 - `PathConvention`
 - `ActionMetadata`
 - `FailureEnvelope`
@@ -116,19 +118,19 @@ defines the stable seams that `std` wraps, documents, and tests. The
 implementation is internal, but downstream consumers should still bind only to
 the public `std` facade and registry contract.
 
-| Component                           | Local source area                                              | Purpose in the model                                                                              | `std` seam                                                                                         |
-| ----------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| Type contracts                      | `src/std/_sources/paisano-core/types/`                         | Validate Cell, Cell Block, Block Type, Target, and Action Command shapes.                         | `std.blockTypes.*` must produce valid Block Type specs and action commands.                        |
-| Path conventions                    | `src/std/_sources/paisano-core/paths.nix`                      | Map `cellsFrom` to Cells, Cell Blocks, target docs, and README metadata.                          | Downstream repos use `<cell>/<block>.nix` or `<cell>/<block>/default.nix`.                         |
-| Config processor                    | `src/std/_sources/paisano-core/grow/newProcessCfg.nix`         | Normalize systems, deduplicate Cell Blocks, and discover Cells.                                   | `std.grow` and `std.growOn` pass curated defaults before the absorbed core validates the contract. |
-| Import-signature builder            | `src/std/_sources/paisano-core/grow/newImportSignatureFor.nix` | De-systemize inputs, instantiate `nixpkgs`, inject `inputs.cells`, and source metadata.           | Cell Blocks keep the small `{ inputs, cell }` interface.                                           |
-| Cell Block loader                   | `src/std/_sources/paisano-core/grow/default.nix`               | Load existing block files/directories per system and assemble the output graph.                   | `std` relies on the absorbed core for recursion, optional block loading, and graph shape.          |
-| Target extractor / registry builder | `src/std/_sources/paisano-core/grow/newExtractFor.nix`         | Materialize actions and extract `actions`, `init`, and `ci` registry lanes.                       | CLI/TUI, CI, and agents consume registry metadata instead of scraping the source tree.             |
-| Accumulator helpers                 | `src/std/_sources/paisano-core/grow/newHelpers.nix`            | Merge output, action, init, and CI lanes while skipping absent blocks.                            | Sparse Cells are valid as long as declared Block Types are the only import candidates.             |
-| Soil translators                    | `src/std/_sources/paisano-core/soil/{winnow,harvest,pick}.nix` | Translate `system.cell.block.target` into Nix-flake-compatible output shapes.                     | `std.harvest`, `std.pick`, and `std.winnow` keep compatibility outside the core artifact model.    |
-| Registry schema                     | `src/std/_sources/paisano-core/registry.schema.json`           | Version the JSON-serializable `#__std` contract.                                                  | External consumers should bind to the schema, not to importer internals.                           |
-| Paisano TUI/CLI                     | `src/std/_sources/paisano-tui`                                 | Load registry metadata, cache it, parse selectors, build action derivations, and execute actions. | `std` packages and brands this consumer as the `std` command.                                      |
-| mdBook Paisano preprocessor         | `src/std/_sources/mdbook-paisano-preprocessor`                 | Append Cell reference documentation from `#__std.init` into mdBook chapters.                      | Documentation config keeps the `paisano-preprocessor` name stable for now.                         |
+| Component                           | Local source area                                              | Purpose in the model                                                                                           | `std` seam                                                                                         |
+| ----------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Type contracts                      | `src/std/_sources/paisano-core/types/`                         | Validate Cell, Cell Block, Block Type, Target, and Action Command shapes.                                      | `std.blockTypes.*` must produce valid Block Type specs and action commands.                        |
+| Path conventions                    | `src/std/_sources/paisano-core/paths.nix`                      | Map `cellsFrom` to Cells, Cell Blocks, target docs, and README metadata.                                       | Downstream repos use `<cell>/<block>.nix` or `<cell>/<block>/default.nix`.                         |
+| Config processor                    | `src/std/_sources/paisano-core/grow/newProcessCfg.nix`         | Normalize systems, deduplicate Cell Blocks, and discover Cells.                                                | `std.grow` and `std.growOn` pass curated defaults before the absorbed core validates the contract. |
+| Import-signature builder            | `src/std/_sources/paisano-core/grow/newImportSignatureFor.nix` | De-systemize inputs, instantiate `nixpkgs`, inject `inputs.cells`, source metadata, and optional source roots. | Cell Blocks keep the small `{ inputs, cell }` interface.                                           |
+| Cell Block loader                   | `src/std/_sources/paisano-core/grow/default.nix`               | Load existing block files/directories per system and assemble the output graph.                                | `std` relies on the absorbed core for recursion, optional block loading, and graph shape.          |
+| Target extractor / registry builder | `src/std/_sources/paisano-core/grow/newExtractFor.nix`         | Materialize actions and extract `actions`, `init`, and `ci` registry lanes.                                    | CLI/TUI, CI, and agents consume registry metadata instead of scraping the source tree.             |
+| Accumulator helpers                 | `src/std/_sources/paisano-core/grow/newHelpers.nix`            | Merge output, action, init, and CI lanes while skipping absent blocks.                                         | Sparse Cells are valid as long as declared Block Types are the only import candidates.             |
+| Soil translators                    | `src/std/_sources/paisano-core/soil/{winnow,harvest,pick}.nix` | Translate `system.cell.block.target` into Nix-flake-compatible output shapes.                                  | `std.harvest`, `std.pick`, and `std.winnow` keep compatibility outside the core artifact model.    |
+| Registry schema                     | `src/std/_sources/paisano-core/registry.schema.json`           | Version the JSON-serializable `#__std` contract.                                                               | External consumers should bind to the schema, not to importer internals.                           |
+| Paisano TUI/CLI                     | `src/std/_sources/paisano-tui`                                 | Load registry metadata, cache it, parse selectors, build action derivations, and execute actions.              | `std` packages and brands this consumer as the `std` command.                                      |
+| mdBook Paisano preprocessor         | `src/std/_sources/mdbook-paisano-preprocessor`                 | Append Cell reference documentation from `#__std.init` into mdBook chapters.                                   | Documentation config keeps the `paisano-preprocessor` name stable for now.                         |
 
 ### Paisano component flow
 
@@ -163,6 +165,8 @@ std.grow / std.growOn configuration
 - Tool-specific details are translated at Block Type or library edges.
 - Optional integrations are absent by default and activated through input
   overloading.
+- Source roots are explicit caller-provided paths; they are not inferred from
+  `sourceInfo.outPath` and are not defaulted to `cellsFrom`.
 - Dogfood-only inputs live in private input manifests and are injected by the
   root flake; those manifests must not self-reference the in-repo `std` flake.
 - Actions run through a small, stable runtime contract rather than ad hoc shell

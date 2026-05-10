@@ -5,7 +5,7 @@ entries:
   - path: docs/architecture/std-domain-model.md
     title: std Domain Model
     canonical: true
-    summary: Defines the ubiquitous language, aggregate sketch, absorbed Paisano component view, dogfood input manifests, and core invariants for std.
+    summary: Defines the ubiquitous language, aggregate sketch, absorbed Paisano component view, source roots, dogfood input manifests, and core invariants for std.
     load_when:
       - modeling std concepts
       - mapping Paisano importer, registry, soil, or CLI/TUI components into std
@@ -57,7 +57,7 @@ entries:
   - path: docs/architecture/workflows.md
     title: std Workflows
     canonical: true
-    summary: Describes grow, harvest, dogfood private input injection, action invocation, optional integration, and knowledge update workflows, including Paisano component flow.
+    summary: Describes grow, source-root injection, harvest, dogfood private input injection, action invocation, optional integration, and knowledge update workflows, including Paisano component flow.
     load_when:
       - changing framework behavior
       - modeling Paisano importer, soil, or CLI/TUI execution flow

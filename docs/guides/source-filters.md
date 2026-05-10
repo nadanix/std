@@ -9,19 +9,35 @@ convenience helper for the common “root plus selected paths” case.
 
 ## Preferred pattern
 
+When Cell code needs to filter sources from the project root, pass an explicit
+path from the caller:
+
+```nix
+std.growOn {
+  inherit inputs;
+  cellsFrom = ./nix;
+  sourceRoot = ./.;
+  cellBlocks = with std.blockTypes; [
+    (installables "packages")
+  ];
+}
+```
+
+Then use that path inside Cell Blocks:
+
 ```nix
 {
   inputs,
   cell,
 }: let
   inherit (inputs) nixpkgs std;
-  root = ./backend;
+  root = inputs.self.sourceRoot;
 in {
   backend = nixpkgs.mkYarnPackage {
     name = "backend";
     src = std.fileset.include root [
-      (root + /app.js)
-      (root + /config/config.js)
+      (root + /backend/app.js)
+      (root + /backend/config/config.js)
       # ...
     ];
   };
@@ -38,5 +54,8 @@ nixpkgs.lib.fileset.toSource {
 ```
 
 Use path values, not stringified paths. `lib.fileset.toSource` intentionally
-rejects string roots such as `inputs.self.outPath`; use a path literal relative
-to the Nix file instead.
+rejects string roots such as `inputs.self.outPath` or a flake's
+`sourceInfo.outPath`; pass `sourceRoot = ./.;` from the caller when Cell Blocks
+need a repo-root path. `sourceRoot` is intentionally absent unless
+configured, because `cellsFrom` and the project source root are different
+concepts.

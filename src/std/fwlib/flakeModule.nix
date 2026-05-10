@@ -119,6 +119,12 @@ in
                   { allowUnfree = true; }
                 '';
               };
+              sourceRoot = mkOption {
+                description = "Optional project source root exposed to Cell Blocks as `inputs.self.sourceRoot` for native `lib.fileset` source filtering.";
+                type = with lib.types; nullOr path;
+                default = null;
+                example = literalExpression "./.";
+              };
             };
           };
         };
@@ -171,7 +177,7 @@ in
           inherit inputs;
           inherit (config) systems;
           # access them explicitly to trigger a module system error if not defined
-          inherit (cfg.grow) cellsFrom cellBlocks nixpkgsConfig;
+          inherit (cfg.grow) cellsFrom cellBlocks nixpkgsConfig sourceRoot;
         };
         picked = mapAttrs (_: v: pick grown v) cfg.pick;
         harvested = mapAttrs (_: v: harvest grown v) cfg.harvest;

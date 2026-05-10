@@ -66,6 +66,7 @@
       "aarch64-darwin"
     ],
     nixpkgsConfig ? {},
+    sourceRoot ? null,
   } @ cfg: let
     # preserve pos of `systems` if not using the default
     cfg' =
@@ -78,7 +79,7 @@
     inherit (ProcessCfg cfg' inputs.self.sourceInfo) systems' cells' cellBlocks';
     inherit (Helpers) accumulate optionalLoad;
 
-    __ImportSignatureFor = ImportSignatureFor {inherit inputs nixpkgsConfig;};
+    __ImportSignatureFor = ImportSignatureFor {inherit inputs nixpkgsConfig sourceRoot;};
     ___extract = ExtractFor cellsFrom;
 
     cells = res.output; # recursion on cells (with system)
@@ -208,6 +209,7 @@
     res = accumulate (l.map loadOutputFor systems');
   in
     assert l.assertMsg ((l.compareVersions l.nixVersion "2.10.3") >= 0) "The truth is: you'll need a newer nix version (minimum: v2.10.3).";
+    assert l.assertMsg (sourceRoot == null || l.typeOf sourceRoot == "path") "std.grow[On]: sourceRoot must be a path value, for example `sourceRoot = ./.;`. String-like values such as inputs.self.outPath are not compatible with lib.fileset.";
       res.output
       // {
         __std.__schema = "v0";

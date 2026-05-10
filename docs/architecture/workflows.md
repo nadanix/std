@@ -9,12 +9,12 @@
 
 ## Workflow: grow project
 
-| Field   | Description                                                               |
-| ------- | ------------------------------------------------------------------------- |
-| Purpose | Import a repo into the std artifact model.                                |
-| Trigger | Flake evaluation calls `std.grow` or `std.growOn`.                        |
-| Input   | `inputs`, `systems`, `cellsFrom`, `cellBlocks`, optional `nixpkgsConfig`. |
-| Output  | std-shaped graph, registry metadata, optional compatibility soil.         |
+| Field   | Description                                                                                      |
+| ------- | ------------------------------------------------------------------------------------------------ |
+| Purpose | Import a repo into the std artifact model.                                                       |
+| Trigger | Flake evaluation calls `std.grow` or `std.growOn`.                                               |
+| Input   | `inputs`, `systems`, `cellsFrom`, `cellBlocks`, optional `nixpkgsConfig`, optional `sourceRoot`. |
+| Output  | std-shaped graph, registry metadata, optional compatibility soil.                                |
 
 Steps:
 
@@ -22,21 +22,25 @@ Steps:
 2. Pass `std.grow` / `std.growOn` configuration to Paisano's config processor.
 3. Normalize systems, deduplicate declared Cell Blocks, and discover Cells under
    `cellsFrom`.
-4. For each system, build the import signature: de-systemize inputs,
+4. If the caller passed `sourceRoot`, validate that it is a path value and expose
+   it as `inputs.self.sourceRoot` for Cell Block source filtering.
+5. For each system, build the import signature: de-systemize inputs,
    instantiate `nixpkgs`, inject `inputs.cells`, and expose source metadata.
-5. Discover declared Cell Blocks through Paisano path conventions:
+6. Discover declared Cell Blocks through Paisano path conventions:
    `<cell>/<block>.nix` or `<cell>/<block>/default.nix`.
-6. Load each discovered Cell Block with the `{ inputs, cell }` signature.
-7. Apply the Cell Block's Block Type and target extractor to materialize actions
+7. Load each discovered Cell Block with the `{ inputs, cell }` signature.
+8. Apply the Cell Block's Block Type and target extractor to materialize actions
    and registry metadata.
-8. Accumulate the std output graph and registry lanes: `__std.actions`,
+9. Accumulate the std output graph and registry lanes: `__std.actions`,
    `__std.init`, and `__std.ci`.
-9. If using `std.growOn`, merge additional flake-output soil around the graph;
-   if using `std.grow`, return the graph without the soil functor surface.
+10. If using `std.growOn`, merge additional flake-output soil around the graph;
+    if using `std.grow`, return the graph without the soil functor surface.
 
 Invariants:
 
 - Cell Blocks use the `{ inputs, cell }` interface.
+- `sourceRoot` is absent unless explicitly configured by the caller; `std` must
+  not infer it from string-like `sourceInfo.outPath`.
 - Block Type declarations define which blocks are import candidates.
 - Missing declared blocks are skipped; undeclared blocks are not part of the
   model.

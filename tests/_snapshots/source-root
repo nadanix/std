@@ -1,0 +1,14 @@
+#pretty
+{
+  withSourceRoot = {
+    hasSourceRoot = true;
+    ignoredExists = false;
+    sourceContent = ''
+      source-root works
+    '';
+    sourceRootType = "path";
+  };
+  withoutSourceRoot = {
+    hasSourceRoot = false;
+  };
+}

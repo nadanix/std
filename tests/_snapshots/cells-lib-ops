@@ -1,6 +1,10 @@
 #pretty
 {
-  lazyDerivation = "missing-test";
+  lazyDerivation = {
+    description = "lazy hello";
+    drvType = "derivation";
+    foo = "bar";
+  };
   mkDevOCI = <derivation image-hello-dev.json>;
   mkMicrovm = <derivation microvm-qemu-nixos>;
   mkOCI = "missing-test";

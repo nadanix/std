@@ -8,6 +8,17 @@ in
   builtins.mapAttrs (
     n: f:
       rec {
+        lazyDerivation = let
+          drv = f {
+            derivation = nixpkgs.hello;
+            meta.description = "lazy hello";
+            passthru.foo = "bar";
+          };
+        in {
+          drvType = drv.type;
+          inherit (drv.meta) description;
+          inherit (drv) foo;
+        };
         mkMicrovm = let
           target = f {microvm.hypervisor = "qemu";};
         in

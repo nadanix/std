@@ -2,24 +2,24 @@ manifest_version: 1
 area: dependency-contracts
 map: docs/architecture/dependency-contracts.md
 entries:
-  - input: paisano
+  - component: paisano-core
     upstream: paisano-nix/core
-    relationship: supplier-owned-contract
+    relationship: absorbed-internal-framework-component
     std_surface:
       - growOn
       - harvest
       - pick
       - winnow
       - registry
-    status: active
+    status: internalized
 
-  - input: paisano-tui
+  - component: paisano-tui
     upstream: paisano-nix/tui
-    relationship: registry-consumer-packaged-by-std
+    relationship: absorbed-registry-consumer-packaged-by-std
     std_surface:
       - src/std/cli.nix
       - package std
-    status: active
+    status: internalized
 
   - input: yants
     upstream: divnix/yants
@@ -59,6 +59,20 @@ entries:
     std_surface:
       - input overloading defaults
       - requireInput failure envelope
+    status: active
+
+  - input: call-flake
+    upstream: divnix/call-flake
+    relationship: temporary-importer-helper
+    std_surface:
+      - per-Cell flake input loading
+    status: active
+
+  - input: nosys
+    upstream: divnix/nosys
+    relationship: temporary-de-systemizing-helper
+    std_surface:
+      - Cell Block input signature
     status: active
 
   - input: haumea
@@ -150,12 +164,12 @@ entries:
       - snapshot checks
     status: optional
 
-  - input: mdbook-paisano-preprocessor
+  - component: mdbook-paisano-preprocessor
     upstream: paisano-nix/mdbook-paisano-preprocessor
-    relationship: docs-edge-adapter
+    relationship: absorbed-docs-edge-adapter
     std_surface:
       - mdBook generated API docs
-    status: data-subflake
+    status: internalized
 
   - input: flake-parts
     upstream: hercules-ci/flake-parts

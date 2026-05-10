@@ -5,7 +5,7 @@ entries:
   - path: docs/architecture/std-domain-model.md
     title: std Domain Model
     canonical: true
-    summary: Defines the ubiquitous language, aggregate sketch, Paisano supplier component view, and core invariants for std.
+    summary: Defines the ubiquitous language, aggregate sketch, absorbed Paisano component view, and core invariants for std.
     load_when:
       - modeling std concepts
       - mapping Paisano importer, registry, soil, or CLI/TUI components into std
@@ -16,7 +16,7 @@ entries:
       - ubiquitous-language
       - registry
       - paisano
-      - supplier-components
+      - absorbed-components
     next_reads:
       - docs/architecture/bounded-contexts.md
       - docs/architecture/workflows.md

@@ -17,11 +17,11 @@
     },
     "call-flake": {
       "locked": {
-        "lastModified": 1687380775,
-        "narHash": "sha256-bmhE1TmrJG4ba93l9WQTLuYM53kwGQAjYHRvHOeuxWU=",
+        "lastModified": 1754792893,
+        "narHash": "sha256-11/dQG/vjpfMi4D7ku2o1UtUMf8Sud0KJ/Le44zHIc8=",
         "owner": "divnix",
         "repo": "call-flake",
-        "rev": "74061f6c241227cd05e79b702db9a300a2e4131a",
+        "rev": "1abb37095a152e0e8ba4315c57c84905bc8bf93c",
         "type": "github"
       },
       "original": {
@@ -218,59 +218,16 @@
     },
     "nosys": {
       "locked": {
-        "lastModified": 1668010795,
-        "narHash": "sha256-JBDVBnos8g0toU7EhIIqQ1If5m/nyBqtHhL3sicdPwI=",
+        "lastModified": 1708971380,
+        "narHash": "sha256-vw8MUu8N2VLhieciB8ory4aZ3RwIZD6sdwpwPLXOC64=",
         "owner": "divnix",
         "repo": "nosys",
-        "rev": "feade0141487801c71ff55623b421ed535dbdefa",
+        "rev": "798ee92962613f296c0ed89a098a7fba9978ffc0",
         "type": "github"
       },
       "original": {
         "owner": "divnix",
         "repo": "nosys",
-        "type": "github"
-      }
-    },
-    "paisano": {
-      "inputs": {
-        "call-flake": "call-flake",
-        "nixpkgs": [
-          "std",
-          "nixpkgs"
-        ],
-        "nosys": "nosys",
-        "yants": [
-          "std",
-          "yants"
-        ]
-      },
-      "locked": {
-        "lastModified": 1708640854,
-        "narHash": "sha256-EpcAmvIS4ErqhXtVEfd2GPpU/E/s8CCRSfYzk6FZ/fY=",
-        "owner": "paisano-nix",
-        "repo": "core",
-        "rev": "adcf742bc9463c08764ca9e6955bd5e7dcf3a3fe",
-        "type": "github"
-      },
-      "original": {
-        "owner": "paisano-nix",
-        "repo": "core",
-        "type": "github"
-      }
-    },
-    "paisano-tui": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1708637039,
-        "narHash": "sha256-EFDb8jfv2SH57a6CfDo0WU4XjDihhgvVnKKw20yqksc=",
-        "owner": "paisano-nix",
-        "repo": "tui",
-        "rev": "6461b31e4458dbce655fa1db6d266f666dbdfc4e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "paisano-nix",
-        "repo": "tui",
         "type": "github"
       }
     },
@@ -290,6 +247,7 @@
           "blank"
         ],
         "blank": "blank",
+        "call-flake": "call-flake",
         "devshell": [
           "devshell"
         ],
@@ -311,8 +269,7 @@
           "nixago"
         ],
         "nixpkgs": "nixpkgs",
-        "paisano": "paisano",
-        "paisano-tui": "paisano-tui",
+        "nosys": "nosys",
         "terranix": [
           "std",
           "blank"
@@ -321,12 +278,12 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-YcQtXS89RP6OZZpkD5BhRMmliJ7tbRDD0NbTjDdeO8w=",
-        "path": "/nix/store/82a1085r6w92kfrr5kjzglgg8fa0ca1z-source",
+        "narHash": "sha256-ZEH2v90rDBGjYfi6BoxsRdfEgN9EOrw3jH00obAO7d8=",
+        "path": "/nix/store/fyi4c6msmp2an4z50qfzbhbn3829n8p2-source",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/82a1085r6w92kfrr5kjzglgg8fa0ca1z-source",
+        "path": "/nix/store/fyi4c6msmp2an4z50qfzbhbn3829n8p2-source",
         "type": "path"
       }
     },

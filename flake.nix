@@ -8,13 +8,8 @@
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
   inputs.lib.url = "github:nix-community/nixpkgs.lib";
   inputs = {
-    paisano.url = "github:paisano-nix/core";
-    paisano.inputs.nixpkgs.follows = "nixpkgs";
-    paisano.inputs.yants.follows = "yants";
-    paisano-tui = {
-      url = "github:paisano-nix/tui";
-      flake = false; # we're after the source code, only
-    };
+    call-flake.url = "github:divnix/call-flake";
+    nosys.url = "github:divnix/nosys";
   };
   inputs.blank.url = "github:divnix/blank";
   inputs.yants = {
@@ -54,7 +49,7 @@
     # load fwlib again through the framework
     # to enable input overloading for blocktypes
     fileset = fwlib.fileset;
-    fwlib' = inputs.paisano.pick (fwlib.grow {
+    fwlib' = fwlib.paisano.pick (fwlib.grow {
       inherit inputs;
       cellsFrom = fileset.include ./src [./src/std];
       cellBlocks = [(fwlib.blockTypes.functions "fwlib")];
@@ -63,7 +58,7 @@
     std = {
       # the framework's basic top-level tools
       inherit (inputs) yants dmerge;
-      inherit (inputs.paisano) pick harvest winnow;
+      inherit (fwlib'.paisano) pick harvest winnow;
       inherit (fwlib') blockTypes actions dataWith fileset flakeModule grow growOn findTargets;
       inherit (fwlib'.fileset) incl;
     };

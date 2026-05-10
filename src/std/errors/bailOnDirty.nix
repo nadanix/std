@@ -21,7 +21,7 @@
     msg:
       throw (apply "\n{202}${msg}{reset}");
 in
-  if inputs.paisano.isDirty rev
+  if rev == "not-a-commit"
   then
     bail ''
       ─────┬─────────────────────────────────────────────────────────────────────────

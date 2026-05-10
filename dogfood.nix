@@ -1,6 +1,6 @@
 inputs: let
   inherit (inputs) std;
-  inherit (inputs.paisano) pick harvest;
+  inherit (std) pick harvest;
 in
   std.growOn {
     inherit inputs;

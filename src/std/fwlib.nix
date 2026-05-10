@@ -7,7 +7,7 @@
   # during bootstrap: set to {}  / don't use
   cell,
 }: let
-  inherit (inputs) haumea paisano self;
+  inherit (inputs) haumea self;
   fwlib = haumea.lib.load {
     src = ./fwlib;
     inputs = (removeAttrs inputs ["self"]) // {trivial = inputs.nixpkgs;};

@@ -7,6 +7,8 @@
 - Divnix-family inputs mostly provide small semantic utilities or temporary implementation helpers used by `std`.
 - Vertical tool inputs are optional edge integrations and should be shielded
   behind Block Types or `std.lib.*`.
+- Dogfood-only inputs are declared in private input manifests and injected by
+  the root flake; those manifests must not lock the in-repo `std` flake.
 - If a dependency is not legible to agents from this repo, document the contract
   or hide it behind a smaller adapter.
 
@@ -53,6 +55,23 @@
 | `arion`    | Compose/orchestration integration.            | `arion` Block Type, `std.lib.dev.mkArion`.                                 | `requireInput "arion" ...`                        |
 | `namaka`   | Snapshot testing integration.                 | `namaka` Block Type and this repo's tests.                                 | Missing input breaks snapshot actions.            |
 
+### Dogfood private input manifests
+
+| Manifest              | Scope                                    | Contract                                                                                                                                                                                        |
+| --------------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/local/flake.nix` | Local development environment inputs.    | Declares private inputs such as `devshell`, `nixago`, `n2c`, and `namaka`; lock-coherence inputs are removed from outputs; the root flake injects a local `std` instance.                       |
+| `src/tests/flake.nix` | Snapshot and optional-integration tests. | Declares private test inputs such as `namaka`, `arion`, `microvm`, `terranix`, and `flake-parts`; lock-coherence inputs are removed from outputs; the root flake injects a test `std` instance. |
+
+Rules:
+
+- These manifests are input manifests, not independent self-hosting flakes.
+- Do not add `std.url = "../../"` or any store-path lock back to them.
+- Lock-coherence inputs such as `nixpkgs` and `haumea` may appear in the
+  manifests for `follows`, but they should be removed from manifest outputs so
+  they do not shadow framework-owned inputs during Cell import.
+- Refresh their locks with `./.github/workflows/update-subflake.sh` after
+  changing either manifest.
+
 ### Test and downstream compatibility inputs
 
 | Input                                         | Scope                                    | Note                                                                             |
@@ -69,6 +88,8 @@
 4. If an input changes the public model, update `std-domain-model.md` or an ADR.
 5. If an input only supports this repo's local development, keep it in dogfood
    docs rather than the downstream framework surface.
+6. Dogfood input manifests may depend on private tools, but they must not depend
+   on the parent `std` flake; parent injection is owned by `dogfood.nix`.
 
 ## Review questions
 
@@ -77,6 +98,8 @@
 - What does `std` consume, and what does it deliberately hide?
 - What failure should an agent see if the dependency is missing or blanked out?
 - Does the dependency increase agent legibility or require compensating docs?
+- If the dependency is dogfood-only, is it declared in the private manifest and
+  filtered away from the downstream framework surface?
 
 ## Related docs
 

@@ -12,16 +12,16 @@ This directory is the agent-facing architecture surface for `std`.
 
 ## Documents
 
-| Document                  | Load when                                                                                       |
-| ------------------------- | ----------------------------------------------------------------------------------------------- |
-| `std-domain-model.md`     | You need the ubiquitous language, aggregate shape, or absorbed Paisano component view of `std`. |
-| `bounded-contexts.md`     | You are changing ownership boundaries or deciding where behavior belongs.                       |
-| `dependency-contracts.md` | You touch flake inputs, Paisano/Divnix dependencies, or vertical tool integrations.             |
-| `workflows.md`            | You change `grow`, harvesting, action invocation, optional integrations, or docs generation.    |
-| `action-runtime.md`       | You change action scripts, `mkCommand`, PRJ env assumptions, or action failure behavior.        |
-| `block-type-catalog.md`   | You add, rename, remove, or review a built-in Block Type.                                       |
-| `invariants.md`           | You need the architecture and taste rules that should stay mechanically enforceable.            |
-| `quality-score.md`        | You want a compact review of current architecture/documentation gaps.                           |
+| Document                  | Load when                                                                                                             |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `std-domain-model.md`     | You need the ubiquitous language, aggregate shape, absorbed Paisano component view, or dogfood input model of `std`.  |
+| `bounded-contexts.md`     | You are changing ownership boundaries or deciding where behavior belongs.                                             |
+| `dependency-contracts.md` | You touch flake inputs, dogfood private manifests, Paisano/Divnix dependencies, or vertical tool integrations.        |
+| `workflows.md`            | You change `grow`, harvesting, dogfood input injection, action invocation, optional integrations, or docs generation. |
+| `action-runtime.md`       | You change action scripts, `mkCommand`, PRJ env assumptions, or action failure behavior.                              |
+| `block-type-catalog.md`   | You add, rename, remove, or review a built-in Block Type.                                                             |
+| `invariants.md`           | You need the architecture and taste rules that should stay mechanically enforceable.                                  |
+| `quality-score.md`        | You want a compact review of current architecture/documentation gaps.                                                 |
 
 ## Manifests
 

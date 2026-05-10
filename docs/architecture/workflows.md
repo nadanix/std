@@ -99,6 +99,40 @@ Invariants:
 - Actions should not assume ambient global tools unless that is explicitly the
   contract.
 
+## Workflow: use dogfood private inputs
+
+| Field   | Description                                                                  |
+| ------- | ---------------------------------------------------------------------------- |
+| Purpose | Self-host `std` with repo-local tools without expanding the downstream lock. |
+| Trigger | Root flake evaluation of local devshells, configs, containers, or tests.     |
+| Input   | `src/local/flake.nix`, `src/tests/flake.nix`, and root framework inputs.     |
+| Output  | Dogfood `std` instances injected into local and test Cell imports.           |
+
+Steps:
+
+1. Keep `src/local/flake.nix` and `src/tests/flake.nix` as private input
+   manifests that return only dogfood-private inputs from `outputs`.
+2. Do not add a relative or store-path `std` input to those manifests.
+3. Keep lock-coherence inputs such as `nixpkgs` and `haumea` private to the
+   manifest by removing them from the manifest outputs.
+4. Load each manifest through the root flake's flake loader.
+5. Filter framework-owned inputs such as `self`, `std`, `nixpkgs`, `haumea`,
+   `blank`, and absorbed importer helpers from the manifest outputs.
+6. Build a public `std` output graph with public placeholder inputs.
+7. Build separate dogfood `std` flake-like inputs with the local and test
+   private inputs, respectively.
+8. Grow `src/local` with the local dogfood `std` input and `src/tests` with the
+   test dogfood `std` input.
+9. Merge local/test graphs with the public graph and harvested flake outputs.
+
+Invariants:
+
+- The public `std` surface keeps optional integrations blank unless downstream
+  opts in.
+- Dogfood-only inputs do not leak into the root public dependency contract.
+- Local and test manifests remain lockable on both Nix and Lix because they do
+  not require Nix 2.26 relative path input semantics.
+
 ## Workflow: use optional integration
 
 | Field   | Description                                                    |

@@ -25,25 +25,26 @@ narrative in root `ARCHITECTURE.md`.
 
 ## Ubiquitous language
 
-| Term              | Meaning in `std`                                                                          | Notes                                                                        |
-| ----------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| Cell              | First-level grouping under `cellsFrom`; a coherent collection of functionality.           | Project-specific semantics are chosen by the consumer repo.                  |
-| Cell Block        | Named block inside a Cell that represents a class of outputs.                             | Implemented as `<block>.nix` or `<block>/default.nix`.                       |
-| Block Type        | Generic type for a Cell Block; may provide actions.                                       | Examples: `installables`, `devshells`, `containers`.                         |
-| Target            | Concrete output inside a Cell Block.                                                      | `default` is the conventional singleton target.                              |
-| Action            | Runnable procedure provided by a Block Type for a Target.                                 | Examples: `build`, `run`, `enter`, `publish`.                                |
-| Registry          | `#__std`, the discoverable metadata surface consumed by CLI/TUI/CI.                       | Produced by the absorbed Paisano core and shaped by `std` configuration.     |
-| Registry lane     | One logical slice of the registry produced during import.                                 | The absorbed core emits `actions`, `init`, and `ci` lanes plus schema data.  |
-| Import signature  | The argument contract used to import a Cell Block.                                        | The absorbed core constructs it; Cell Blocks receive `{ inputs, cell }`.     |
-| Extractor         | Component that turns targets into registry metadata and action derivations.               | Keeps registry discovery separate from raw target values.                    |
-| grow              | Import and type a project using Standard defaults, returning the std-shaped output graph. | Removes the `growOn` functor surface.                                        |
-| growOn            | Import and type a project while allowing additional flake-output soil.                    | Used when layering compatibility outputs.                                    |
-| harvest           | Translate std-shaped outputs into Nix CLI-compatible flake outputs.                       | Lossy by design when the target schema is less expressive.                   |
-| pick              | Select std outputs while removing system scope where appropriate.                         | Useful for system-agnostic outputs such as templates.                        |
-| winnow            | Select std outputs with predicates.                                                       | Used when filtering targets from the std graph.                              |
-| Soil              | Compatibility layer around the std graph.                                                 | Keeps downstream Nix CLI or flake-parts expectations outside the core model. |
-| Input overloading | Replacing default `blank` inputs with real vertical-tool integrations.                    | Missing integrations should fail through `requireInput`.                     |
-| PRJ env           | Runtime environment satisfying prj-spec variables such as `PRJ_ROOT`.                     | Required by Block Type actions.                                              |
+| Term                   | Meaning in `std`                                                                            | Notes                                                                                 |
+| ---------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Cell                   | First-level grouping under `cellsFrom`; a coherent collection of functionality.             | Project-specific semantics are chosen by the consumer repo.                           |
+| Cell Block             | Named block inside a Cell that represents a class of outputs.                               | Implemented as `<block>.nix` or `<block>/default.nix`.                                |
+| Block Type             | Generic type for a Cell Block; may provide actions.                                         | Examples: `installables`, `devshells`, `containers`.                                  |
+| Target                 | Concrete output inside a Cell Block.                                                        | `default` is the conventional singleton target.                                       |
+| Action                 | Runnable procedure provided by a Block Type for a Target.                                   | Examples: `build`, `run`, `enter`, `publish`.                                         |
+| Registry               | `#__std`, the discoverable metadata surface consumed by CLI/TUI/CI.                         | Produced by the absorbed Paisano core and shaped by `std` configuration.              |
+| Registry lane          | One logical slice of the registry produced during import.                                   | The absorbed core emits `actions`, `init`, and `ci` lanes plus schema data.           |
+| Import signature       | The argument contract used to import a Cell Block.                                          | The absorbed core constructs it; Cell Blocks receive `{ inputs, cell }`.              |
+| Extractor              | Component that turns targets into registry metadata and action derivations.                 | Keeps registry discovery separate from raw target values.                             |
+| grow                   | Import and type a project using Standard defaults, returning the std-shaped output graph.   | Removes the `growOn` functor surface.                                                 |
+| growOn                 | Import and type a project while allowing additional flake-output soil.                      | Used when layering compatibility outputs.                                             |
+| harvest                | Translate std-shaped outputs into Nix CLI-compatible flake outputs.                         | Lossy by design when the target schema is less expressive.                            |
+| pick                   | Select std outputs while removing system scope where appropriate.                           | Useful for system-agnostic outputs such as templates.                                 |
+| winnow                 | Select std outputs with predicates.                                                         | Used when filtering targets from the std graph.                                       |
+| Soil                   | Compatibility layer around the std graph.                                                   | Keeps downstream Nix CLI or flake-parts expectations outside the core model.          |
+| Input overloading      | Replacing default `blank` inputs with real vertical-tool integrations.                      | Missing integrations should fail through `requireInput`.                              |
+| Dogfood input manifest | A self-hosting subflake that declares private repo-local inputs without depending on `std`. | The root flake loads these manifests and injects a dogfood `std` instance explicitly. |
+| PRJ env                | Runtime environment satisfying prj-spec variables such as `PRJ_ROOT`.                       | Required by Block Type actions.                                                       |
 
 ## Aggregate sketch
 
@@ -162,6 +163,8 @@ std.grow / std.growOn configuration
 - Tool-specific details are translated at Block Type or library edges.
 - Optional integrations are absent by default and activated through input
   overloading.
+- Dogfood-only inputs live in private input manifests and are injected by the
+  root flake; those manifests must not self-reference the in-repo `std` flake.
 - Actions run through a small, stable runtime contract rather than ad hoc shell
   snippets.
 - The registry is the machine-facing system of record for actionable repo

@@ -66,6 +66,7 @@ entries:
     relationship: temporary-importer-helper
     std_surface:
       - per-Cell flake input loading
+      - dogfood private input manifest loading
     status: active
 
   - input: nosys
@@ -156,6 +157,15 @@ entries:
       - namaka Block Type
       - snapshot checks
     status: optional
+
+  - component: dogfood-private-input-manifests
+    upstream: src/local/flake.nix and src/tests/flake.nix
+    relationship: self-hosting-input-boundary
+    std_surface:
+      - dogfood.nix
+      - local devshell/config outputs
+      - snapshot and optional integration checks
+    status: dogfood-only
 
   - component: mdbook-paisano-preprocessor
     upstream: paisano-nix/mdbook-paisano-preprocessor

@@ -112,20 +112,26 @@ check = namaka.lib.load {
 
 ## Updating Flake Inputs / Locks
 
-- After editing any `flake.nix`, run `nix flake update` in that flake directory.
-- This repo has subflakes; update them explicitly when touched:
+- After editing any public `flake.nix`, update that flake's lock intentionally:
 
 ```bash
 nix flake update
 nix flake update --flake ./src/data
-nix flake update --flake ./src/local
-nix flake update --flake ./src/tests
 ```
 
-- Subflakes track in-repo std via a store-path lock; update those pins with:
+- `src/local` and `src/tests` are private dogfood input manifests; they do
+  not lock the in-repo `std` flake. Refresh their lock files explicitly when
+  those manifests change without bumping existing pins:
 
 ```bash
 ./.github/workflows/update-subflake.sh
+```
+
+- When you intentionally want to bump dogfood tool inputs too, use:
+
+```bash
+nix flake update --flake ./src/local
+nix flake update --flake ./src/tests
 ```
 
 ## Code Style Guidelines

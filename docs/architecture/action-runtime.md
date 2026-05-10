@@ -18,13 +18,17 @@
 - shell command body
 - optional metadata, such as provisos
 
+`mkCommand` delegates shell construction to nixpkgs' `writeShellApplication`,
+then exposes the executable at the action derivation's output path for the
+std CLI/TUI contract.
+
 The generated script:
 
 1. uses the Nix runtime shell
 2. enables `errexit`, `nounset`, and `pipefail`
 3. checks for `PRJ_ROOT`
-4. injects declared dependencies into `PATH`
-5. runs shell dry-run and shellcheck checks at build time
+4. injects declared dependencies into `PATH` through `runtimeInputs`
+5. runs shell dry-run and shellcheck checks at build time through nixpkgs
 
 ## Action boundary shape
 

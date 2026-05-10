@@ -46,13 +46,6 @@ entries:
       - bootstrap filtering
     status: active
 
-  - input: incl
-    upstream: divnix/incl
-    relationship: deprecated-source-boundary-helper
-    std_surface:
-      - std.incl compatibility shim
-    status: deprecated
-
   - input: blank
     upstream: divnix/blank
     relationship: optional-input-sentinel

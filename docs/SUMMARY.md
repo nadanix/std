@@ -35,7 +35,7 @@
 # How-To Guides
 
 - [Growing Cells](guides/growing-cells.md)
-- [Source Filters](guides/incl.md)
+- [Source Filters](guides/source-filters.md)
 - [Setup `.envrc`](guides/envrc.md)
 
 # Explanation

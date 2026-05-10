@@ -41,7 +41,7 @@
 | `haumea`              | Loader infrastructure.           | Load framework library files.                           | Internal implementation detail.                          |
 | `lib` (`nixpkgs.lib`) | Library substrate.               | System-independent Nix library.                         | Prefer this when full `nixpkgs` is not required.         |
 | `nixpkgs`             | Build and package substrate.     | Packages, shell tooling, lib, stdenv.                   | Special, but not a license to add hidden global context. |
-| `nixpkgs.lib.fileset` | Source boundary helper.          | Filter source trees for `cellsFrom` and package srcs.   | Prefer native file sets; `std.incl` is deprecated.       |
+| `nixpkgs.lib.fileset` | Source boundary helper.          | Filter source trees for `cellsFrom` and package srcs.   | Prefer native file sets or `std.fileset.include`.        |
 
 ### Optional vertical tool integrations
 

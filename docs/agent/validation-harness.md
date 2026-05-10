@@ -55,8 +55,8 @@ Notes:
 
 - `nix flake check` is release-level confidence and may be slow.
 - Snapshot updates should go through `namaka review`, not manual edits.
-- Some subflake locks may contain store-path pins; report exact failures rather
-  than hiding them.
+- `src/local` and `src/tests` locks are private dogfood input manifests; report
+  exact lock diffs or evaluation failures rather than hiding them.
 
 ## Documentation checks
 

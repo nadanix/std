@@ -91,14 +91,14 @@
 
 ### Self-hosting / Dogfood
 
-| Field          | Description                                                    |
-| -------------- | -------------------------------------------------------------- |
-| Purpose        | Use `std` to build, test, document, and maintain `std` itself. |
-| Strategic role | Internal validation context.                                   |
-| Vocabulary     | `local`, `tests`, snapshots, configs, devshell.                |
-| Owns           | This repo's development environment and test wiring.           |
-| Does not own   | Downstream framework semantics.                                |
-| Relationship   | Split by change pressure from the public framework surface.    |
+| Field          | Description                                                                                                                                          |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Purpose        | Use `std` to build, test, document, and maintain `std` itself.                                                                                       |
+| Strategic role | Internal validation context.                                                                                                                         |
+| Vocabulary     | `local`, `tests`, snapshots, configs, devshell.                                                                                                      |
+| Owns           | This repo's development environment, test wiring, and private dogfood input manifests.                                                               |
+| Does not own   | Downstream framework semantics or public optional-input defaults.                                                                                    |
+| Relationship   | Split by change pressure from the public framework surface; the root flake injects dogfood inputs instead of having subflakes lock the parent `std`. |
 
 ## Boundary rules
 
@@ -106,6 +106,9 @@
   contract requires it.
 - Do not let vertical tool vocabulary replace std's artifact vocabulary.
 - Keep dogfood-only concerns out of the downstream framework API.
+- Treat dogfood input manifests as a self-hosting boundary: they declare private
+  inputs, while the root framework facade owns injecting the appropriate `std`
+  instance.
 - Keep `AGENTS.md` as a map; put durable context-specific knowledge here.
 
 ## Review questions

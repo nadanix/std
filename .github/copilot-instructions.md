@@ -163,11 +163,11 @@ After making code changes, ALWAYS test these complete workflows:
    # Should work without errors - takes 5-15 minutes first time
    ```
 
-4. **Subflake lock file updates** (for maintainers):
+4. **Dogfood input manifest lock updates** (for maintainers):
    ```bash
-   # When updating Standard framework itself:
+   # When src/local/flake.nix or src/tests/flake.nix changes:
    ./.github/workflows/update-subflake.sh
-   # This updates src/local/flake.lock and src/tests/flake.lock
+   # This refreshes src/local/flake.lock and src/tests/flake.lock without bumping existing pins
    ```
 
 ## Common Tasks
@@ -254,7 +254,7 @@ mdbook serve            # Serve docs locally at localhost:3000
 - **Slow builds**: This is normal for Nix - do not cancel, builds are cached after first success
 - **direnv not working**: Ensure direnv is installed and shell hook is configured
 - **Network errors during setup**: Some dependencies require internet access; check firewall/proxy settings
-- **Flake lock issues**: In subflakes, run `./.github/workflows/update-subflake.sh` to update lock files
+- **Flake lock issues**: For dogfood input manifests, run `./.github/workflows/update-subflake.sh` to refresh lock files without bumping existing pins
 - **"error: getting status of '/nix/store/...'**: Usually means incomplete download; try `nix build` again
 - **Out of disk space**: Nix store can get large; run `nix-collect-garbage` to clean up
 

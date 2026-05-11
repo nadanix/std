@@ -41,7 +41,7 @@ entries:
     upstream: nixos/nixpkgs/lib/fileset
     relationship: native-source-boundary-helper
     std_surface:
-      - std.fileset.include
+      - native lib.fileset usage
       - optional sourceRoot import-signature path
       - cellsFrom filtering
       - bootstrap filtering

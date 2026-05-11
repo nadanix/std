@@ -2,6 +2,7 @@
   inputs,
   std,
 }: let
+  inherit (inputs.nixpkgs.lib) fileset;
   inherit (std) harvest pick;
 
   # Inputs that belong to the public std framework surface. Dogfood manifests may
@@ -31,11 +32,14 @@
   mkStdOutputs = extraInputs: let
     stdGraph = std.grow {
       inputs = inputs // extraInputs // {std = stdBootstrapInput;};
-      cellsFrom = std.fileset.include ./src [
-        ./src/std
-        ./src/lib
-        ./src/data
-      ];
+      cellsFrom = fileset.toSource {
+        root = ./src;
+        fileset = fileset.unions [
+          ./src/std
+          ./src/lib
+          ./src/data
+        ];
+      };
       cellBlocks = with std.blockTypes; [
         ## For downstream use
 
@@ -81,7 +85,10 @@
 
   localGraph = std.growOn {
     inputs = inputs // localInputs // {std = localStd;};
-    cellsFrom = std.fileset.include ./src [./src/local];
+    cellsFrom = fileset.toSource {
+      root = ./src;
+      fileset = ./src/local;
+    };
     nixpkgsConfig = {allowUnfree = true;};
     cellBlocks = with std.blockTypes; [
       ## For local use in the Standard repository
@@ -94,7 +101,10 @@
 
   testGraph = std.growOn {
     inputs = inputs // testInputs // {std = testStd;};
-    cellsFrom = std.fileset.include ./src [./src/tests];
+    cellsFrom = fileset.toSource {
+      root = ./src;
+      fileset = ./src/tests;
+    };
     nixpkgsConfig = {allowUnfree = true;};
     cellBlocks = with std.blockTypes; [
       ## For local use in the Standard repository

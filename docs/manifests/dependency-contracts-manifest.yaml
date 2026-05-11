@@ -37,8 +37,8 @@ entries:
       - config pebbles
     status: active
 
-  - input: nixpkgs.lib.fileset
-    upstream: nixos/nixpkgs/lib/fileset
+  - input: lib.fileset
+    upstream: nix-community/nixpkgs.lib
     relationship: native-source-boundary-helper
     std_surface:
       - native lib.fileset usage
@@ -82,6 +82,8 @@ entries:
     relationship: library-substrate
     std_surface:
       - system-independent lib usage
+      - bootstrap source filtering
+      - dogfood source filtering
     status: active
 
   - input: nixpkgs

@@ -40,7 +40,7 @@
   };
 
   outputs = inputs: let
-    inherit (inputs.nixpkgs.lib) fileset;
+    inherit (inputs.lib.lib) fileset;
 
     # bootstrap std
     fwlib = import ./src/std/fwlib.nix {

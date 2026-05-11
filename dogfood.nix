@@ -2,7 +2,7 @@
   inputs,
   std,
 }: let
-  inherit (inputs.nixpkgs.lib) fileset;
+  inherit (inputs.lib.lib) fileset;
   inherit (std) harvest pick;
 
   # Inputs that belong to the public std framework surface. Dogfood manifests may

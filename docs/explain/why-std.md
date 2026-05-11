@@ -39,7 +39,7 @@ different things: _**Cells** and **Cell Blocks** set the stage for code readabil
 
 - `cell` the local **Cell**, promoting separation of concern
 - `inputs` the `deSystemize`ed flake inputs &mdash; plus:
-  - `inputs.self = self.sourceInfo;` reference source metadata in `nix`; filter source paths with `lib.fileset` / `std.fileset.include`; don't misuse the global `self`.
+  - `inputs.self = self.sourceInfo;` reference source metadata in `nix`; filter source paths with `lib.fileset` and an explicit `sourceRoot`; don't misuse the global `self`.
   - `inputs.cells`: the other cells by name; code that documents its boundaries.
   - `inputs.nixpkgs`: an _instantiated_ `nixpkgs` for the current system;
 

@@ -40,6 +40,8 @@
   };
 
   outputs = inputs: let
+    inherit (inputs.nixpkgs.lib) fileset;
+
     # bootstrap std
     fwlib = import ./src/std/fwlib.nix {
       inputs = inputs // {nixpkgs = inputs.nixpkgs.legacyPackages;};
@@ -47,10 +49,12 @@
     };
     # load fwlib again through the framework
     # to enable input overloading for blocktypes
-    fileset = fwlib.fileset;
     fwlib' = fwlib.paisano.pick (fwlib.grow {
       inherit inputs;
-      cellsFrom = fileset.include ./src [./src/std];
+      cellsFrom = fileset.toSource {
+        root = ./src;
+        fileset = ./src/std;
+      };
       cellBlocks = [(fwlib.blockTypes.functions "fwlib")];
     }) ["std" "fwlib"];
 
@@ -58,7 +62,7 @@
       # the framework's basic top-level tools
       inherit (inputs) yants dmerge;
       inherit (fwlib'.paisano) pick harvest winnow;
-      inherit (fwlib') blockTypes actions dataWith fileset flakeModule grow growOn findTargets;
+      inherit (fwlib') blockTypes actions dataWith flakeModule grow growOn findTargets;
     };
   in
     assert inputs.nixpkgs.lib.assertMsg ((builtins.compareVersions builtins.nixVersion "2.13") >= 0) "The truth is: you'll need a newer nix version to use Standard (minimum: v2.13).";

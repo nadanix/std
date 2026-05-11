@@ -4,8 +4,7 @@ It is common to filter source code before passing it to a build tool. This avoid
 unnecessary rebuilds and improves cache hits because only the files that are
 actual build inputs affect the source hash.
 
-Prefer native `lib.fileset` functions. `std.fileset.include` is a small
-convenience helper for the common “root plus selected paths” case.
+Use native `lib.fileset` functions for source filtering.
 
 ## Preferred pattern
 
@@ -30,32 +29,45 @@ Then use that path inside Cell Blocks:
   inputs,
   cell,
 }: let
-  inherit (inputs) nixpkgs std;
+  inherit (inputs) nixpkgs;
+  inherit (nixpkgs) lib;
   root = inputs.self.sourceRoot;
 in {
   backend = nixpkgs.mkYarnPackage {
     name = "backend";
-    src = std.fileset.include root [
-      (root + /backend/app.js)
-      (root + /backend/config/config.js)
-      # ...
-    ];
+    src = lib.fileset.toSource {
+      inherit root;
+      fileset = lib.fileset.unions [
+        (root + /backend/app.js)
+        (root + /backend/config/config.js)
+        # ...
+      ];
+    };
   };
 }
 ```
 
-`std.fileset.include root paths` is equivalent to:
+For `cellsFrom` filtering, use the same native helper directly at the caller
+boundary:
 
 ```nix
-nixpkgs.lib.fileset.toSource {
-  root = root;
-  fileset = nixpkgs.lib.fileset.unions paths;
+let
+  inherit (inputs.nixpkgs) lib;
+in
+std.grow {
+  inherit inputs;
+  cellsFrom = lib.fileset.toSource {
+    root = ./nix;
+    fileset = ./nix/app;
+  };
+  cellBlocks = with std.blockTypes; [
+    (installables "packages")
+  ];
 }
 ```
 
 Use path values, not stringified paths. `lib.fileset.toSource` intentionally
 rejects string roots such as `inputs.self.outPath` or a flake's
 `sourceInfo.outPath`; pass `sourceRoot = ./.;` from the caller when Cell Blocks
-need a repo-root path. `sourceRoot` is intentionally absent unless
-configured, because `cellsFrom` and the project source root are different
-concepts.
+need a repo-root path. `sourceRoot` is intentionally absent unless configured,
+because `cellsFrom` and the project source root are different concepts.

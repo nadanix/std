@@ -2,15 +2,16 @@
   inputs,
   cell,
 }: let
-  inherit (inputs) std;
+  inherit (inputs.nixpkgs) lib;
   hasSourceRoot = inputs.self ? sourceRoot;
   root = inputs.self.sourceRoot or null;
   source =
     if hasSourceRoot
     then
-      std.fileset.include root [
-        (root + /source.txt)
-      ]
+      lib.fileset.toSource {
+        inherit root;
+        fileset = root + /source.txt;
+      }
     else null;
 in {
   default =

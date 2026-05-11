@@ -18,7 +18,7 @@
 
 Steps:
 
-1. Filter the source tree before import when needed, preferably through native `lib.fileset` helpers (`std.fileset.include` in this repo).
+1. Filter the source tree before import when needed through native `lib.fileset` helpers.
 2. Pass `std.grow` / `std.growOn` configuration to Paisano's config processor.
 3. Normalize systems, deduplicate declared Cell Blocks, and discover Cells under
    `cellsFrom`.

@@ -4,7 +4,7 @@
     nixpkgs.url = "github:nixos/nixpkgs";
     haumea.url = "github:nix-community/haumea";
     haumea.inputs.nixpkgs.follows = "nixpkgs";
-    namaka.url = "github:nix-community/namaka/v0.2.0";
+    namaka.url = "github:nix-community/namaka";
     namaka.inputs.haumea.follows = "haumea";
     namaka.inputs.nixpkgs.follows = "nixpkgs";
 

@@ -1,0 +1,32 @@
+#pretty
+{
+  mdbookPackages = [
+    "alejandra"
+    "prettier"
+    "taplo"
+    "shfmt"
+    "mdbook-paisano-preprocessor"
+  ];
+  prettier = {
+    command = true;
+    formatsToml = false;
+    options = [
+      "--write"
+    ];
+  };
+  toml = {
+    command = true;
+    includes = [
+      "*.toml"
+    ];
+    options = [
+      "format"
+    ];
+  };
+  treefmtPackages = [
+    "alejandra"
+    "prettier"
+    "taplo"
+    "shfmt"
+  ];
+}

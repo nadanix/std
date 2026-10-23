@@ -5,8 +5,8 @@ in {
   hook.mode = "copy"; # let CI pick it up outside of devshell
   packages = [
     nixpkgs.alejandra
-    nixpkgs.nodePackages.prettier
-    nixpkgs.nodePackages.prettier-plugin-toml
+    nixpkgs.prettier
+    nixpkgs.taplo
     nixpkgs.shfmt
     mdbook-paisano-preprocessor
   ];

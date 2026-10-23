@@ -4,8 +4,8 @@ let
 in {
   packages = [
     nixpkgs.alejandra
-    nixpkgs.nodePackages.prettier
-    nixpkgs.nodePackages.prettier-plugin-toml
+    nixpkgs.prettier
+    nixpkgs.taplo
     nixpkgs.shfmt
   ];
 
@@ -16,8 +16,8 @@ in {
         includes = ["*.nix"];
       };
       prettier = {
-        command = lib.getExe nixpkgs.nodePackages.prettier;
-        options = ["--plugin" "${nixpkgs.nodePackages.prettier-plugin-toml}/lib/node_modules/prettier-plugin-toml/lib/index.js" "--write"];
+        command = lib.getExe nixpkgs.prettier;
+        options = ["--write"];
         includes = [
           "*.css"
           "*.html"
@@ -29,8 +29,12 @@ in {
           "*.scss"
           "*.ts"
           "*.yaml"
-          "*.toml"
         ];
+      };
+      toml = {
+        command = lib.getExe nixpkgs.taplo;
+        options = ["format"];
+        includes = ["*.toml"];
       };
       shell = {
         command = lib.getExe nixpkgs.shfmt;

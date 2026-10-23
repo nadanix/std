@@ -1,8 +1,21 @@
 #pretty
 {
   currentSource = true;
+  documentationSourceOnly = true;
   frameworkInputs = true;
   local = true;
+  nixpkgsNodes = {
+    data = 1;
+    local = 1;
+    root = 1;
+    tests = 1;
+  };
+  nixpkgsPins = {
+    data = true;
+    local = true;
+    root = true;
+    tests = true;
+  };
   privateInputs = true;
   tests = true;
 }

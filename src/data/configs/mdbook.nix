@@ -1,6 +1,6 @@
 let
   inherit (inputs) nixpkgs;
-  inherit (inputs.mdbook-paisano-preprocessor.app.package) mdbook-paisano-preprocessor;
+  mdbook-paisano-preprocessor = inputs.mdbook-paisano-preprocessor.packages.default;
 in {
   hook.mode = "copy"; # let CI pick it up outside of devshell
   packages = [
@@ -14,7 +14,6 @@ in {
   data = {
     book = {
       language = "en";
-      multilingual = false;
       src = "docs";
       title = "Documentation";
     };

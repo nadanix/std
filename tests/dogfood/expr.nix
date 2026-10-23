@@ -2,6 +2,17 @@
   inputs,
   std,
 }: let
+  readLock = path: builtins.fromJSON (builtins.readFile path);
+  locks = {
+    root = readLock ../../flake.lock;
+    local = readLock ../../src/local/flake.lock;
+    tests = readLock ../../src/tests/flake.lock;
+    data = readLock ../../src/data/flake.lock;
+  };
+  inputNode = lock: name: lock.nodes.${lock.nodes.${lock.root}.inputs.${name}};
+  nixpkgsPin = lock: (inputNode lock "nixpkgs").locked;
+  documentationSource = inputNode locks.data "mdbook-paisano-preprocessor";
+
   check = name: let
     dir = ../../src + "/${name}";
     flake = import (dir + "/flake.nix");
@@ -21,4 +32,9 @@ in {
   privateInputs = std.inputs.namaka.outPath == inputs.namaka.outPath;
   local = check "local";
   tests = check "tests";
+  nixpkgsPins = builtins.mapAttrs (_: lock: nixpkgsPin lock == nixpkgsPin locks.root) locks;
+  nixpkgsNodes = builtins.mapAttrs (_: lock:
+    builtins.length (builtins.filter (node: (node.locked.repo or null) == "nixpkgs") (builtins.attrValues lock.nodes)))
+  locks;
+  documentationSourceOnly = !(documentationSource.flake or true) && !(documentationSource ? inputs);
 }

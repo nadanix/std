@@ -25,6 +25,7 @@
     microvm.url = "github:astro/microvm.nix";
     microvm.inputs.nixpkgs.follows = "nixpkgs";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
   };
   outputs = i: builtins.removeAttrs i ["self" "nixpkgs" "haumea"];
 }

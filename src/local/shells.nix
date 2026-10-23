@@ -48,7 +48,7 @@ in
             category = "nix-testing";
           }
         ]
-        ++ optionals nixpkgs.stdenv.isLinux [
+        ++ optionals nixpkgs.stdenv.hostPlatform.isLinux [
           {
             package = nixpkgs.golangci-lint;
             category = "cli-dev";

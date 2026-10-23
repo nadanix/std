@@ -1,0 +1,8 @@
+#pretty
+{
+  currentSource = true;
+  frameworkInputs = true;
+  local = true;
+  privateInputs = true;
+  tests = true;
+}

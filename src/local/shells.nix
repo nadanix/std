@@ -23,7 +23,12 @@ in
       commands =
         [
           {
-            package = nixpkgs.reuse;
+            package = nixpkgs.reuse.overrideAttrs (_: {
+              # Work around sphinxHook reading only the first structured-attrs array item.
+              # TODO: remove once https://github.com/NixOS/nixpkgs/pull/573479
+              # reaches master and our nixpkgs lock includes the fix.
+              sphinxBuilders = "html man";
+            });
             category = "legal";
           }
           {

@@ -84,8 +84,8 @@ in
            --state ${git.state} \
            terraform ${cmd} "$@" \
            ${pkgs.lib.optionalString (cmd == "plan") ''
-             -lock=false -no-color | tee "$PRJ_CACHE_HOME/tf.console.txt"
-           ''}
+          -lock=false -no-color | tee "$PRJ_CACHE_HOME/tf.console.txt"
+        ''}
 
         # Pass output to the snippet
         ${pkgs.lib.optionalString (cmd == "plan") ''
@@ -95,7 +95,6 @@ in
           ${postDiffToGitHubSnippet "${fragmentRelPath}:${cmd}" "$output" "$summary"}
         ''}
       '';
-      
     in [
       (mkCommand currentSystem "init" "tf init" [pkgs.jq pkgs.terraform pkgs.terraform-backend-git] (wrap "init") {})
       (mkCommand currentSystem "plan" "tf plan" [pkgs.jq pkgs.terraform pkgs.terraform-backend-git] (wrap "plan") {})

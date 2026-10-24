@@ -76,26 +76,6 @@
         "type": "github"
       }
     },
-    "incl": {
-      "inputs": {
-        "nixlib": [
-          "lib"
-        ]
-      },
-      "locked": {
-        "lastModified": 1693483555,
-        "narHash": "sha256-Beq4WhSeH3jRTZgC1XopTSU10yLpK1nmMcnGoXO0XYo=",
-        "owner": "divnix",
-        "repo": "incl",
-        "rev": "526751ad3d1e23b07944b14e3f6b7a5948d3007b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "divnix",
-        "repo": "incl",
-        "type": "github"
-      }
-    },
     "lib": {
       "locked": {
         "lastModified": 1792290253,
@@ -193,7 +173,6 @@
         ],
         "dmerge": "dmerge",
         "haumea": "haumea",
-        "incl": "incl",
         "lib": "lib",
         "makes": [
           "blank"

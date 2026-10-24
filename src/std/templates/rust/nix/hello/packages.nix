@@ -2,16 +2,16 @@
   inputs,
   cell,
 }: let
-  inherit (inputs) std self cells;
+  inherit (inputs) cells;
+  inherit (inputs.nixpkgs.lib) fileset;
 
   crane = inputs.crane.lib.overrideToolchain cells.repo.rust.toolchain;
 in {
   # sane default for a binary package
   default = crane.buildPackage {
-    src = std.incl self [
-      "${self}/Cargo.lock"
-      "${self}/Cargo.toml"
-      "${self}/src"
-    ];
+    src = fileset.toSource {
+      root = ../..;
+      fileset = fileset.unions [../../Cargo.lock ../../Cargo.toml ../../src];
+    };
   };
 }

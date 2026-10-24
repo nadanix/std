@@ -1,0 +1,13 @@
+#pretty
+{
+  absolute = true;
+  debug = true;
+  directory = true;
+  empty = true;
+  emptyDirectory = true;
+  missing = true;
+  path = true;
+  prefix = true;
+  relative = true;
+  sourceInfo = true;
+}

@@ -3,7 +3,7 @@ Upstream-Name: Standard
 Upstream-Contact: The Standard Authors
 Source: https://github.com/divnix/std
 
-Files: src/*
+Files: src/* tests/incl/* tests/_snapshots/incl
 Copyright: 2022 The Standard Authors
 License: Unlicense
 

@@ -8,9 +8,8 @@
   inputs.nixpkgs.url = "github:nixos/nixpkgs";
   inputs.lib.url = "github:nix-community/nixpkgs.lib";
   inputs = {
-    paisano.url = "github:paisano-nix/core";
-    paisano.inputs.nixpkgs.follows = "nixpkgs";
-    paisano.inputs.yants.follows = "yants";
+    call-flake.url = "github:divnix/call-flake";
+    nosys.url = "github:divnix/nosys";
     paisano-tui = {
       url = "github:paisano-nix/tui";
       flake = false; # we're after the source code, only
@@ -49,12 +48,12 @@
     inherit (inputs.lib.lib) fileset;
     # bootstrap std
     fwlib = import ./src/std/fwlib.nix {
-      inputs = inputs // {nixpkgs = inputs.nixpkgs.legacyPackages;};
+      inputs = inputs // {nixpkgs = inputs.nixpkgs.legacyPackages // {inherit (inputs.nixpkgs) lib;};};
       cell = {};
     };
     # load fwlib again through the framework
     # to enable input overloading for blocktypes
-    fwlib' = inputs.paisano.pick (fwlib.grow {
+    fwlib' = fwlib.pick (fwlib.grow {
       inherit inputs;
       cellsFrom = fileset.toSource {
         root = ./src;
@@ -66,7 +65,7 @@
     std = {
       # the framework's basic top-level tools
       inherit (inputs) yants dmerge;
-      inherit (inputs.paisano) pick harvest winnow;
+      inherit (fwlib') pick harvest winnow;
       inherit (fwlib') blockTypes actions dataWith flakeModule grow growOn findTargets incl;
     };
   in

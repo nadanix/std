@@ -1,7 +1,7 @@
 inputs: let
   inherit (inputs) std;
   inherit (inputs.lib.lib) fileset;
-  inherit (inputs.paisano) pick harvest;
+  inherit (std) pick harvest;
   grow = name: let
     extraInputs =
       (builtins.getFlake (builtins.unsafeDiscardStringContext

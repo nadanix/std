@@ -7,10 +7,19 @@
   # during bootstrap: set to {}  / don't use
   cell,
 }: let
-  inherit (inputs) haumea paisano self;
+  inherit (inputs) haumea;
+  core = import ./core {
+    inherit (inputs) nosys call-flake yants;
+    inherit (inputs.nixpkgs) lib;
+  };
   fwlib = haumea.lib.load {
     src = ./fwlib;
-    inputs = (removeAttrs inputs ["self"]) // {trivial = inputs.nixpkgs;};
+    inputs =
+      (removeAttrs inputs ["self"])
+      // {
+        inherit core;
+        trivial = inputs.nixpkgs;
+      };
   };
 in
-  fwlib
+  fwlib // {inherit (core) pick harvest winnow;}

@@ -1,9 +1,12 @@
 #pretty
 {
+  cleanRevision = true;
   currentSource = true;
+  dirtyRevision = true;
   documentationSourceOnly = true;
   frameworkInputs = true;
   local = true;
+  localCore = true;
   nixpkgsNodes = {
     data = 1;
     local = 1;

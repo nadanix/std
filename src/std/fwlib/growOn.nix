@@ -1,9 +1,9 @@
 {
-  paisano,
+  core,
   root,
 }: let
   inherit (root) blockTypes;
-  inherit (paisano) growOn;
+  inherit (core) growOn;
 in
   {
     cellBlocks ? [
@@ -22,4 +22,4 @@ in
         else {inherit cellBlocks;}
       );
   in
-    paisano.growOn args'
+    growOn args'

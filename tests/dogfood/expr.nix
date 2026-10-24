@@ -30,6 +30,9 @@ in {
   currentSource = std.outPath == toString ../..;
   frameworkInputs = std.inputs.nixpkgs.outPath == inputs.nixpkgs.outPath;
   privateInputs = std.inputs.namaka.outPath == inputs.namaka.outPath;
+  localCore = !(std.inputs ? paisano) && !(inputs ? paisano) && !(inputs ? core);
+  cleanRevision = std.std.errors.bailOnDirty "test" "constant-rev" == "constant-rev";
+  dirtyRevision = !(builtins.tryEval (std.std.errors.bailOnDirty "test" "not-a-commit")).success;
   local = check "local";
   tests = check "tests";
   nixpkgsPins = builtins.mapAttrs (_: lock: nixpkgsPin lock == nixpkgsPin locks.root) locks;

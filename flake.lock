@@ -121,31 +121,6 @@
         "type": "github"
       }
     },
-    "paisano": {
-      "inputs": {
-        "call-flake": "call-flake",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "nosys": "nosys",
-        "yants": [
-          "yants"
-        ]
-      },
-      "locked": {
-        "lastModified": 1787579760,
-        "narHash": "sha256-WGhIEINOICx7bhV3WrSz0QTzv8uzaaa9AXvD1clIWpc=",
-        "owner": "paisano-nix",
-        "repo": "core",
-        "rev": "88739c84d308876714322eb9844ede6597c1a580",
-        "type": "github"
-      },
-      "original": {
-        "owner": "paisano-nix",
-        "repo": "core",
-        "type": "github"
-      }
-    },
     "paisano-tui": {
       "flake": false,
       "locked": {
@@ -168,6 +143,7 @@
           "blank"
         ],
         "blank": "blank",
+        "call-flake": "call-flake",
         "devshell": [
           "blank"
         ],
@@ -187,7 +163,7 @@
           "blank"
         ],
         "nixpkgs": "nixpkgs",
-        "paisano": "paisano",
+        "nosys": "nosys",
         "paisano-tui": "paisano-tui",
         "terranix": [
           "blank"

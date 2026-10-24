@@ -115,8 +115,8 @@ What is Standard made of? And how do its components contribute value?
 
 On the left side of the graphic, we show how Standard, like an onion, is build in layers:
 
-Center to Standard is [`divnix/paisano`](https://github.com/paisano-tui/core).
-This flake (i.e. "Nix library") implements two main abstractions: Block Types and Cells.
+Central to Standard is its [framework core](./src/std/core), imported from Paisano and maintained in-tree.
+This Nix library implements two main abstractions: Block Types and Cells.
 
 _**Block Types**_ are not unlike Rust's traits or Golang's interfaces.
 They are abstract definitions of artifact classes.

@@ -174,7 +174,8 @@ It's super simple & super useful ™ and you should do it _right now_ if you hav
 
 Please learn how to enable `direnv` in this project by following the [direnv how-to][direnv-how-to].
 
-In this case, you would adapt the relevant line to: **`use std nix //local/shells:default`**.
+In this case, you would adapt the relevant line to: **`use envreload //local/shells/default`**.
+The library discovers the `nix` Cell directory from the Standard registry.
 
 Now, you can simply `cd` into that directory, and the devshells is being loaded.
 The MOTD will be shown, too.

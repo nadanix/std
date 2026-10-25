@@ -4,10 +4,12 @@
   cell,
 }: let
   inherit (inputs) fenix;
+  inherit (inputs.nixpkgs.lib) filterAttrs isDerivation;
 
   # you may change "default" to any of "[minimal|default|complete|latest]" for variants
   # see upstream fenix documentation for details
-  rustPkgs = builtins.removeAttrs fenix.packages.default ["withComponents" "name" "type"];
+  # Keep packages, not helper functions or flake-check metadata.
+  rustPkgs = filterAttrs (_: isDerivation) fenix.packages.default;
 in
   # add rust-analyzer from nightly, if not present
   if rustPkgs ? rust-analyzer

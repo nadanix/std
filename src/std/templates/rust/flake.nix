@@ -1,8 +1,10 @@
 {
   description = "A very basic flake for Rust development";
 
-  inputs.std.url = "github:divnix/std";
+  inputs.std.url = "github:nadanix/std";
   inputs.std.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.std.inputs.devshell.follows = "devshell";
+  inputs.devshell.url = "github:numtide/devshell";
 
   inputs.fenix.url = "github:nix-community/fenix";
   inputs.crane.url = "github:ipetkov/crane";

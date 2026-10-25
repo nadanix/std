@@ -1,0 +1,8 @@
+#pretty
+{
+  analyzer = true;
+  mainSource = true;
+  onlyPackages = true;
+  projectSources = true;
+  toolchain = true;
+}

@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: The Standard Authors
+# SPDX-License-Identifier: Unlicense
+
+version = 3
+
+[[package]]
+name = "template-test"
+version = "0.1.0"

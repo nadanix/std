@@ -11,6 +11,7 @@
   dev = lib.dev.mkShell {
     packages = [
       nixpkgs.pkg-config
+      nixpkgs.stdenv.cc
     ];
     language.rust = {
       packageSet = cell.rust;
@@ -22,8 +23,8 @@
       deps = [];
       text = ''
         # ensure CARGO_HOME is populated
-        mkdir -p "$PRJ_DATA_DIR/cargo"
-        ln -snf -t "$PRJ_DATA_DIR/cargo" $(ls -d ${cell.rust.toolchain}/*)
+        mkdir -p "$PRJ_DATA_HOME/cargo"
+        ln -snf -t "$PRJ_DATA_HOME/cargo" $(ls -d ${cell.rust.toolchain}/*)
       '';
     };
 
@@ -32,12 +33,12 @@
         # ensures subcommands are picked up from the right place
         # but also needs to be writable; see link-cargo-home above
         name = "CARGO_HOME";
-        eval = "$PRJ_DATA_DIR/cargo";
+        eval = "$PRJ_DATA_HOME/cargo";
       }
       {
         # ensure we know where rustup_home will be
         name = "RUSTUP_HOME";
-        eval = "$PRJ_DATA_DIR/rustup";
+        eval = "$PRJ_DATA_HOME/rustup";
       }
       {
         name = "RUST_SRC_PATH";

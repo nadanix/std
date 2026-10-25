@@ -30,12 +30,5 @@ builtins.mapAttrs (_: lib.dev.mkShell) {
       cell.configs.mdbook
       cell.configs.treefmt
     ];
-
-    commands = [
-      {
-        category = "rendering";
-        package = inputs.nixpkgs.mdbook;
-      }
-    ];
   };
 }

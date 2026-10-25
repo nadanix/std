@@ -11,7 +11,9 @@
   };
   inputNode = lock: name: lock.nodes.${lock.nodes.${lock.root}.inputs.${name}};
   nixpkgsPin = lock: (inputNode lock "nixpkgs").locked;
-  documentationSource = inputNode locks.data "mdbook-paisano-preprocessor";
+  documentationFlake = import ../../src/data/flake.nix;
+  documentation = documentationFlake.outputs {nixpkgs = std.inputs.nixpkgs;};
+  documentationPackage = documentation.mdbook-paisano-preprocessor.packages.${inputs.nixpkgs.system}.default;
 
   check = name: let
     dir = ../../src + "/${name}";
@@ -41,5 +43,7 @@ in {
   nixpkgsNodes = builtins.mapAttrs (_: lock:
     builtins.length (builtins.filter (node: (node.locked.repo or null) == "nixpkgs") (builtins.attrValues lock.nodes)))
   locks;
-  documentationSourceOnly = !(documentationSource.flake or true) && !(documentationSource ? inputs);
+  localDocumentation = !(documentationFlake.inputs ? mdbook-paisano-preprocessor) && !(locks.data.nodes.${locks.data.root}.inputs ? mdbook-paisano-preprocessor);
+  documentationProvider = builtins.attrNames documentation == ["mdbook-paisano-preprocessor"];
+  documentationSource = builtins.readFile (documentationPackage.src + /Cargo.toml) == builtins.readFile ../../src/data/mdbook-paisano-preprocessor/Cargo.toml;
 }

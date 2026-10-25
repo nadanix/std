@@ -1,0 +1,11 @@
+Unknown upstream licensing status
+
+No applicable upstream license has been established for the files marked with
+LicenseRef-Unknown. This identifier records an unresolved licensing status; it
+is not a license or a grant of rights. Inclusion in Standard does not apply
+Standard's Unlicense to those files.
+
+For mdbook-paisano-preprocessor, revision
+f84fc450aaf4824b4d64d957349553c0f8acc243, the upstream Cargo.toml references a
+LICENSE file that is absent from the source and its available history.
+See src/data/mdbook-paisano-preprocessor/README.md for provenance.

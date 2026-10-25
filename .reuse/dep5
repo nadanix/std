@@ -11,6 +11,16 @@ Files: src/std/cli/cache/hash.go
 Copyright: 2021 Tamás Gulácsi
 License: BSD-3-Clause
 
+Files: src/data/mdbook-paisano-preprocessor/Cargo.toml
+       src/data/mdbook-paisano-preprocessor/src/*
+       src/data/mdbook-paisano-preprocessor/assets/*
+       src/data/mdbook-paisano-preprocessor/templates/*
+Copyright: The Paisano Authors
+License: LicenseRef-Unknown
+Comment: Imported from paisano-nix/mdbook-paisano-preprocessor at
+ f84fc450aaf4824b4d64d957349553c0f8acc243. No upstream license was found;
+ this marker records unknown licensing, not a license grant.
+
 Files: docs/*
 Copyright: 2022 The Standard Authors
 License: Unlicense

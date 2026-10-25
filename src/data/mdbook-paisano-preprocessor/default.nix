@@ -4,19 +4,22 @@
   libiconv,
   mdbook,
   runCommand,
-  src,
 }: let
   package = rustPlatform.buildRustPackage {
     pname = "mdbook-paisano-preprocessor";
-    version = (lib.importTOML (src + /Cargo.toml)).package.version;
-    inherit src;
+    version = (lib.importTOML ./Cargo.toml).package.version;
+    src = lib.fileset.toSource {
+      root = ./.;
+      fileset = lib.fileset.unions [
+        ./Cargo.toml
+        ./Cargo.lock
+        ./src
+        ./assets
+        ./templates
+      ];
+    };
 
-    # Upstream still targets mdBook 0.4; use the 0.5 preprocessor protocol.
-    patches = [./mdbook-0.5.patch];
     cargoLock.lockFile = ./Cargo.lock;
-    postPatch = ''
-      cp ${./Cargo.lock} Cargo.lock
-    '';
     buildInputs = [libiconv];
 
     passthru.tests.mdbook =
@@ -38,7 +41,10 @@
         EOF
         printf '# Summary\n\n- [Protocol](protocol.md)\n' > src/SUMMARY.md
         printf '# Protocol\n\nPreprocessor protocol works.\n' > src/protocol.md
+        mdbook-paisano-preprocessor install
+        grep -q 'assets_version = ' book.toml
         mdbook build
+        test -s book/mdbook-paisano-preprocessor.css
         grep -q 'Preprocessor protocol works.' book/protocol.html
         touch "$out"
       '';

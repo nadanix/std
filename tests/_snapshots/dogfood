@@ -4,11 +4,13 @@
   cliSource = true;
   currentSource = true;
   dirtyRevision = true;
-  documentationSourceOnly = true;
+  documentationProvider = true;
+  documentationSource = true;
   frameworkInputs = true;
   local = true;
   localCli = true;
   localCore = true;
+  localDocumentation = true;
   nixpkgsNodes = {
     data = 1;
     local = 1;

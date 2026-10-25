@@ -1,21 +1,5 @@
 {
   "nodes": {
-    "mdbook-paisano-preprocessor": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1694819355,
-        "narHash": "sha256-rUPXjsUNUjpd3c+2M0KtbMHrlZ1sDyAY6ASJZNk0TQE=",
-        "owner": "paisano-nix",
-        "repo": "mdbook-paisano-preprocessor",
-        "rev": "f84fc450aaf4824b4d64d957349553c0f8acc243",
-        "type": "github"
-      },
-      "original": {
-        "owner": "paisano-nix",
-        "repo": "mdbook-paisano-preprocessor",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1792793736,
@@ -33,7 +17,6 @@
     },
     "root": {
       "inputs": {
-        "mdbook-paisano-preprocessor": "mdbook-paisano-preprocessor",
         "nixpkgs": "nixpkgs"
       }
     }

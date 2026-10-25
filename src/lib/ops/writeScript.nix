@@ -15,7 +15,7 @@ in
       then (l.getExe runtimeShell)
       else runtimeShell;
   in
-    cell.ops.lazyDerivation {
+    nixpkgs.lib.lazyDerivation {
       meta.mainProgram = name;
       derivation = nixpkgs.writeTextFile {
         inherit name;

@@ -1,14 +1,85 @@
 #pretty
 {
-  lazyDerivation = "missing-test";
   mkDevOCI = <derivation image-hello-dev.json>;
   mkMicrovm = <derivation microvm-qemu-nixos>;
-  mkOCI = "missing-test";
-  mkOperable = <derivation operable-hello>;
+  mkOCI = {
+    derivation = <derivation image-hello.json>;
+    image = {
+      name = "docker.io/hello:test";
+      repo = "docker.io/hello";
+      tag = "test";
+      tags = [
+        "test"
+        "latest"
+      ];
+    };
+    lazy = {
+      drvType = "derivation";
+      forcesDerivation = true;
+      image = {
+        name = "docker.io/lazy-hello:test";
+        repo = "docker.io/lazy-hello";
+        tag = "test";
+        tags = [
+          "test"
+        ];
+      };
+      meta = {
+        description = "lazy image";
+      };
+    };
+    meta = {
+      description = "hello image";
+      tags = [
+        "test"
+        "latest"
+      ];
+    };
+  };
+  mkOperable = {
+    debug = <derivation debug>;
+    debugInputs = [
+      <derivation coreutils-9.12>
+    ];
+    derivation = <derivation operable-hello>;
+    lazy = {
+      drvType = "derivation";
+      forcesDerivation = true;
+      meta = {
+        description = "lazy operable";
+        mainProgram = "operable-hello";
+      };
+      package = <derivation hello-2.12.3>;
+    };
+    livenessProbe = <derivation hello-2.12.3>;
+    meta = {
+      description = "hello operable";
+      mainProgram = "operable-hello";
+    };
+    package = <derivation hello-2.12.3>;
+    readinessProbe = <derivation hello-2.12.3>;
+    runtime = <derivation runtime>;
+    runtimeInputs = [
+      <derivation hello-2.12.3>
+    ];
+    runtimeShellPreserved = true;
+  };
   mkOperableScript = "missing-test";
   mkSetup = "missing-test";
   mkStandardOCI = <derivation image-hello.json>;
   mkUser = "missing-test";
   readYAML = "missing-test";
-  writeScript = "missing-test";
+  writeScript = {
+    derivation = <derivation hello-script>;
+    lazy = {
+      drvType = "derivation";
+      forcesDerivation = true;
+      meta = {
+        mainProgram = "lazy-script";
+      };
+    };
+    meta = {
+      mainProgram = "hello-script";
+    };
+  };
 }

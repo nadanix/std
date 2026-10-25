@@ -1,5 +1,5 @@
 let
-  inherit (inputs) nixpkgs std;
+  inherit (inputs) nixpkgs;
   l = nixpkgs.lib // builtins;
 in
   /*
@@ -77,7 +77,7 @@ in
         inherit runtimeShell;
       });
   in
-    cell.ops.lazyDerivation {
+    nixpkgs.lib.lazyDerivation {
       meta = meta // {inherit (drv.meta) mainProgram;};
       derivation = drv;
       passthru =

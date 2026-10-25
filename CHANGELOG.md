@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 #### Breaking Changes
 
+- Remove `std.lib.ops.lazyDerivation` and its fallback for older nixpkgs. Replace calls with `nixpkgs.lib.lazyDerivation` (or `inputs.nixpkgs.lib.lazyDerivation` in a Standard Cell Block). The `writeScript`, `mkOperable`, and `mkOCI` helpers now use nixpkgs directly and require a nixpkgs input that provides `lib.lazyDerivation`.
 - Remove the `std.lib.dev.mkMakes` integration and the `makes` input. [Makes](https://github.com/fluidattacks/makes) is deprecated and archived upstream. Migrate tasks to native Nix derivations/apps and Standard actions, and remove any `inputs.std.inputs.makes` overrides.
 
 ---

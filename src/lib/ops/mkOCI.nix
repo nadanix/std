@@ -1,6 +1,6 @@
 let
   inherit (inputs.cells.std.errors) requireInput;
-  inherit (requireInput "n2c" "github:nlewo/nix2container" "std.lib.ops.mkOCI") nixpkgs std n2c;
+  inherit (requireInput "n2c" "github:nlewo/nix2container" "std.lib.ops.mkOCI") nixpkgs n2c;
   inherit (n2c.packages) nix2container;
 
   l = nixpkgs.lib // builtins;
@@ -115,7 +115,7 @@ in
         (l.head (l.strings.splitString "-" (baseNameOf image.outPath)));
     tags = l.unique ([mainTag] ++ meta.tags or []);
   in
-    cell.ops.lazyDerivation {
+    nixpkgs.lib.lazyDerivation {
       inherit meta;
       derivation = image;
       passthru = {

@@ -31,6 +31,8 @@ in {
   frameworkInputs = std.inputs.nixpkgs.outPath == inputs.nixpkgs.outPath;
   privateInputs = std.inputs.namaka.outPath == inputs.namaka.outPath;
   localCore = !(std.inputs ? paisano) && !(inputs ? paisano) && !(inputs ? core);
+  localCli = !(std.inputs ? paisano-tui) && !(inputs ? paisano-tui);
+  cliSource = builtins.readFile (std.std.cli.std.src + /go.mod) == builtins.readFile ../../src/std/cli/go.mod;
   cleanRevision = std.std.errors.bailOnDirty "test" "constant-rev" == "constant-rev";
   dirtyRevision = !(builtins.tryEval (std.std.errors.bailOnDirty "test" "not-a-commit")).success;
   local = check "local";

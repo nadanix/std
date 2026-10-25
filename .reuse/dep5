@@ -7,6 +7,10 @@ Files: src/* tests/incl/* tests/_snapshots/incl tests/core-*/* tests/_snapshots/
 Copyright: 2022 The Standard Authors
 License: Unlicense
 
+Files: src/std/cli/cache/hash.go
+Copyright: 2021 Tamás Gulácsi
+License: BSD-3-Clause
+
 Files: docs/*
 Copyright: 2022 The Standard Authors
 License: Unlicense

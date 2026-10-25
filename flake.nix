@@ -10,10 +10,6 @@
   inputs = {
     call-flake.url = "github:divnix/call-flake";
     nosys.url = "github:divnix/nosys";
-    paisano-tui = {
-      url = "github:paisano-nix/tui";
-      flake = false; # we're after the source code, only
-    };
   };
   inputs.blank.url = "github:divnix/blank";
   inputs.yants = {

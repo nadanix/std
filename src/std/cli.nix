@@ -12,11 +12,11 @@ in {
     pname = "std";
     meta = {
       inherit (import (inputs.self + /flake.nix)) description;
-      license = licenses.unlicense;
+      license = [licenses.unlicense licenses.bsd3];
       homepage = "https://github.com/divnix/std";
     };
 
-    src = inputs.paisano-tui + /src;
+    src = ./cli;
 
     vendorHash = "sha256-S1oPselqHRIPcqDSsvdIkCwu1siQGRDHOkxWtYwa+g4=";
 
@@ -24,6 +24,8 @@ in {
 
     postInstall = ''
       mv $out/bin/paisano $out/bin/${pname}
+      install -Dm644 LICENSE $out/share/doc/${pname}/LICENSE
+      install -Dm644 cache/LICENSE $out/share/doc/${pname}/LICENSE-cache
 
       installShellCompletion --cmd ${pname} \
         --bash <($out/bin/${pname} _carapace bash) \

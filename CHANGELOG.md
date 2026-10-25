@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file. See [conven
 
 ---
 
+## Unreleased
+
+#### Breaking Changes
+
+- Remove the `std.lib.dev.mkMakes` integration and the `makes` input. [Makes](https://github.com/fluidattacks/makes) is deprecated and archived upstream. Migrate tasks to native Nix derivations/apps and Standard actions, and remove any `inputs.std.inputs.makes` overrides.
+
+---
+
 ## [v0.33.4](https://github.com/divnix/std/compare/58e6300b8a525059b33e97e475322c00115f7ee9..v0.33.4) - 2025-01-28
 
 #### Bug Fixes

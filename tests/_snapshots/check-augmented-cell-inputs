@@ -9,7 +9,6 @@
   flake-parts = "/nix/store/6xr58mfvs42ixw6428x3vm9l5h88l2z7-source";
   haumea = "/nix/store/f5zglh7gfd4w9y5xg6hcf7knllpk1rm2-source";
   lib = "/nix/store/ksw7r2jsbsjvhr8nxbpqb6sjkjcq0n0y-source";
-  makes = "/nix/store/c1silm3bs5g86rvhmjz8vm2lmgjnchzw-source";
   microvm = "/nix/store/2p70ycdvc9x1vrjmbwmvb4rjqxhj0drv-source";
   n2c = "/nix/store/4znsrd78v8gryvvjwbjqsnva7gdnfkc4-source";
   namaka = "/nix/store/i1h9bfkw4nxx163y4385ig067arnr8sb-source";

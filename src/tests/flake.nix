@@ -33,8 +33,6 @@
     namaka.url = "github:nix-community/namaka";
     namaka.inputs.haumea.follows = "haumea";
     namaka.inputs.nixpkgs.follows = "nixpkgs";
-    makes.url = "github:fluidattacks/makes";
-    makes.inputs.nixpkgs.follows = "nixpkgs";
     arion.url = "github:hercules-ci/arion";
     arion.inputs.nixpkgs.follows = "nixpkgs";
     arion.inputs.flake-parts.follows = "flake-parts";

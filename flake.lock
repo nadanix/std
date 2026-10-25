@@ -134,9 +134,6 @@
         "dmerge": "dmerge",
         "haumea": "haumea",
         "lib": "lib",
-        "makes": [
-          "blank"
-        ],
         "microvm": [
           "blank"
         ],

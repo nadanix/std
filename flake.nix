@@ -36,7 +36,6 @@
     nixago.follows = "blank";
     terranix.follows = "blank";
     microvm.follows = "blank";
-    makes.follows = "blank";
     arion.follows = "blank";
   };
 

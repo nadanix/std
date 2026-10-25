@@ -1,6 +1,6 @@
 # The `std` Cell
 
-... is the only cell in `divnix/std` and provides only very limited functionality.
+... provides the framework and developer-facing tools in `nadanix/std`.
 
 - It contains the TUI, in `./cli`.
 - It contains a `devshellProfile` in `./devshellProfiles`.

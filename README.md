@@ -6,7 +6,7 @@ SPDX-License-Identifier: Unlicense
 -->
 
 <div align="center">
-  <img src="https://github.com/divnix/std/raw/main/artwork/logo.png" width="250" />
+  <img src="https://raw.githubusercontent.com/nadanix/std/upstream-main/artwork/logo.png" width="250" />
   <h1>Standard</h1>
   <p>Ship today.</span>
 </div>
@@ -26,6 +26,18 @@ enables an efficient Software Development Life Cycle (SDLC) with the power of [N
 It organizes and disciplines your Nix and thereby speeds you up.
 It also comes with great horizontal integrations of high
 quality vertical DevOps tooling crafted by the [Nix Ecosystem][ecosystem].
+
+### This fork
+
+This is [`nadanix/std`][std], a fork of [`divnix/std`][upstream].
+Source and documentation links on this branch refer to `upstream-main`.
+Flake examples use `github:nadanix/std` (the fork's default branch), with exact
+revisions recorded in each consumer's `flake.lock`.
+
+Use this fork's [issue tracker][issues] for bugs and contributions. Historical
+changelog links, upstream attribution, and dependencies such as `divnix/std-action`
+retain their original identities. The Matrix room and video/book resources below
+belong to the upstream Standard community.
 
 ---
 
@@ -90,7 +102,7 @@ But hey! It means: we can progress together!
   description = "Description for the project";
 
   inputs = {
-    std.url = "github:divnix/std";
+    std.url = "github:nadanix/std";
     nixpkgs.follows = "std/nixpkgs";
   };
 
@@ -108,7 +120,7 @@ But hey! It means: we can progress together!
       (devshells "shells" {ci.build = true;})
     ];
   }
-  # 4. Run 'nix run github:divnix/std'
+  # 4. Run 'nix run github:nadanix/std'
   # 'growOn' ... Soil:
   #  - here, compat for the Nix CLI
   #  - but can use anything that produces flake outputs (e.g. flake-parts or flake-utils)
@@ -144,7 +156,7 @@ _That's it. `std.grow` is a "smart" importer of your `nix` code and is designed 
 
 > **TIP:**
 >
-> 1. Clone this repo `git clone https://github.com/divnix/std.git`
+> 1. Clone this repo `git clone --branch upstream-main https://github.com/nadanix/std.git`
 > 2. Install `direnv` & inside the repo, do: `direnv allow` (first time takes a little longer)
 > 3. Run the TUI by entering `std` (first time takes a little longer)
 >
@@ -153,7 +165,10 @@ _That's it. `std.grow` is a "smart" importer of your `nix` code and is designed 
 
 ## Documentation
 
-The [Documentation][documentation] is here.
+The [fork's documentation sources][documentation] are in this repository.
+Build the rendered documentation locally with `nix develop .#book -c mdbook build`.
+This fork does not currently publish a documentation site; the Pages workflow
+must not claim the upstream project's domain.
 
 And here is the [Book][book], a very good walk-trough. Start here!
 
@@ -166,7 +181,7 @@ And here is the [Book][book], a very good walk-trough. Start here!
 
 ###### Examples in the Wild
 
-This [GitHub search query](https://github.com/search?q=%22divnix%2Fstd%22+path%3Aflake.nix&type=Code) holds a pretty good answer.
+This [GitHub search query](https://github.com/search?q=%22nadanix%2Fstd%22+path%3Aflake.nix&type=Code) finds consumers of this fork.
 
 ## Why?
 
@@ -189,16 +204,18 @@ _And the usual copies? &rarr; [`./LICENSES`][licenses]._
 
 ---
 
-[cells]: https://github.com/divnix/std/tree/main/cells
-[documentation]: https://std.divnix.com
+[cells]: https://github.com/nadanix/std/tree/upstream-main/src
+[documentation]: https://github.com/nadanix/std/blob/upstream-main/docs/SUMMARY.md
 [book]: https://jmgilman.github.io/std-book/
-[licensing]: https://github.com/divnix/std/blob/main/.reuse/dep5
-[licenses]: https://github.com/divnix/std/tree/main/LICENSES
-[blocktypes]: https://github.com/divnix/std/blob/main/src/blocktypes.nix
+[licensing]: https://github.com/nadanix/std/blob/upstream-main/.reuse/dep5
+[licenses]: https://github.com/nadanix/std/tree/upstream-main/LICENSES
+[blocktypes]: https://github.com/nadanix/std/tree/upstream-main/src/std/fwlib/blockTypes
 [nix-flakes]: https://nixos.wiki/wiki/Flakes
 [nix]: https://nixos.org/manual/nix/unstable
-[std]: https://github.com/divnix/std
-[why-std]: https://std.divnix.com/explain/why-std.html
-[why-nix]: https://std.divnix.com/explain/why-nix.html
+[std]: https://github.com/nadanix/std
+[upstream]: https://github.com/divnix/std
+[issues]: https://github.com/nadanix/std/issues
+[why-std]: https://github.com/nadanix/std/blob/upstream-main/docs/explain/why-std.md
+[why-nix]: https://github.com/nadanix/std/blob/upstream-main/docs/explain/why-nix.md
 [ecosystem]: https://discourse.nixos.org
 [hive]: https://github.com/divnix/hive

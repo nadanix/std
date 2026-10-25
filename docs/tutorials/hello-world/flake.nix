@@ -1,5 +1,5 @@
 {
-  inputs.std.url = "github:divnix/std";
+  inputs.std.url = "github:nadanix/std";
   inputs.nixpkgs.url = "github:nixos/nixpkgs";
 
   outputs = {std, ...} @ inputs:

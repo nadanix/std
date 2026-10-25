@@ -13,7 +13,7 @@ in {
     meta = {
       inherit (import (inputs.self + /flake.nix)) description;
       license = [licenses.unlicense licenses.bsd3];
-      homepage = "https://github.com/divnix/std";
+      homepage = "https://github.com/nadanix/std";
     };
 
     src = ./cli;

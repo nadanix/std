@@ -33,7 +33,7 @@ This file implements an extractor that feeds the registry.
           if ! l.hasAttr action actions'
           then
             throw ''
-              divnix/std(ci-integration): Block Type '${cellBlock.type}' has no '${action}' Action defined.
+              nadanix/std(ci-integration): Block Type '${cellBlock.type}' has no '${action}' Action defined.
               ---
               ${l.generators.toPretty {} (l.removeAttrs cellBlock ["__functor"])}
             ''

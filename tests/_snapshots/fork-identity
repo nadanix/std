@@ -1,0 +1,11 @@
+#pretty
+{
+  changelogOwner = true;
+  cliHomepage = true;
+  consumerInputs = true;
+  containerSources = true;
+  generatedRepositoryHomepage = true;
+  repositoryHomepage = true;
+  schemaId = true;
+  staleReferences = [ ];
+}

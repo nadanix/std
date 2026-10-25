@@ -21,7 +21,7 @@ Example use:
 {
   inputs = {
     # ...
-    std.url = "github:divnix/std";
+    std.url = "github:nadanix/std";
   };
 
   outputs = inputs: let

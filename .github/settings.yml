@@ -67,6 +67,6 @@ repository:
   delete_branch_on_merge: true
   description: A DevOps framework for the SDLC with the power of Nix and Flakes.
     Good for keeping deadlines!
-  homepage: https://std.divnix.com
+  homepage: https://github.com/nadanix/std/blob/upstream-main/docs/SUMMARY.md
   name: std
   topics: nix, nix-flakes, devops, sdlc

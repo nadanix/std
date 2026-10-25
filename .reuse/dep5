@@ -1,9 +1,11 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: Standard
 Upstream-Contact: The Standard Authors
-Source: https://github.com/divnix/std
+Source: https://github.com/nadanix/std
+Comment: Forked from https://github.com/divnix/std; upstream attribution is preserved.
 
 Files: src/* tests/incl/* tests/_snapshots/incl tests/core-*/* tests/_snapshots/core-*
+       tests/_snapshots/fork-identity
 Copyright: 2022 The Standard Authors
 License: Unlicense
 

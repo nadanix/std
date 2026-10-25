@@ -10,7 +10,7 @@ in {
     data.changelog = {
       remote = "github.com";
       repository = "std";
-      owner = "divnix";
+      owner = "nadanix";
     };
   };
   treefmt = (mkNixago configs.treefmt) {
@@ -71,7 +71,7 @@ in {
     data = {
       repository = {
         name = "std";
-        homepage = "https://std.divnix.com";
+        homepage = "https://github.com/nadanix/std/blob/upstream-main/docs/SUMMARY.md";
         description = "A DevOps framework for the SDLC with the power of Nix and Flakes. Good for keeping deadlines!";
         topics = "nix, nix-flakes, devops, sdlc";
         default_branch = "main";

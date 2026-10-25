@@ -48,4 +48,4 @@ The explicit handling of `system` in foreign contexts, where `system` is not a p
 
 This makes using this framework a little easier for everybody, including packaging experts.
 
-Since `nixpkgs`, itself, exposes `nixpkgs.system` and packaging without `nixpkgs` is hardly imaginably, power-users still enjoy easy access to the "current" system, in case it's needed.
+Since `nixpkgs`, itself, exposes `nixpkgs.stdenv.hostPlatform.system` and packaging without `nixpkgs` is hardly imaginably, power-users still enjoy easy access to the host system, in case it's needed.

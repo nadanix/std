@@ -29,7 +29,7 @@
   privateInputNames = ["nixpkgs" "haumea" "haskell-flake" "flake-utils" "systems" "import-tree" "spectrum"];
   documentationFlake = import ../../src/data/flake.nix;
   documentation = documentationFlake.outputs {nixpkgs = std.inputs.nixpkgs;};
-  documentationPackage = documentation.mdbook-paisano-preprocessor.packages.${inputs.nixpkgs.system}.default;
+  documentationPackage = documentation.mdbook-paisano-preprocessor.packages.${inputs.nixpkgs.stdenv.hostPlatform.system}.default;
 
   check = name: let
     dir = ../../src + "/${name}";

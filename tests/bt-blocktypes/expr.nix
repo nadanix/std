@@ -5,7 +5,7 @@
 }: let
   inherit (builtins) mapAttrs concatStringsSep seq removeAttrs derivation;
   inherit (nixpkgs.lib) splitString drop pipe optionalAttrs;
-  inherit (nixpkgs.stdenv) isLinux;
+  inherit (nixpkgs.stdenv.hostPlatform) isLinux;
   inherit (std) dmerge;
   trimProvisoPath = a:
     if a ? proviso
@@ -109,7 +109,7 @@ in
           actions = let
             actions' = bt.actions {
               inherit inputs;
-              currentSystem = inputs.nixpkgs.system;
+              currentSystem = inputs.nixpkgs.stdenv.hostPlatform.system;
               fragment = "f.r.a.g.m.e.n.t";
               fragmentRelPath = "x86/f/r/a/g/m/e/n/t";
               target = TargetsExtraData.${n} or {};

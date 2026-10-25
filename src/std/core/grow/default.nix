@@ -37,8 +37,9 @@
   automatically folds any particular system scope of inputs automatically one
   level up. So, when dealing with inputs, no dealing with 'system' either.
 
-  If you need to crosscompile and know your current system, `inputs.nixpkgs.system`
-  always has it. And all other inputs still expose `inputs.foo.system` as a
+  If you need to crosscompile and know your host system,
+  `inputs.nixpkgs.stdenv.hostPlatform.system` always has it.
+  And all other inputs still expose `inputs.foo.system` as a
   fall back. But use your escape hatch wisely. If you feel that you need it and
   you aren't doing cross-compilation, search for the upstream bug.
   It's there! Guaranteed!

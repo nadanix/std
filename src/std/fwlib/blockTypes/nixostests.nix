@@ -29,7 +29,7 @@ in
     }: let
       pkgs = inputs.nixpkgs.${currentSystem};
       inherit (pkgs) lib;
-      inherit (pkgs.stdenv) isLinux;
+      inherit (pkgs.stdenv.hostPlatform) isLinux;
     in
       [
         (mkCommand currentSystem "run" "run tests in headless vm" [] ''

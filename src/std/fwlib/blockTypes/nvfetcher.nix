@@ -26,7 +26,6 @@ in
     }: let
       pkgs = inputs.nixpkgs.${currentSystem};
       inherit (pkgs) lib;
-      inherit (pkgs.stdenv) isLinux;
     in [
       (mkCommand currentSystem "fetch" "update source" [pkgs.nvfetcher] ''
          targetname="$(basename ${fragmentRelPath})"

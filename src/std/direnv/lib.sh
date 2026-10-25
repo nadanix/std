@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+
+# SPDX-FileCopyrightText: 2022 The Standard Authors
+# SPDX-License-Identifier: Unlicense
+
+# Source this library from .envrc, then select a Standard devshell:
+#   use envreload //repo/shells/default //repo/configs
+# See README.md for local loading and pinned remote consumers.
+
+# signature direnv & nixago output styling
+export DIRENV_LOG_FORMAT=$'\E[mdirenv: \E[38;5;8m%s\E[m'
+
+{ # PRJ Base Directory Specification: https://github.com/numtide/prj-spec
+  # shellcheck source=/dev/null
+  source "$(
+    fetchurl \
+      "https://raw.githubusercontent.com/numtide/prj-spec/9b0ffcd0fddcb261bcd73ad9dad18a096760b4a0/contrib/direnv" \
+      "sha256-54YaaGly6Q0E8GhFT9fB/h9tN1PDERo2/4R4X0Pdi/c="
+  )"
+}
+
+{ # Standard Block
+
+  registry="git+file://$PRJ_ROOT#__std"
+  nix=("nix")
+  nix_eval_args=(
+    "--no-update-lock-file"
+    "--no-write-lock-file"
+    "--no-warn-dirty"
+    "--accept-flake-config"
+  )
+  nix_eval=("${nix[@]}" "eval" "${nix_eval_args[@]}")
+  nix_build_args=(
+    "--no-link"
+    "--keep-outputs"
+    "--build-poll-interval" "0"
+    "--builders-use-substitutes"
+  )
+  nix_build=("${nix[@]}" "build" "${nix_eval_args[@]}" "${nix_build_args[@]}")
+
+  system="$("${nix_eval[@]}" 2>/dev/null --raw --impure --expr builtins.currentSystem)"
+  cellsFrom="$("${nix_eval[@]}" 2>/dev/null --raw "$registry.cellsFrom")"
+
+  # Usage: use env <target>
+  #
+  # Loads the environment determined by the given target
+  #
+  #   use env //local/env/default
+  use_env() {
+    local input="$1"
+    read -r cell block target <<<"${input//\// }"
+
+    action="enter"
+
+    local profile_path="${PRJ_DATA_HOME}/$cell/$block/$target"
+    mkdir -p "${PRJ_DATA_HOME}/$cell/$block/$target"
+
+    cmd=(
+      "${nix_build[@]}"
+      "--print-out-paths"
+      "--profile"
+      "$profile_path/enter-action"
+      "$registry.actions.$system.$cell.$block.$target.$action"
+    )
+
+    if ! enter="$("${cmd[@]}")"; then
+      log_status "The follwing command just failed:"
+      log_status "${cmd[@]}"
+      read -rp "Rerun with --show-trace (y/N): " diagnose
+      [[ $diagnose == "y" ]] && "${cmd[@]}" --show-trace
+      exit 1
+    fi
+
+    export STD_DIRENV=1
+    eval "$(<"$enter")"
+    # this is not true
+    unset IN_NIX_SHELL STD_DIRENV
+  }
+
+  _set_watchers() {
+    local input="$1"
+    read -r cell block target <<<"${input//\// }"
+    local BLOCK_PATH="$cellsFrom/$cell/$block"
+    local watchableFile=
+    local watchableDir=
+
+    if [[ -f "$BLOCK_PATH/$target.nix" ]]; then
+      watchableFile="$BLOCK_PATH/$target.nix"
+    elif [[ -f "$BLOCK_PATH/default.nix" ]]; then
+      watchableFile="$BLOCK_PATH/default.nix"
+    elif [[ -f "$BLOCK_PATH.nix" ]]; then
+      watchableFile="$BLOCK_PATH.nix"
+    fi
+
+    if [[ -d "$BLOCK_PATH/$target" ]]; then
+      watchableDir="$BLOCK_PATH/$target"
+    fi
+
+    if [[ -n $watchableFile ]]; then
+      log_status "Watching: ${watchableFile}"
+      watch_file "$watchableFile"
+    fi
+    if [[ -n $watchableDir ]]; then
+      log_status "Watching: ${watchableDir} (recursively)"
+      watch_dir "$watchableDir"
+    fi
+
+  }
+
+  use_envreload() {
+    for target in "${@}"; do
+      _set_watchers "$target"
+    done
+    use_env "$1"
+  }
+}

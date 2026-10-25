@@ -39,7 +39,11 @@ in
   (grow "tests")
   {
     devShells = harvest inputs.self ["local" "shells"];
-    checks = harvest inputs.self ["tests" "checks" "snapshots" "check"];
+    checks = inputs.nixpkgs.lib.mapAttrs (system: checks:
+      checks
+      // {
+        direnv = inputs.nixpkgs.legacyPackages.${system}.callPackage ./src/tests/direnv.nix {};
+      }) (harvest inputs.self ["tests" "checks" "snapshots" "check"]);
   }
   (std.grow {
     inherit inputs;

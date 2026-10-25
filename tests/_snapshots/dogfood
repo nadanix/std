@@ -6,6 +6,13 @@
   dirtyRevision = true;
   documentationProvider = true;
   documentationSource = true;
+  floatingFlakeInputs = true;
+  floatingLockInputs = {
+    data = true;
+    local = true;
+    root = true;
+    tests = true;
+  };
   frameworkInputs = true;
   local = true;
   localCli = true;

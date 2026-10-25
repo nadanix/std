@@ -11,6 +11,22 @@
   };
   inputNode = lock: name: lock.nodes.${lock.nodes.${lock.root}.inputs.${name}};
   nixpkgsPin = lock: (inputNode lock "nixpkgs").locked;
+  flakeFiles = [
+    ../../flake.nix
+    ../../src/local/flake.nix
+    ../../src/tests/flake.nix
+    ../../src/data/flake.nix
+    ../../src/std/templates/minimal/flake.nix
+    ../../src/std/templates/rust/flake.nix
+    ../../docs/tutorials/hello-world/flake.nix
+    ../../docs/tutorials/hello-moon/flake.nix
+  ];
+  floatingReference = input: !(input ? rev || input ? ref || input ? narHash);
+  floatingInput = input:
+    floatingReference input
+    && (!(input ? url) || builtins.match "(github:[^/]+/[^/?#]+|git\\+https://[^?#]+)" input.url != null)
+    && builtins.all floatingInput (builtins.attrValues (input.inputs or {}));
+  privateInputNames = ["nixpkgs" "haumea" "haskell-flake" "flake-utils" "systems" "import-tree" "spectrum"];
   documentationFlake = import ../../src/data/flake.nix;
   documentation = documentationFlake.outputs {nixpkgs = std.inputs.nixpkgs;};
   documentationPackage = documentation.mdbook-paisano-preprocessor.packages.${inputs.nixpkgs.system}.default;
@@ -22,11 +38,11 @@
   in
     !(flake.inputs ? std)
     && !(lock.nodes.${lock.root}.inputs ? std)
-    && flake.outputs {
-      self = null;
-      nixpkgs = null;
-      haumea = null;
-    }
+    && flake.outputs ({self = null;}
+      // builtins.listToAttrs (map (name: {
+        inherit name;
+        value = null;
+      }) (builtins.filter (name: flake.inputs ? ${name}) privateInputNames)))
     == {};
 in {
   currentSource = std.outPath == toString ../..;
@@ -39,6 +55,10 @@ in {
   dirtyRevision = !(builtins.tryEval (std.std.errors.bailOnDirty "test" "not-a-commit")).success;
   local = check "local";
   tests = check "tests";
+  floatingFlakeInputs = builtins.all (path: builtins.all floatingInput (builtins.attrValues (import path).inputs)) flakeFiles;
+  floatingLockInputs = builtins.mapAttrs (_: lock:
+    builtins.all (node: floatingReference (node.original or {})) (builtins.attrValues lock.nodes))
+  locks;
   nixpkgsPins = builtins.mapAttrs (_: lock: nixpkgsPin lock == nixpkgsPin locks.root) locks;
   nixpkgsNodes = builtins.mapAttrs (_: lock:
     builtins.length (builtins.filter (node: (node.locked.repo or null) == "nixpkgs") (builtins.attrValues lock.nodes)))

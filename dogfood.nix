@@ -44,6 +44,9 @@ in
       // {
         direnv = inputs.nixpkgs.legacyPackages.${system}.callPackage ./src/tests/direnv.nix {};
         files-explore = inputs.nixpkgs.legacyPackages.${system}.callPackage ./src/tests/files-explore.nix {inherit std;};
+        adrgen = inputs.nixpkgs.legacyPackages.${system}.callPackage ./src/tests/adrgen.nix {
+          configFile = inputs.self.${system}.local.configs.adrgen.configFile;
+        };
       }) (harvest inputs.self ["tests" "checks" "snapshots" "check"]);
   }
   (std.grow {

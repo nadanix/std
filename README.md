@@ -6,7 +6,7 @@ SPDX-License-Identifier: Unlicense
 -->
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/nadanix/std/upstream-main/artwork/logo.png" width="250" />
+  <img src="https://raw.githubusercontent.com/nadanix/std/main/artwork/logo.png" width="250" />
   <h1>Standard</h1>
   <p>Ship today.</span>
 </div>
@@ -30,7 +30,7 @@ quality vertical DevOps tooling crafted by the [Nix Ecosystem][ecosystem].
 ### This fork
 
 This is [`nadanix/std`][std], a fork of [`divnix/std`][upstream].
-Source and documentation links on this branch refer to `upstream-main`.
+Source and documentation links refer to `main`, the fork's default branch.
 Flake examples use `github:nadanix/std` (the fork's default branch), with exact
 revisions recorded in each consumer's `flake.lock`.
 
@@ -155,7 +155,7 @@ _That's it. `std.grow` is a "smart" importer of your `nix` code and is designed 
 
 > **TIP:**
 >
-> 1. Clone this repo `git clone --branch upstream-main https://github.com/nadanix/std.git`
+> 1. Clone this repo `git clone https://github.com/nadanix/std.git`
 > 2. Install `direnv` & inside the repo, do: `direnv allow` (first time takes a little longer)
 > 3. Run the TUI by entering `std` (first time takes a little longer)
 >
@@ -203,18 +203,18 @@ _And the usual copies? &rarr; [`./LICENSES`][licenses]._
 
 ---
 
-[cells]: https://github.com/nadanix/std/tree/upstream-main/src
-[documentation]: https://github.com/nadanix/std/blob/upstream-main/docs/SUMMARY.md
+[cells]: https://github.com/nadanix/std/tree/main/src
+[documentation]: https://github.com/nadanix/std/blob/main/docs/SUMMARY.md
 [book]: https://jmgilman.github.io/std-book/
-[licensing]: https://github.com/nadanix/std/blob/upstream-main/.reuse/dep5
-[licenses]: https://github.com/nadanix/std/tree/upstream-main/LICENSES
-[blocktypes]: https://github.com/nadanix/std/tree/upstream-main/src/std/fwlib/blockTypes
+[licensing]: https://github.com/nadanix/std/blob/main/.reuse/dep5
+[licenses]: https://github.com/nadanix/std/tree/main/LICENSES
+[blocktypes]: https://github.com/nadanix/std/tree/main/src/std/fwlib/blockTypes
 [nix-flakes]: https://nixos.wiki/wiki/Flakes
 [nix]: https://nixos.org/manual/nix/unstable
 [std]: https://github.com/nadanix/std
 [upstream]: https://github.com/divnix/std
 [issues]: https://github.com/nadanix/std/issues
-[why-std]: https://github.com/nadanix/std/blob/upstream-main/docs/explain/why-std.md
-[why-nix]: https://github.com/nadanix/std/blob/upstream-main/docs/explain/why-nix.md
+[why-std]: https://github.com/nadanix/std/blob/main/docs/explain/why-std.md
+[why-nix]: https://github.com/nadanix/std/blob/main/docs/explain/why-nix.md
 [ecosystem]: https://discourse.nixos.org
 [hive]: https://github.com/divnix/hive

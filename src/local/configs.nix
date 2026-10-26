@@ -71,7 +71,7 @@ in {
     data = {
       repository = {
         name = "std";
-        homepage = "https://github.com/nadanix/std/blob/upstream-main/docs/SUMMARY.md";
+        homepage = "https://github.com/nadanix/std/blob/main/docs/SUMMARY.md";
         description = "A DevOps framework for the SDLC with the power of Nix and Flakes. Good for keeping deadlines!";
         topics = "nix, nix-flakes, devops, sdlc";
         default_branch = "main";

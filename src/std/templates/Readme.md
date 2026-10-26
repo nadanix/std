@@ -11,4 +11,4 @@ nix flake init -t github:nadanix/std#<template-name>
 
 Please consult the template section in the [docs][docs] for an overview.
 
-[docs]: https://github.com/nadanix/std/tree/upstream-main/docs/templates
+[docs]: https://github.com/nadanix/std/tree/main/docs/templates

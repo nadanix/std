@@ -72,4 +72,4 @@ This example consumes the following defaults or builtins:
 ---
 
 [std]: https://github.com/nadanix/std
-[here]: https://github.com/nadanix/std/tree/upstream-main/docs/tutorials/hello-world
+[here]: https://github.com/nadanix/std/tree/main/docs/tutorials/hello-world

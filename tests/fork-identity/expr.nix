@@ -7,11 +7,12 @@
   inherit (nixpkgs) lib;
   root = std.outPath;
   repository = "https://github.com/nadanix/std";
-  documentation = "${repository}/blob/upstream-main/docs/SUMMARY.md";
+  documentation = "${repository}/blob/main/docs/SUMMARY.md";
   # Split these strings so the policy test does not flag its own definitions.
   upstreamOwner = "divnix";
   upstream = "${upstreamOwner}/std";
   upstreamDocs = "std.${upstreamOwner}.com";
+  retiredBranch = "upstream" + "-main";
 
   # Only attribution is allowed to name the old repository. Changelog entries
   # retain historical commit/release URLs; std-action is a separate dependency.
@@ -45,6 +46,7 @@
     content = lib.replaceStrings allowed (map (_: "") allowed) (builtins.readFile (root + "/${relative}"));
   in
     lib.any (pattern: lib.hasInfix pattern content) [
+      retiredBranch
       upstream
       upstreamDocs
       "${upstreamOwner}%2Fstd"
@@ -74,5 +76,5 @@ in {
   generatedRepositoryHomepage = lib.hasInfix "homepage: ${documentation}" (builtins.readFile ../../.github/settings.yml);
   containerSources = lib.all (container: container.labels.url == repository && container.labels.source == repository) (builtins.attrValues containers);
   consumerInputs = lib.all (path: (import path).inputs.std.url == "github:nadanix/std") consumerFlakes;
-  schemaId = (builtins.fromJSON (builtins.readFile ../../src/std/core/registry.schema.json))."$id" == "https://raw.githubusercontent.com/nadanix/std/upstream-main/src/std/core/registry.schema.json";
+  schemaId = (builtins.fromJSON (builtins.readFile ../../src/std/core/registry.schema.json))."$id" == "https://raw.githubusercontent.com/nadanix/std/main/src/std/core/registry.schema.json";
 }

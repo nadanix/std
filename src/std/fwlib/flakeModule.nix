@@ -85,9 +85,9 @@ in
         grow = mkOption {
           description = ''
             Orderly 'grow' a project from Standard Cells & Cell Blocks.
-             - Find the [glossary here](https://github.com/nadanix/std/blob/upstream-main/docs/glossary.md).
+             - Find the [glossary here](https://github.com/nadanix/std/blob/main/docs/glossary.md).
              - Find a good [walk-through here](https://jmgilman.github.io/std-book/).
-             - And the general [documentation here](https://github.com/nadanix/std/blob/upstream-main/docs/SUMMARY.md).
+             - And the general [documentation here](https://github.com/nadanix/std/blob/main/docs/SUMMARY.md).
           '';
           type = lib.types.submodule {
             options = {

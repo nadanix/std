@@ -194,7 +194,7 @@ Because I use these commands so often, I've set: `alias d="direnv"` in my shell'
 [direnv-how-to]: ../../guides/envrc.md
 [blocktypes-devshells]: ../../reference/blocktypes/devshells-blocktype.md
 [blocktypes-nixago]: ../../reference/blocktypess/nixago-blocktype.md
-[lib-cfg]: https://github.com/nadanix/std/tree/upstream-main/src/lib/cfg
+[lib-cfg]: https://github.com/nadanix/std/tree/main/src/lib/cfg
 [direnv]: #direnv
 [hello-world]: ../hello-world
 [devshell-wrapper]: ../../reference/lib/dev/mkShell.md

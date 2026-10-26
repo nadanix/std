@@ -36,3 +36,7 @@ To interact with this ADR, enter the devshell and interact though the `adrgen` t
 {{#include ./0006-avoid-fix-point-logic-such-as-overlays.md}}
 
 ---
+
+{{#include ./0007-adopt-design-context-without-vendoring.md}}
+
+---

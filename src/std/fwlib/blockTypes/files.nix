@@ -22,7 +22,9 @@ in
       pkgs = inputs.nixpkgs.${currentSystem};
     in [
       (mkCommand currentSystem "explore" "interactively explore with bat" [pkgs.bat] ''
-        bat ${file}
+        # The target is a literal path, not a shell expression.
+        # shellcheck disable=SC2016
+        bat -- ${pkgs.lib.escapeShellArg file}
       '' {})
     ];
   }

@@ -43,6 +43,7 @@ in
       checks
       // {
         direnv = inputs.nixpkgs.legacyPackages.${system}.callPackage ./src/tests/direnv.nix {};
+        files-explore = inputs.nixpkgs.legacyPackages.${system}.callPackage ./src/tests/files-explore.nix {inherit std;};
       }) (harvest inputs.self ["tests" "checks" "snapshots" "check"]);
   }
   (std.grow {

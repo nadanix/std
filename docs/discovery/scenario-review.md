@@ -1,0 +1,319 @@
+# Scenario review
+
+## Status and scope
+
+**Discovery is closed for these nine scenarios; the model is not declared
+validated.** On 2026-10-26, the requesting user, acting as reviewer of the discovery
+delivery, accepted blocks F1–F4 (records R1–R4) and the final synthesis F5 (R5).
+R5 explicitly retains Q1/Q2/Q4, P-F1–P-F4, the B3 operational gap and all mechanical
+limits, including F4's unexecuted jq filters. This is acceptance of a bounded
+discovery delivery, not representation of external consumers or approval of new
+contracts. Documentary promotion was authorized separately.
+
+This review uses the [glossary](../glossary.md),
+[registry reference](../reference/registry.md) and accepted
+[calling-interface][adr-interface] and [system-first][adr-system] decisions.
+It does not replace them. Questions remain in [Open questions](open-questions.md);
+validation owners are unassigned. A Cell is not, by its directory alone, a DDD
+bounded context or an organizational ownership assignment.
+
+### Provenance and reading the evidence
+
+- Local implementation baseline: [`d0f1c75`][baseline] of `nadanix/std`.
+  Source links below are pinned evidence, not navigation to a future `main`.
+- External integration examined: `divnix/std-action` at
+  [`4d88d45`][external]. The workflow's `@main` does not identify which revision
+  a historical or future job uses. No remote CI result is established here.
+- Historical investigation: 2026-10-26, `x86_64-linux`, Lix 2.96.0; tools from
+  nixpkgs [`01a4873`][nixpkgs]. Each probe used a disposable copy of the baseline,
+  separate HOME/XDG/TMP directories, a clean process environment and no lock
+  updates. The Nix store, daemon and system configuration remained shared.
+- `observed` distinguishes source reading from probe execution; `inferred`
+  marks consequences not exercised. Q1/Q2 remain `disputed` public contracts;
+  Q4 and the P-F questions remain `unknown` commitments. No contract is promoted
+  to `confirmed` by a passing assertion or by approval of this document.
+- The conditions and decisive results below are a curated historical evidence
+  record. Disposable checkouts, caches, full logs and probe scripts are not
+  vendored. This is not a complete reproduction archive or a new test suite;
+  source citations establish implementation provenance, not a rerun of a probe.
+  A fresh execution claim would need separately scoped checks and their outputs.
+
+## Nine scenarios
+
+### A1. From a Block function to a Target
+
+**Prediction:** in the single-layer example, the imported function receives the
+prepared signature; its string Target becomes an ordinary output and is projected
+into `init`, `actions` and `ci`. A Target need not be a derivation or executable.
+
+The F1 probe reduced [`tests/core-grow`][grow-test] to one system, Cell, Block,
+Target and Action. It supplied `self.sourceInfo.outPath = "constant-self"`, with
+revision `constant-rev`, used Target `self = "via foo-cell ${inputs.self}"` and
+enabled `ci.foo-action = true` only in the probe.
+[`grow/default.nix`][grow] uses `scopedImport`, calls function Blocks
+and checks the returned Target set; [`newExtractFor.nix`][extract] separately
+extracts metadata, commands and CI candidates.
+
+**Observed by evaluation/assertions (`passed`):**
+
+```text
+Target: x86_64-linux.foo-cell.test-block.self = "via foo-cell constant-self"
+init: one foo-action, requiresArgs = false
+ci: one candidate, targetDrv = null, meta = null, proviso = null
+Action derivation: yky0559igq0pa2f9b1zamssjzfq88fiz-foo-action.drv
+Action output:    5jb1c9w9bj7dxxhhsx5ihciliq557rpb-foo-action
+```
+
+The last two identifiers are Nix store basenames, not stable public names. The
+name tuple joins projections in this example; it does not establish uniqueness
+under composition, exhaustive Target typing or cross-system behavior.
+
+### A2. Function versus attribute-set import
+
+**Prediction:** the same Block body, imported as an attrset instead of a function,
+can access the signature through `scopedImport` and produce the same result in
+this example. [`types/default.nix`][types] accepts both forms; [the importer][grow]
+calls functions but returns imported sets directly.
+
+**Observed by F2 evaluation/assertions (`passed`):** with the same F1 inputs and
+body, the two forms produced equal Target values, serialized registries and
+Action derivation paths. No Action was built or executed in F2.
+
+This is not proof of equivalence for arbitrary imports or support for attrsets
+as a public alternative. [Q2](open-questions.md#q2-cell-block-functions-and-attribute-sets)
+remains disputed against Conventions and ADR 0002; the accepted function interface
+is not weakened by the probe.
+
+### A3. Two Soil layers with the same identity
+
+**Prediction:** the tested composition selects one ordinary output/Action while
+retaining both layers' announcements and CI candidates. [`grow-on.nix`][grow-on]
+merges attributes recursively and treats `__std.init`/`ci` lists separately.
+
+F2 used an empty base and layers A and B with the same
+`//foo-cell/test-block/self:foo-action` identity but different Target strings and
+`echo` command derivations. **Observed by evaluation/assertions (`passed`):**
+
+| Composition | Selected ordinary Target / Action | `init` announcements | `ci` candidates                   |
+| ----------- | --------------------------------- | -------------------- | --------------------------------- |
+| A then B    | A                                 | A, B; same selector  | A, B; distinct Action derivations |
+| B then A    | B                                 | B, A; same selector  | B, A; distinct Action derivations |
+
+The selected derivations were `8z5k27065b41dg9zqmm4lqqz1z1naq0w-foo-action.drv`
+for A and `37k87m2bqlwpljfrz8va70wwnb05vrdk-foo-action.drv` for B. Neither was
+built or executed. Go's [name-based selectors][go-data] carry no layer identity:
+the consequence that both announcements select the same winning path is
+`inferred`, not a TUI execution result. Determinism does not settle P-F2's
+coherence requirement or authorize a merge-policy change.
+
+### B1. Selector, built artifact and process
+
+**Prediction:** finding an Action path, building its executable and running it
+are distinct stages. [The Go runner][go-run] assembles the selector, builds the
+Action, creates a state link and then executes it with the project environment.
+Those Go steps were read, not exercised by F1.
+
+**Observed in F1 (`passed`):** the Action from A1 was built with `--no-link` and
+its script was read before direct execution. It only printed
+`I'm Paisano and 42!`; exit status was 0 and stderr empty. No Go CLI/TUI,
+`last-action` link or project environment setup was exercised.
+
+The fixture uses `writeShellScript` directly. The syntax/ShellCheck and
+`PRJ_ROOT` guards in [`_mkCommand.nix`][mkcommand] apply to its users, not every
+Action. A successful `echo` says nothing about another Action's effects or
+recovery, and a CI candidate is not a receipt for a completed job.
+
+### B2. Required arguments in TUI and direct CLI
+
+**Prediction, conditional on successful assembly:** a TUI-selected Action with
+`requiresArgs = true` and no extra arguments reaches rejection before the Action
+build; direct CLI leaves the flag unset and that guard does not reject it.
+
+**Source observations:** [the extractor][extract] derives the flag from
+`target.meta.requiresArgs`; [TUI][go-tui] passes the pointer to `RunActionCmd`,
+and [main][go-main] calls `Exec(nil)`. [Direct CLI][go-cli] omits the field and
+passes `args[1:]`. [The runner][go-run] checks:
+
+```go
+c.RequiresArgs != nil && *c.RequiresArgs == true && len(extraArgs) == 0
+```
+
+Assembly happens before this guard and can already invoke Nix to obtain the
+system. The consequences above are `inferred`; Go/CLI/TUI execution was
+`not-run`. This is neither universal rejection nor validation of argument
+meaning. P-F3 asks whether both entry paths should guarantee rejection; no code
+or intended contract was changed.
+
+### B3. Partial publication and unknown remote outcomes
+
+**Prediction:** a sequential publication can leave earlier work after a later
+failure. [`containers.nix`][containers] copies tags in order, using the previous
+tag as the next source; the inspected body provides no transaction or rollback.
+
+F3 extracted that loop and the strict wrapper prefix, replaced `skopeo` with a
+Bash function and used synthetic tags at `scenario.invalid/example`. The function
+only recorded calls and wrote local marks; no real executable was delegated to.
+A verified separate network namespace, read-only store and private writable
+case directory bounded the mock. **Observed results:**
+
+| Mock case                          | Process exit | Calls | Local marks | Assertions |
+| ---------------------------------- | ------------ | ----- | ----------- | ---------- |
+| All simulated copies succeed       | 0            | 3     | 3           | `passed`   |
+| Fail before second simulated write | 42           | 2     | 1           | `passed`   |
+
+The second case never calls tag three and retains the first mark; 42 is the
+expected injected error. It does not test real signals, skopeo, remote durability,
+atomicity or idempotence. A dispatched real copy without confirmation has an
+**unknown remote result**, not necessarily the mock's known pre-write failure.
+
+[The proviso][proviso] inspects one image; it is not per-tag reconciliation or a
+recovery protocol. It was not executed. The operational gap remains: identify
+who may assess destination evidence and authorize recovery before any real
+retry. No incident, retry permission or recovery design is implied here.
+
+### C1. Different consumers, different projections
+
+**Prediction:** announcing a Target does not ensure that all consumers can
+document, select or execute it. The [consumer matrix](../reference/registry.md#consumers-and-translations)
+distinguishes Go's `init` decoding/name-based action selection, Rust's configured
+Cell/readme rendering, direnv's `enter` path/profile handling and external CI's
+candidate translation. These paths were examined statically, not run end-to-end.
+
+One F1 fragment was executed with jq 1.8.2, using the A1 candidate and the pinned
+external [`discover/eval.sh`][external-discover] selection expression:
+
+```text
+action = foo-action
+selection expression = .foo-action[] | @base64
+jq exit = 3
+error = action/0 is not defined
+```
+
+**The fragment `failed`.** It was not a complete `std-action` execution or a
+remote job; Bash process-substitution propagation was not tested. P-F1 asks
+whether that Action name should be admissible in CI discovery at this boundary.
+The result neither defines a new naming restriction nor proves a fork CI failure.
+
+### C2. CI metadata, schema and consumer expectations
+
+**Prediction:** `publish` supplies an object `meta.image`, core preserves it,
+and the resulting record conflicts with the schema's string/null restriction.
+The proviso expects `.meta.image` by source reading.
+
+F4 evaluated the real `containers` Block Type against a synthetic, non-OCI Target
+and inert dependency; no Action or proviso was built or run. Python jsonschema
+4.26.0 checked Draft 2020-12 and reported exactly this instance error:
+
+```text
+instance path: ci.x86_64-linux[0].meta
+instance: {"image": "example.invalid/f4/image:tag"}
+allowed types: string, null
+```
+
+**C2 conformance `failed` as expected.** In-memory null/string controls conformed;
+that does not select either as an operational solution. Source evidence:
+[producer][containers], [extraction][extract], [schema][schema] and
+[proviso][proviso]. [Q1](open-questions.md#q1-ci-metadata-shape) remains disputed.
+
+F4's global verifier later failed while extracting jq filters with a regex that
+matched `json=(` rather than `json=$(`. Its exit was **1 (`failed`)**; all F4 jq
+filters are **`not-run`**. No fourth attempt or repair followed. This is a probe
+error, not a `std-action` failure. Consumer transport/parsing remains static
+analysis at the pinned external revision, not observed execution or a CI result.
+
+### C3. Same derivable Target, different name
+
+**Prediction:** unchanged Target derivation identity does not preserve selectors,
+profile paths or companion readme associations after a rename.
+
+F4 evaluated identical `mkShellNoCC` bodies under `old` and `new`, keeping
+`old.md` in both variants and providing no `new.md`. The real
+[`devshells`][devshells] Action incorporates `fragmentRelPath`; [readme lookup][paths]
+is name-based. **Assertions completed before the later F4 verifier failure:**
+
+| Property                                     | Observed comparison               |
+| -------------------------------------------- | --------------------------------- |
+| Target derivation/output and `build` command | Equal                             |
+| Old Target/Action key after rename           | Absent                            |
+| `enter` command                              | Different, through `profile_path` |
+| `old.md` association                         | Present for old; absent for new   |
+| Both full registries against schema v0       | Conformant                        |
+
+Go/Rust/direnv/CI impacts are `inferred`, not executions of the renamed scenario.
+Schema conformance and equal Target derivations do not establish compatibility.
+P-F4 refines [Q4](open-questions.md#q4-registry-evolution-and-compatibility): is the
+rename compatible when `old:enter` stops resolving? No aliases, migration policy
+or compatibility guarantee were accepted.
+
+## Open decisions and accountable perspectives
+
+All rows remain **open**. The roles below are needed perspectives, not assigned
+people, a validated contract or an authorized implementation backlog.
+
+| Question           | Decision and impact                                                                      | Needed perspectives / next human step                                                                                                           |
+| ------------------ | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Q2 / A2            | Public status of attrset Blocks versus ADR 0002                                          | Framework maintainers and Cell authors/consumers: give an attributable answer for this import interface                                         |
+| P-F2 / A3          | Must every announcement/candidate identify its own selectable command under a collision? | Core/Soil maintainers, Cell authors and CLI/CI consumers: decide coherence requirements for A→B                                                 |
+| P-F3 / B2          | Must `requiresArgs = true` reject missing arguments in direct CLI too?                   | Framework/CLI maintainers and Action authors: delimit the guarantee across both entry paths                                                     |
+| B3 operational gap | Who assesses per-tag evidence and authorizes recovery after partial/unknown effects?     | Authorized publication/destination operator and integration maintainers: establish ownership and authority for an actual case before retrying   |
+| P-F1 / C1          | Is `foo-action` admissible when `ci.foo-action` is enabled?                              | Framework/external CI maintainers and Block author: answer for this name and integration revision                                               |
+| Q1 / C2            | Shape/meaning of `ci.meta` and compatibility impact                                      | Framework/schema/container maintainers and CI consumers: reconcile the rejected instance and `.meta.image` expectation                          |
+| Q4 / P-F4 / C3     | Compatibility of renaming under v0 when `old:enter` disappears                           | Framework and Go/Rust/direnv/CI maintainers with Cell authors/consumers: accept an explicit scope, not compatibility inferred from a derivation |
+
+Q3 remains open but outside the nine scenarios. Building documentation does not
+resolve [preprocessor licensing](open-questions.md#q3-preprocessor-licensing).
+No tenth scenario or implicit F6 is introduced.
+
+## Mechanical evidence and remaining limits
+
+This table records the historical discovery runs, **not the checks performed
+when editing or rendering this page**. Documentation checks have their own
+[validation route](../guides/contributing.md#documentation-checks).
+
+| Block / accepted discovery    | Executed evidence                                                                                    | Limits retained                                                              |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| F1: A1/B1/C1, accepted in R1  | Evaluation/assertions, build and direct echo `passed`; jq selection fragment `failed` (3)            | No JSON Schema validation; no Go/Rust/direnv/full CI execution               |
+| F2: A2/A3, accepted in R2     | Evaluations and equality/collision assertions `passed`                                               | No build/Action execution, consumer execution or schema validation           |
+| F3: B2/B3, accepted in R3     | Mock control/failure, syntax and network-namespace assertions `passed`                               | B2 static; no real publication, signal test or recovery validation           |
+| F4: C2/C3, accepted in R4     | Final eval completed; C2 rejected, controls/C3 conformant; assertions completed before later failure | Global verifier `failed` (1); jq filters `not-run`; consumer by reading only |
+| F5: synthesis, accepted in R5 | Traceability, note/link and integrity review                                                         | No new model execution or changed status for any earlier check               |
+
+F4 also retained two earlier preparation failures: an import outside the copied
+Cell root, then a capture assertion affected by attrset-to-string JSON coercion.
+Bounded recovery reached the final evaluation described above; the subsequent
+regex failure was not repaired. Partial assertions do not make the whole run pass.
+
+The discovery did not run the repository's aggregate Nix/Go/direnv suites,
+preprocessor protocol/full-book checks, remote CI or an independent orientation
+pilot. A later book build cannot retroactively exercise the nine probes or
+validate their contracts. No publication, load, profile modification, deployment
+or remote recovery was performed as discovery validation.
+
+To strengthen an execution claim, scope the missing consumer/fragment check
+explicitly; approval of discovery does not waive it for future uses. To validate
+a contract, obtain acceptance from its accountable perspectives; another schema
+check or mock cannot replace that judgment. Revisit only affected evidence when
+its source, inputs, consumer revision or asserted scope changes.
+
+[baseline]: https://github.com/nadanix/std/tree/d0f1c75a672231411e2da3bb6d38374938253d7e
+[nixpkgs]: https://github.com/NixOS/nixpkgs/tree/01a4873dfe535c3f9190eaabe187d57b81035042
+[external]: https://github.com/divnix/std-action/tree/4d88d45cacadad99e60218b4ed83037a5884a33c
+[external-discover]: https://github.com/divnix/std-action/blob/4d88d45cacadad99e60218b4ed83037a5884a33c/discover/eval.sh#L43-L57
+[adr-interface]: ../explain/architecture-decision-records/#2-restrict-the-calling-interface
+[adr-system]: ../explain/architecture-decision-records/#4-early-select-system-for-conceptual-untangling
+[grow-test]: https://github.com/nadanix/std/blob/d0f1c75a672231411e2da3bb6d38374938253d7e/tests/core-grow/expr.nix
+[grow]: https://github.com/nadanix/std/blob/d0f1c75a672231411e2da3bb6d38374938253d7e/src/std/core/grow/default.nix#L91-L167
+[extract]: https://github.com/nadanix/std/blob/d0f1c75a672231411e2da3bb6d38374938253d7e/src/std/core/grow/newExtractFor.nix
+[types]: https://github.com/nadanix/std/blob/d0f1c75a672231411e2da3bb6d38374938253d7e/src/std/core/types/default.nix#L10-L47
+[grow-on]: https://github.com/nadanix/std/blob/d0f1c75a672231411e2da3bb6d38374938253d7e/src/std/core/grow/grow-on.nix#L61-L91
+[go-data]: https://github.com/nadanix/std/blob/d0f1c75a672231411e2da3bb6d38374938253d7e/src/std/cli/data/data.go#L59-L89
+[go-run]: https://github.com/nadanix/std/blob/d0f1c75a672231411e2da3bb6d38374938253d7e/src/std/cli/flake/run.go#L14-L132
+[go-tui]: https://github.com/nadanix/std/blob/d0f1c75a672231411e2da3bb6d38374938253d7e/src/std/cli/tui.go#L290-L305
+[go-main]: https://github.com/nadanix/std/blob/d0f1c75a672231411e2da3bb6d38374938253d7e/src/std/cli/main.go#L17-L35
+[go-cli]: https://github.com/nadanix/std/blob/d0f1c75a672231411e2da3bb6d38374938253d7e/src/std/cli/cli.go#L21-L69
+[mkcommand]: https://github.com/nadanix/std/blob/d0f1c75a672231411e2da3bb6d38374938253d7e/src/std/fwlib/_mkCommand.nix#L9-L41
+[containers]: https://github.com/nadanix/std/blob/d0f1c75a672231411e2da3bb6d38374938253d7e/src/std/fwlib/blockTypes/containers.nix#L22-L71
+[proviso]: https://github.com/nadanix/std/blob/d0f1c75a672231411e2da3bb6d38374938253d7e/src/std/fwlib/blockTypes/containers-proviso.sh
+[schema]: https://github.com/nadanix/std/blob/d0f1c75a672231411e2da3bb6d38374938253d7e/src/std/core/registry.schema.json#L129-L190
+[devshells]: https://github.com/nadanix/std/blob/d0f1c75a672231411e2da3bb6d38374938253d7e/src/std/fwlib/blockTypes/devshells.nix#L20-L57
+[paths]: https://github.com/nadanix/std/blob/d0f1c75a672231411e2da3bb6d38374938253d7e/src/std/core/paths.nix#L17-L23

@@ -25,6 +25,8 @@
 
 - [Open Questions](discovery/open-questions.md)
 
+- [Scenario Review](discovery/scenario-review.md)
+
 - [Why `nix`?](explain/why-nix.md)
 
 - [Why `std`?](explain/why-std.md)

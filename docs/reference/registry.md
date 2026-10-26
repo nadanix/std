@@ -5,7 +5,10 @@ is an **as-is contract description**, observed at [`322921b`][baseline], not a n
 compatibility guarantee. Implementation and fixture links cite that revision as
 evidence, not the current checkout. The [repository map](../explain/repository-map.md)
 provides navigation to maintained sources; the [glossary](../glossary.md) owns the
-terms Cell, Cell Block, Block Type, Target and Action.
+terms Cell, Cell Block, Block Type, Target and Action. The later
+[scenario review](../discovery/scenario-review.md), at `d0f1c75`, qualifies the
+single-layer identity and argument-guard observations below; accepting that
+discovery does not resolve the open contracts.
 
 ## Producer and representation
 
@@ -71,7 +74,9 @@ for an automation consumer to consider, not permission to perform it.
 ## Observed invariants and limits
 
 - Names join discovery records to the nested action path: `cell` → `cellBlock`
-  → Target `name` → Action `name`, with the system selected separately.
+  → Target `name` → Action `name`, with the system selected separately. This is
+  not a one-to-one guarantee under composition: [A3](../discovery/scenario-review.md#a3-two-soil-layers-with-the-same-identity)
+  retains both layers' announcements/candidates while selecting one command.
 - [`types/default.nix`][types] checks Block declarations and uses `attrs any` for
   Target sets. It does not prove that each Target satisfies all assumptions of
   its Block Type. CI extraction checks the selected command as a derivation.
@@ -97,9 +102,12 @@ JSON Schema or negotiating `__schema`. Successful decoding therefore does not
 prove schema conformance. Go reports JSON decoding errors; Rust uses typed
 Serde decoding and can fail while rendering referenced files. Nix evaluation or
 build failures are separate from those representation failures and from the
-outcome of an executed action. The Go runner rejects a `requiresArgs` action
-without extra arguments; that is not validation of the arguments' meaning.
-No common retry or recovery contract is established by these sources.
+outcome of an executed action. The Go runner rejects missing extra arguments
+only when its `RequiresArgs` pointer is present and true. [B2](../discovery/scenario-review.md#b2-required-arguments-in-tui-and-direct-cli)
+traces TUI passing that flag and direct CLI leaving it unset; the distinction
+is source-based, not an executed CLI/TUI test. This is neither universal
+rejection nor validation of argument meaning. No common retry or recovery
+contract is established by these sources.
 
 ## Discovery, building and execution are different
 

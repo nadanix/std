@@ -1,8 +1,11 @@
 # Open questions
 
 These are unresolved questions about the current implementation and its
-contracts, not decisions or instructions to change behavior. Evidence was
-rechecked against [`322921b`][baseline]. The
+contracts, not decisions or instructions to change behavior. The original static
+review was checked against [`322921b`][baseline]. The later
+[nine-scenario review](scenario-review.md), at `d0f1c75`, adds bounded evidence
+for Q1/Q2/Q4 and preserves scenario-specific questions below. Its discovery
+closure was accepted on 2026-10-26, not its unresolved contracts. The
 [repository map](../explain/repository-map.md) provides orientation and the
 [registry reference](../reference/registry.md) describes the observed boundary.
 
@@ -31,9 +34,16 @@ perspectives are not replaced by this source review.
   definitions with synthetic Targets, not full-registry schema validation.
 
 **Question:** Which shape should `ci.meta` guarantee, and which schema, producer
-or consumer changes, if any, should follow? No JSON Schema validator was run to
-establish this observation; the static mismatch is not evidence of a live CI
-failure.
+or consumer changes, if any, should follow?
+
+**Additional discovery evidence:** [C2](scenario-review.md#c2-ci-metadata-schema-and-consumer-expectations)
+subsequently evaluated the real producer with a synthetic Target and ran a Draft
+2020-12 validator. It rejected exactly `ci.x86_64-linux[0].meta`; null/string
+controls conformed but were not accepted as solutions. The overall F4 verifier
+still `failed` later, and its jq filters remain `not-run`. Consumer expectations
+are based on reading the pinned integration, not executing it. Neither the
+original static mismatch nor this schema result establishes a live CI failure
+or decides which side should change.
 
 **Validation owner:** unassigned. Framework/schema maintainers and CI consumers,
 including the external `divnix/std-action` integration, need to agree on the
@@ -54,6 +64,11 @@ meaning and compatibility impact. A snapshot match cannot make that decision.
 **Question:** Is the attrset form a supported public alternative, a scoped
 exception, or implementation behavior that should not be relied on? How should
 that answer relate to the accepted calling-interface decision?
+
+**Additional discovery evidence:** [A2](scenario-review.md#a2-function-versus-attribute-set-import)
+observed equal values, serialized registry and Action derivation paths for one
+function/attrset pair using `scopedImport`. This does not establish general
+equivalence or accept the attrset form as a public alternative.
 
 **Validation owner:** unassigned. Framework maintainers must validate intent with
 Cell authors/consumers. Do not silently weaken the convention to a recommendation
@@ -94,10 +109,37 @@ fields, names and executable paths, and how should a future change coordinate
 in-tree and external consumers? The `cellsFrom` basename/checkout distinction
 and Q1 are concrete cases a policy must account for, not silently normalize.
 
+**Additional discovery evidence:** [C3 / P-F4](scenario-review.md#c3-same-derivable-target-different-name)
+renamed a Target from `old` to `new`: its derivation and build command stayed the
+same, while the old selector disappeared, `enter` changed its profile path and
+the `old.md` association was lost. Both registries conformed to schema v0; this
+does not answer whether losing `old:enter` is compatible. Consumer impacts remain
+inferred rather than executed.
+
 **Validation owner:** unassigned. Framework maintainers and maintainers of the
 Go, Rust, direnv and CI consumers need to establish the intended scope. Until
 then, the registry reference documents observations, not a newly accepted
 versioning or backward-compatibility guarantee.
+
+## Scenario-specific questions and operational gap
+
+These discovery identifiers remain **open**, alongside Q1/Q2/Q4. Acceptance of
+F1–F5 did not resolve them, assign owners or authorize implementation. The
+[scenario review](scenario-review.md#open-decisions-and-accountable-perspectives)
+records the evidence, impact and necessary perspectives; these are not an
+authorized backlog.
+
+| Identifier                                                                                  | Unresolved question                                                                                                         | Needed perspectives (owners unassigned)                                 |
+| ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| [P-F1 / C1](scenario-review.md#c1-different-consumers-different-projections)                | Should `foo-action` be admissible in CI discovery with `ci.foo-action` enabled?                                             | Framework/external CI maintainers and Block author                      |
+| [P-F2 / A3](scenario-review.md#a3-two-soil-layers-with-the-same-identity)                   | Must all announcements/candidates of a colliding identity correspond to their own selectable command?                       | Core/Soil maintainers, Cell authors and CLI/CI consumers                |
+| [P-F3 / B2](scenario-review.md#b2-required-arguments-in-tui-and-direct-cli)                 | Must `requiresArgs = true` reject missing arguments in direct CLI as well as TUI?                                           | Framework/CLI maintainers and Action authors                            |
+| [P-F4 / C3](scenario-review.md#c3-same-derivable-target-different-name)                     | Is renaming under v0 compatible when `old:enter` stops resolving? A concrete instance of Q4, not a separate accepted policy | Framework and consumer maintainers with Cell authors/consumers          |
+| [B3 operational gap](scenario-review.md#b3-partial-publication-and-unknown-remote-outcomes) | Who may assess per-tag evidence and authorize recovery after partial/unknown publication?                                   | Authorized publication/destination operator and integration maintainers |
+
+The B3 mock is not a real incident or recovery test. Identify operational
+authority before any real retry; no generic retry or rollback rule is inferred.
+Q3 remains open and outside the nine-scenario discovery scope.
 
 [baseline]: https://github.com/nadanix/std/tree/322921ba8adda373f1a4bb57b78fc201322c8b93
 [schema]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/core/registry.schema.json

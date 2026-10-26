@@ -106,8 +106,9 @@ existing surfaces, not new gates. Use Nix with flakes enabled (root minimum 2.13
 and the repository's locked environments. The examples target `x86_64-linux`;
 select an appropriate supported system on other hosts. Retain both lock guards:
 no update and no write. Nested tools may invoke Nix without those guards; check
-the final diff, including lock and snapshot hashes. The linked source wiring was
-checked at `322921b`; revalidate it when commands or their inputs change.
+the final diff, including lock and snapshot hashes. The source wiring was
+checked at [`322921b`][validation-baseline]; revalidate it when commands or their
+inputs change.
 
 ### Documentation checks
 
@@ -133,6 +134,19 @@ nix develop --no-update-lock-file --no-write-lock-file .#book -c mdbook build
 This evaluates `.#__std.init` via the preprocessor and writes `docs/book`. Inspect
 warnings and rendered links; exit zero alone does not establish that every link
 works. Do not publish the output as part of validation.
+
+#### Link conventions
+
+Use relative links between rendered book chapters. Link to ADR headings in the
+ADR index, since individual included ADR files are not separate book pages.
+For repository files not rendered in the book, use GitHub `main` links and keep
+checkout-relative paths visible where practical. These are navigation links, not
+immutable evidence; use local files when working in a different checkout.
+
+Reserve commit-pinned links for explicitly versioned evidence and external
+references. Identify the revision alongside the observation; do not use a
+historical permalink as the default navigation to maintained documentation or
+implementation files.
 
 ### Nix snapshots
 
@@ -240,19 +254,20 @@ Standard's accepted decisions prevail; unresolved local meaning stays unresolved
 If the public source is unreachable, ordinary work can still use the local docs;
 report a blocked methodological lookup instead of silently switching revisions.
 
-[shells]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/local/shells.md
-[shell-definition]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/local/shells.nix
-[hook-definition]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/lib/cfg/lefthook.nix
-[hook-config]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/data/configs/lefthook.nix
-[cli-readme]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/cli/README.md
-[direnv-readme]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/direnv/README.md
-[preprocessor-readme]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/data/mdbook-paisano-preprocessor/README.md
-[snapshot-definition]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/tests/checks.nix
-[namaka-config]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/namaka.toml
-[namaka-type]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/fwlib/blockTypes/namaka.nix
-[direnv-check]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/tests/direnv.nix
-[ci-workflow]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/.github/workflows/ci.yml
-[std-workflow]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/.github/workflows/std.yml
+[validation-baseline]: https://github.com/nadanix/std/tree/322921ba8adda373f1a4bb57b78fc201322c8b93
+[shells]: https://github.com/nadanix/std/blob/main/src/local/shells.md
+[shell-definition]: https://github.com/nadanix/std/blob/main/src/local/shells.nix
+[hook-definition]: https://github.com/nadanix/std/blob/main/src/lib/cfg/lefthook.nix
+[hook-config]: https://github.com/nadanix/std/blob/main/src/data/configs/lefthook.nix
+[cli-readme]: https://github.com/nadanix/std/blob/main/src/std/cli/README.md
+[direnv-readme]: https://github.com/nadanix/std/blob/main/src/std/direnv/README.md
+[preprocessor-readme]: https://github.com/nadanix/std/blob/main/src/data/mdbook-paisano-preprocessor/README.md
+[snapshot-definition]: https://github.com/nadanix/std/blob/main/src/tests/checks.nix
+[namaka-config]: https://github.com/nadanix/std/blob/main/namaka.toml
+[namaka-type]: https://github.com/nadanix/std/blob/main/src/std/fwlib/blockTypes/namaka.nix
+[direnv-check]: https://github.com/nadanix/std/blob/main/src/tests/direnv.nix
+[ci-workflow]: https://github.com/nadanix/std/blob/main/.github/workflows/ci.yml
+[std-workflow]: https://github.com/nadanix/std/blob/main/.github/workflows/std.yml
 [method-commit]: https://github.com/oneingan/design-context/commit/7f57f677da43a9cd9b5d3d264063b17d931cf150
 [method-readme]: https://github.com/oneingan/design-context/blob/7f57f677da43a9cd9b5d3d264063b17d931cf150/README.md
 [method-map]: https://github.com/oneingan/design-context/blob/7f57f677da43a9cd9b5d3d264063b17d931cf150/context/00-map.md

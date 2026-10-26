@@ -2,9 +2,10 @@
 
 The registry connects Nix-organized artifacts to discovery and automation. This
 is an **as-is contract description**, observed at [`322921b`][baseline], not a new
-compatibility guarantee. The [repository map](../explain/repository-map.md)
-explains how it fits into Standard; the [glossary](../glossary.md) owns the terms
-Cell, Cell Block, Block Type, Target and Action.
+compatibility guarantee. Implementation and fixture links cite that revision as
+evidence, not the current checkout. The [repository map](../explain/repository-map.md)
+provides navigation to maintained sources; the [glossary](../glossary.md) owns the
+terms Cell, Cell Block, Block Type, Target and Action.
 
 ## Producer and representation
 
@@ -173,7 +174,7 @@ page or that snapshots accept disputed semantics.
 [installables]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/fwlib/blockTypes/installables.nix
 [devshells]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/fwlib/blockTypes/devshells.nix
 [terra]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/fwlib/blockTypes/terra.nix
-[adr-system]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/docs/explain/architecture-decision-records/0004-early-select-system-for-conceptual-untangling.md
+[adr-system]: ../explain/architecture-decision-records/#4-early-select-system-for-conceptual-untangling
 [grow-test]: https://github.com/nadanix/std/tree/322921ba8adda373f1a4bb57b78fc201322c8b93/tests/core-grow
 [soil-test]: https://github.com/nadanix/std/tree/322921ba8adda373f1a4bb57b78fc201322c8b93/tests/core-soil
 [blocktypes-test]: https://github.com/nadanix/std/tree/322921ba8adda373f1a4bb57b78fc201322c8b93/tests/bt-blocktypes

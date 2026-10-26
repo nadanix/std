@@ -7,8 +7,9 @@ people, tools and CI. Its purpose and SDLC scope belong in
 to a new set of architectural decisions.
 
 **View:** as-is. Implementation observations below were checked against
-[`322921b`][baseline]. Source links pin that evidence; they are not dependency
-pins or promises of future compatibility. Unsettled meaning is recorded in
+[`322921b`][baseline], not established as future compatibility guarantees.
+Source links navigate `main`; use the named paths when working in a different
+checkout. Historical evidence and unsettled meaning are recorded in
 [open questions](../discovery/open-questions.md).
 
 ## From organization to outputs
@@ -113,39 +114,39 @@ support; the physical bootstrap does not replace it.
 
 [baseline]: https://github.com/nadanix/std/tree/322921ba8adda373f1a4bb57b78fc201322c8b93
 [summary]: https://github.com/nadanix/std/blob/main/docs/SUMMARY.md
-[adr-interface]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/docs/explain/architecture-decision-records/0002-restrict-the-calling-interface.md
-[adr-system]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/docs/explain/architecture-decision-records/0004-early-select-system-for-conceptual-untangling.md
-[adr-overlays]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/docs/explain/architecture-decision-records/0006-avoid-fix-point-logic-such-as-overlays.md
-[process]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/core/grow/newProcessCfg.nix
-[cell-type]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/core/types/cell.nix
-[grow]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/core/grow/default.nix
-[signature]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/core/grow/newImportSignatureFor.nix
-[types]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/core/types/default.nix
-[functions]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/fwlib/blockTypes/functions.nix
-[anything]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/fwlib/blockTypes/anything.nix
-[extract]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/core/grow/newExtractFor.nix
-[grow-on]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/core/grow/grow-on.nix
-[harvest]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/core/soil/harvest.nix
-[winnow]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/core/soil/winnow.nix
-[pick]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/core/soil/pick.nix
-[core]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/core/README.md
-[fwlib]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/fwlib.nix
-[lib]: https://github.com/nadanix/std/tree/322921ba8adda373f1a4bb57b78fc201322c8b93/src/lib
-[data]: https://github.com/nadanix/std/tree/322921ba8adda373f1a4bb57b78fc201322c8b93/src/data
-[cli]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/cli/README.md
-[cli-package]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/cli.nix
-[direnv]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/direnv/README.md
-[preprocessor]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/data/mdbook-paisano-preprocessor/README.md
-[data-flake]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/data/flake.nix
-[local]: https://github.com/nadanix/std/tree/322921ba8adda373f1a4bb57b78fc201322c8b93/src/local
-[tests-cell]: https://github.com/nadanix/std/tree/322921ba8adda373f1a4bb57b78fc201322c8b93/src/tests
-[tests]: https://github.com/nadanix/std/tree/322921ba8adda373f1a4bb57b78fc201322c8b93/tests
-[book]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/book.toml
-[workflows]: https://github.com/nadanix/std/tree/322921ba8adda373f1a4bb57b78fc201322c8b93/.github/workflows
-[flake]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/flake.nix
-[dogfood]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/dogfood.nix
-[shells]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/local/shells.md
-[dogfood-test]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/tests/dogfood/expr.nix
-[identity-test]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/tests/fork-identity/expr.nix
-[grow-test]: https://github.com/nadanix/std/tree/322921ba8adda373f1a4bb57b78fc201322c8b93/tests/core-grow
-[soil-test]: https://github.com/nadanix/std/tree/322921ba8adda373f1a4bb57b78fc201322c8b93/tests/core-soil
+[adr-interface]: architecture-decision-records/#2-restrict-the-calling-interface
+[adr-system]: architecture-decision-records/#4-early-select-system-for-conceptual-untangling
+[adr-overlays]: architecture-decision-records/#6-avoid-fix-point-logic-such-as-overlays
+[process]: https://github.com/nadanix/std/blob/main/src/std/core/grow/newProcessCfg.nix
+[cell-type]: https://github.com/nadanix/std/blob/main/src/std/core/types/cell.nix
+[grow]: https://github.com/nadanix/std/blob/main/src/std/core/grow/default.nix
+[signature]: https://github.com/nadanix/std/blob/main/src/std/core/grow/newImportSignatureFor.nix
+[types]: https://github.com/nadanix/std/blob/main/src/std/core/types/default.nix
+[functions]: https://github.com/nadanix/std/blob/main/src/std/fwlib/blockTypes/functions.nix
+[anything]: https://github.com/nadanix/std/blob/main/src/std/fwlib/blockTypes/anything.nix
+[extract]: https://github.com/nadanix/std/blob/main/src/std/core/grow/newExtractFor.nix
+[grow-on]: https://github.com/nadanix/std/blob/main/src/std/core/grow/grow-on.nix
+[harvest]: https://github.com/nadanix/std/blob/main/src/std/core/soil/harvest.nix
+[winnow]: https://github.com/nadanix/std/blob/main/src/std/core/soil/winnow.nix
+[pick]: https://github.com/nadanix/std/blob/main/src/std/core/soil/pick.nix
+[core]: https://github.com/nadanix/std/blob/main/src/std/core/README.md
+[fwlib]: https://github.com/nadanix/std/blob/main/src/std/fwlib.nix
+[lib]: https://github.com/nadanix/std/tree/main/src/lib
+[data]: https://github.com/nadanix/std/tree/main/src/data
+[cli]: https://github.com/nadanix/std/blob/main/src/std/cli/README.md
+[cli-package]: https://github.com/nadanix/std/blob/main/src/std/cli.nix
+[direnv]: https://github.com/nadanix/std/blob/main/src/std/direnv/README.md
+[preprocessor]: https://github.com/nadanix/std/blob/main/src/data/mdbook-paisano-preprocessor/README.md
+[data-flake]: https://github.com/nadanix/std/blob/main/src/data/flake.nix
+[local]: https://github.com/nadanix/std/tree/main/src/local
+[tests-cell]: https://github.com/nadanix/std/tree/main/src/tests
+[tests]: https://github.com/nadanix/std/tree/main/tests
+[book]: https://github.com/nadanix/std/blob/main/book.toml
+[workflows]: https://github.com/nadanix/std/tree/main/.github/workflows
+[flake]: https://github.com/nadanix/std/blob/main/flake.nix
+[dogfood]: https://github.com/nadanix/std/blob/main/dogfood.nix
+[shells]: https://github.com/nadanix/std/blob/main/src/local/shells.md
+[dogfood-test]: https://github.com/nadanix/std/blob/main/tests/dogfood/expr.nix
+[identity-test]: https://github.com/nadanix/std/blob/main/tests/fork-identity/expr.nix
+[grow-test]: https://github.com/nadanix/std/tree/main/tests/core-grow
+[soil-test]: https://github.com/nadanix/std/tree/main/tests/core-soil

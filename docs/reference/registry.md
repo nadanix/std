@@ -9,8 +9,9 @@ terms Cell, Cell Block, Block Type, Target and Action. The later
 [scenario review](../discovery/scenario-review.md), at `d0f1c75`, qualifies the
 single-layer identity and argument-guard observations below; accepting that
 discovery does not resolve the open contracts. The subsequently accepted local
-[`ci.meta` correction](#current-ci-metadata-contract) is identified separately
-from those historical observations.
+[`ci.meta` correction](#current-ci-metadata-contract) and
+[P-F3 argument-handling decision](../discovery/open-questions.md#p-f3-argument-handling-in-tui-and-direct-cli)
+are identified separately from those historical observations.
 
 ## Producer and representation
 
@@ -144,10 +145,15 @@ Serde decoding and can fail while rendering referenced files. Nix evaluation or
 build failures are separate from those representation failures and from the
 outcome of an executed action. The Go runner rejects missing extra arguments
 only when its `RequiresArgs` pointer is present and true. [B2](../discovery/scenario-review.md#b2-required-arguments-in-tui-and-direct-cli)
-traces TUI passing that flag and direct CLI leaving it unset; the distinction
-is source-based, not an executed CLI/TUI test. This is neither universal
-rejection nor validation of argument meaning. No common retry or recovery
-contract is established by these sources.
+traces TUI passing that flag and direct CLI leaving it unset. Its original
+source-only record is separate from the later probes with mock Nix and an inert
+Action. Under the accepted [P-F3 contract](../discovery/open-questions.md#p-f3-argument-handling-in-tui-and-direct-cli),
+TUI directs users to CLI for Actions declared as requiring arguments; direct CLI
+delegates validation to the Action/tool, including when no arguments are supplied.
+The [CLI reference](cli.md#action-arguments) describes this interaction. This is
+neither universal rejection nor validation of argument meaning, and it does not
+guarantee harmless execution or help output. No common retry or recovery contract
+is established by these sources.
 
 ## Discovery, building and execution are different
 

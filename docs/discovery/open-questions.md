@@ -16,8 +16,9 @@ artifact contains the evidence; `disputed` means relevant sources disagree;
 knowledge. `confirmed` is reserved for acceptance by an accountable validator
 within a stated scope, not for agreement between code and a snapshot.
 
-Q1's local shape decision and Q2's function-only Block contract are accepted.
-Q1's external compatibility review remains **open**, alongside Q3, P-F1–P-F3
+Q1's local shape decision, Q2's function-only Block contract and P-F3's distinct
+TUI/CLI argument-handling responsibilities are accepted.
+Q1's external compatibility review remains **open**, alongside Q3, P-F1, P-F2
 and the B3 operational gap. Q4 is a future design consideration, and P-F4 is
 retired as a registry-contract question. Validation
 owners for the remaining questions have not been assigned; roles listed below
@@ -197,10 +198,39 @@ design topic neither reopens that decision nor supplies the missing validation.
 consumer maintainers would need to define and accept a concrete scope. No new
 compatibility guarantee, migration obligation or implementation is introduced.
 
+## P-F3. Argument handling in TUI and direct CLI
+
+**Resolution status:** resolved for this fork by the requesting user's explicit
+decision on 2026-10-27; no functional change is required.
+
+**Knowledge status:** `confirmed` local contract within that accepted scope;
+`observed` source behavior and bounded CLI/TUI probes. This is not a claim about
+the original upstream UX rationale or validation of every Action/tool.
+
+**Accepted decision:** the TUI directs users to the CLI for Actions declared as
+requiring arguments. The CLI delegates their validation to the Action/tool itself.
+
+The TUI has no argument-entry workflow. It exits before the runner rejects an
+Action whose `requiresArgs` flag is true, with a message directing the user to
+the command line; it does not automatically launch another CLI invocation.
+Direct CLI leaves that flag unset and forwards supplied arguments, including an
+empty list. The [user-facing contract](../reference/cli.md#action-arguments)
+retains this distinction rather than requiring identical rejection at both
+entry points. Terminal output after leaving the TUI is possible; lack of an
+embedded output viewer does not mean help or errors cannot be displayed.
+
+**Evidence and limits:** [B2](scenario-review.md#b2-required-arguments-in-tui-and-direct-cli)
+retains its original source-only investigation and separately records the later
+probes at `87064ed`, using mock Nix and an inert Action. The user's decision, not
+those passing probes, accepts the contract. Delegation does not guarantee that
+zero arguments are safe, produce help, or succeed. No argument-entry UI, shared
+runtime validator, registry change or new recovery guarantee is introduced.
+
 ## Scenario-specific questions and operational gap
 
 The identifiers in the table remain **open**, alongside Q3 and Q1's remaining
-compatibility review. Q2's local function-only decision is recorded above.
+compatibility review. Q2 and P-F3 are resolved locally by the later explicit
+decisions recorded above.
 Acceptance of F1–F5 did not resolve them, assign owners or
 authorize implementation. Q4 is a future design consideration, not part of this
 unresolved-scenario list. The
@@ -212,7 +242,6 @@ authorized backlog.
 | ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | [P-F1 / C1](scenario-review.md#c1-different-consumers-different-projections)                | Should `foo-action` be admissible in CI discovery with `ci.foo-action` enabled?                       | Framework/external CI maintainers and Block author                      |
 | [P-F2 / A3](scenario-review.md#a3-two-soil-layers-with-the-same-identity)                   | Must all announcements/candidates of a colliding identity correspond to their own selectable command? | Core/Soil maintainers, Cell authors and CLI/CI consumers                |
-| [P-F3 / B2](scenario-review.md#b2-required-arguments-in-tui-and-direct-cli)                 | Must `requiresArgs = true` reject missing arguments in direct CLI as well as TUI?                     | Framework/CLI maintainers and Action authors                            |
 | [B3 operational gap](scenario-review.md#b3-partial-publication-and-unknown-remote-outcomes) | Who may assess per-tag evidence and authorize recovery after partial/unknown publication?             | Authorized publication/destination operator and integration maintainers |
 
 **P-F4 is retired**, following the user-accepted reframing recorded under Q4.

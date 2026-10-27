@@ -29,6 +29,12 @@ including immediate attrset rejection and migration of this repository. The
 historical A1/A2 results below are preserved, not rerun or relabeled as evidence
 for that new behavior. The implementation has its own regression check.
 
+The requesting user subsequently accepted [P-F3's argument-handling contract](open-questions.md#p-f3-argument-handling-in-tui-and-direct-cli)
+on 2026-10-27: the TUI directs users to CLI for Actions declared as requiring
+arguments; CLI delegates validation to the Action/tool. This resolves P-F3 for
+the fork without changing implementation. B2 retains the original source-only
+record and distinguishes the later bounded CLI/TUI probes below.
+
 This review uses the [glossary](../glossary.md),
 [registry reference](../reference/registry.md) and accepted
 [calling-interface][adr-interface] and [system-first][adr-system] decisions.
@@ -168,8 +174,51 @@ c.RequiresArgs != nil && *c.RequiresArgs == true && len(extraArgs) == 0
 Assembly happens before this guard and can already invoke Nix to obtain the
 system. The consequences above are `inferred`; Go/CLI/TUI execution was
 `not-run`. This is neither universal rejection nor validation of argument
-meaning. P-F3 asks whether both entry paths should guarantee rejection; no code
-or intended contract was changed.
+meaning. At discovery closure, P-F3 asked whether both entry paths should
+guarantee rejection; no code or intended contract was changed in that investigation.
+The later [accepted decision](open-questions.md#p-f3-argument-handling-in-tui-and-direct-cli)
+retains distinct responsibilities rather than requiring identical rejection.
+
+#### B2 follow-up: CLI/TUI probes
+
+On 2026-10-27, a separately scoped investigation used a disposable copy of
+[`87064ed`][b2-follow-up-baseline]; the relevant extractor and CLI/TUI sources
+were unchanged from the original discovery baseline. Go 1.26.10, Python 3.14.8
+and bubblewrap 0.12.0 came from the locked nixpkgs. Preparation isolated
+HOME/XDG/tmp and Go caches, allowed module downloads, disabled remote Nix
+builders and retained both lock guards. No production source, lock or Go module
+file changed; temporary probes were not added to the repository's test suite.
+
+Six Go subcases passed: TUI selection preserves true/false flags and quits;
+the runner's argument guard rejects only true plus an empty argument list among
+the tested true/false/unset cases. A binary built from unchanged production
+sources then exercised five entry-point cases with synthetic metadata, mock Nix
+and an inert Action. Runtime probes used a separate network namespace, no Nix
+daemon socket, read-only store/source mounts and private writable case directories.
+Mock Nix never delegated to real Nix; its build branch only linked the inert Action.
+
+**Observed in the completed follow-up (`passed`):**
+
+- Direct CLI forwarded no arguments, preserved the inert Action's stdout and
+  stderr/help, and exited with its injected status 23. A space-containing
+  argument and `-- --help` were forwarded correctly in separate cases (exit 0).
+- With `requiresArgs = true`, TUI restored the terminal, then reported
+  `run from command line` and exited 1, without a mock build or Action invocation.
+- With `requiresArgs = false`, TUI restored the terminal, then the inert Action's
+  stdout and stderr/help appeared; its injected exit 23 was preserved.
+
+An initial temporary-flake source-selection error was corrected before compiling.
+The first runtime attempt passed the three CLI cases but timed out in TUI startup:
+the bare pseudo-terminal did not answer color/cursor queries. Adding those replies
+to the harness made all five fresh cases pass, without changing production code
+or weakening assertions. The timeout remains a failed harness attempt, not a
+successful original run or an established Standard defect.
+
+These are new consumer-execution observations, not a retroactive execution of B2
+in F3. They show terminal output after leaving TUI, not an integrated argument
+editor or output viewer. They do not evaluate the real producer, build or run
+project Actions, establish behavior for every terminal/tool, or accept a contract;
+P-F3 was resolved separately by the user's explicit decision.
 
 ### B3. Partial publication and unknown remote outcomes
 
@@ -328,8 +377,8 @@ observations establish no obligation to implement aliases or a migration policy.
 The questions originated in discovery, when the original Q4/P-F4/C3 grouping
 was also open. The table now lists only unresolved follow-up: Q1's local shape
 decision is accepted, while its external compatibility review remains open;
-Q2 is resolved for the fork by the later function-only decision, Q4 is a future
-design consideration and P-F4 is retired. See
+Q2 and P-F3 are resolved for the fork by the later explicit decisions, Q4 is a
+future design consideration and P-F4 is retired. See
 [Open questions](open-questions.md) for the current statuses and accepted
 reframing. The roles below are needed perspectives, not assigned people, a
 validated contract or an authorized implementation backlog.
@@ -337,7 +386,6 @@ validated contract or an authorized implementation backlog.
 | Question           | Decision and impact                                                                      | Needed perspectives / next human step                                                                                                          |
 | ------------------ | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | P-F2 / A3          | Must every announcement/candidate identify its own selectable command under a collision? | Core/Soil maintainers, Cell authors and CLI/CI consumers: decide coherence requirements for A→B                                                |
-| P-F3 / B2          | Must `requiresArgs = true` reject missing arguments in direct CLI too?                   | Framework/CLI maintainers and Action authors: delimit the guarantee across both entry paths                                                    |
 | B3 operational gap | Who assesses per-tag evidence and authorizes recovery after partial/unknown effects?     | Authorized publication/destination operator and integration maintainers: establish ownership and authority for an actual case before retrying  |
 | P-F1 / C1          | Is `foo-action` admissible when `ci.foo-action` is enabled?                              | Framework/external CI maintainers and Block author: answer for this name and integration revision                                              |
 | Q1 / C2            | Remaining external compatibility review of the accepted `ci.meta` shape                  | Framework/schema/container maintainers and CI consumers: assess migration and compatibility impact, without reopening the local shape decision |
@@ -348,9 +396,9 @@ No tenth scenario or implicit F6 is introduced.
 
 ## Mechanical evidence and remaining limits
 
-This table records the historical discovery runs and the separately authorized
-data-only follow-up, **not the checks performed when editing or rendering this
-page**. Documentation checks have their own
+This table records the historical discovery runs and separately scoped
+follow-ups, **not the checks performed when editing or rendering this page**.
+Documentation checks have their own
 [validation route](../guides/contributing.md#documentation-checks).
 
 | Block / evidence stage        | Executed evidence                                                                                         | Limits retained                                                                                                       |
@@ -361,6 +409,7 @@ page**. Documentation checks have their own
 | F4: C2/C3, accepted in R4     | Final eval completed; C2 rejected, controls/C3 conformant; assertions completed before later failure      | Global verifier `failed` (1); jq filters `not-run`; consumer by reading only                                          |
 | F5: synthesis, accepted in R5 | Traceability, note/link and integrity review                                                              | No new model execution or changed status for any earlier check                                                        |
 | F4-jq follow-up, 2026-10-27   | Copied data verifier `passed` (0); jq projections observed; string image control `failed` (5) as expected | Original F4 remains `failed` with jq `not-run` in that run; no new Nix evaluation, proviso or end-to-end CI execution |
+| B2 follow-up, 2026-10-27      | Six Go subcases and five CLI/TUI entry-point cases `passed` after harness correction                      | Mock Nix and inert Action only; initial TUI timeout retained; original F3/B2 remains source-only                      |
 
 F4 also retained two earlier preparation failures: an import outside the copied
 Cell root, then a capture assertion affected by attrset-to-string JSON coercion.
@@ -374,13 +423,15 @@ pilot. A later book build cannot retroactively exercise the nine probes or
 validate their contracts. No publication, load, profile modification, deployment
 or remote recovery was performed as discovery validation.
 
-Beyond the observed data projections, stronger consumer-execution claims still
-require explicitly scoped checks; discovery approval does not waive them. To validate
-a contract, obtain acceptance from its accountable perspectives; another schema
+Beyond the observed data projections and bounded B2 consumer probes, stronger
+execution claims still require explicitly scoped checks; discovery approval
+does not waive them. To validate a contract, obtain acceptance from its
+accountable perspectives; another schema
 check or mock cannot replace that judgment. Revisit only affected evidence when
 its source, inputs, consumer revision or asserted scope changes.
 
 [baseline]: https://github.com/nadanix/std/tree/d0f1c75a672231411e2da3bb6d38374938253d7e
+[b2-follow-up-baseline]: https://github.com/nadanix/std/tree/87064eda81acf5af13c1de801a063d6727309c48
 [nixpkgs]: https://github.com/NixOS/nixpkgs/tree/01a4873dfe535c3f9190eaabe187d57b81035042
 [external]: https://github.com/divnix/std-action/tree/4d88d45cacadad99e60218b4ed83037a5884a33c
 [external-discover]: https://github.com/divnix/std-action/blob/4d88d45cacadad99e60218b4ed83037a5884a33c/discover/eval.sh#L43-L57

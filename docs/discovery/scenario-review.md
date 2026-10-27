@@ -11,6 +11,9 @@ discovery delivery, not representation of external consumers or approval of new
 contracts. Documentary promotion was authorized separately. A separately
 authorized data-only follow-up on 2026-10-27 completed the jq checks described in
 C2/C3 below; it does not rewrite the original failed run or resolve contracts.
+The subsequent local `ci.meta` shape decision and schema correction are recorded
+separately in [Q1](open-questions.md#q1-ci-metadata-shape); the historical results
+below remain unchanged.
 
 This review uses the [glossary](../glossary.md),
 [registry reference](../reference/registry.md) and accepted
@@ -35,8 +38,8 @@ bounded context or an organizational ownership assignment.
   offline; Python/jq ran in a separate network namespace with read-only inputs
   and fresh outputs. No new Standard evaluation/build or remote source lookup.
 - `observed` distinguishes source reading from probe execution; `inferred`
-  marks consequences not exercised. Q1/Q2 remain `disputed` public contracts;
-  Q4 and the P-F questions remain `unknown` commitments. No contract is promoted
+  marks consequences not exercised. At discovery closure, Q1/Q2 were `disputed`
+  public contracts; Q4 and the P-F questions were `unknown` commitments. No contract is promoted
   to `confirmed` by a passing assertion or by approval of this document.
 - The conditions and decisive results below are a curated historical evidence
   record. Disposable checkouts, caches, full logs and probe scripts are not
@@ -220,7 +223,9 @@ allowed types: string, null
 **C2 conformance `failed` as expected.** In-memory null/string controls conformed;
 that does not select either as an operational solution. Source evidence:
 [producer][containers], [extraction][extract], [schema][schema] and
-[proviso][proviso]. [Q1](open-questions.md#q1-ci-metadata-shape) remains disputed.
+[proviso][proviso]. [Q1](open-questions.md#q1-ci-metadata-shape) records the later
+local shape decision and the remaining compatibility review; it does not change
+this historical schema result.
 
 **Original F4 run, 2026-10-26:** the global verifier failed while extracting jq
 filters with a regex that matched `json=(` rather than `json=$(`. Its exit was
@@ -295,8 +300,10 @@ or compatibility guarantee were accepted.
 
 ## Open decisions and accountable perspectives
 
-All rows remain **open**. The roles below are needed perspectives, not assigned
-people, a validated contract or an authorized implementation backlog.
+All rows were **open at discovery closure**. Q1's later local shape decision is
+recorded separately in [Open questions](open-questions.md#q1-ci-metadata-shape);
+its compatibility review remains open. The roles below are needed perspectives,
+not assigned people, a validated contract or an authorized implementation backlog.
 
 | Question           | Decision and impact                                                                      | Needed perspectives / next human step                                                                                                           |
 | ------------------ | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |

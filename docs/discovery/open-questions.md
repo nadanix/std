@@ -1,8 +1,8 @@
 # Open questions
 
-These are unresolved questions about the current implementation and its
-contracts, not decisions or instructions to change behavior. The original static
-review was checked against [`322921b`][baseline]. The later
+This page tracks unresolved questions and explicitly scoped decisions about the
+implementation and its contracts. The original static review was checked against
+[`322921b`][baseline]. The later
 [nine-scenario review](scenario-review.md), at `d0f1c75`, adds bounded evidence
 for Q1/Q2/Q4 and preserves scenario-specific questions below. Its discovery
 closure was accepted on 2026-10-26, not its unresolved contracts. The
@@ -15,17 +15,23 @@ artifact contains the evidence; `disputed` means relevant sources disagree;
 knowledge. `confirmed` is reserved for acceptance by an accountable validator
 within a stated scope, not for agreement between code and a snapshot.
 
-All questions below are **open**. Validation owners have not been assigned;
-roles listed below identify perspectives needed, not people who have accepted
-responsibility. Maintainer, downstream-consumer and upstream licensing
-perspectives are not replaced by this source review.
+Q1 now records a local shape decision; its external compatibility review remains
+**open**, as do the other questions. Validation owners for the remaining questions
+have not been assigned; roles listed below identify perspectives needed, not
+people who have accepted responsibility. Maintainer, downstream-consumer and
+upstream licensing perspectives are not replaced by this source review.
 
 ## Q1. CI metadata shape
 
-**Knowledge status:** `disputed` contract; `observed` producer/schema discrepancy
-and bounded jq behavior.
+**Resolution status:** local shape decision accepted on 2026-10-27; external
+compatibility validation remains open.
 
-- [`registry.schema.json`][schema], `definitions.ci` → candidate `meta`, permits
+**Knowledge status:** `observed` historical producer/schema discrepancy and
+bounded jq behavior; external consumer compatibility is not confirmed.
+
+**Historical evidence at the cited revisions:**
+
+- [`registry.schema.json`][schema], `definitions.ci` → candidate `meta`, permitted
   only a string or `null`.
 - [`containers.nix`][containers] gives `publish` an attribute set
   `meta = { image = target.image.name; }`, not a string.
@@ -34,8 +40,8 @@ and bounded jq behavior.
   `meta = { image = "repo:tag"; }`. Its [fixture][blocktypes-test] inspects action
   definitions with synthetic Targets, not full-registry schema validation.
 
-**Question:** Which shape should `ci.meta` guarantee, and which schema, producer
-or consumer changes, if any, should follow?
+**Original question:** Which shape should `ci.meta` guarantee, and which schema,
+producer or consumer changes, if any, should follow?
 
 **Additional discovery evidence:** [C2](scenario-review.md#c2-ci-metadata-schema-and-consumer-expectations)
 subsequently evaluated the real producer with a synthetic Target and ran a Draft
@@ -50,9 +56,24 @@ not executed. Provisos and full CI remain unexecuted. The original failed run is
 preserved, and neither the schema nor these bounded filter results establish a
 live CI failure or decide which side should change.
 
-**Validation owner:** unassigned. Framework/schema maintainers and CI consumers,
-including the external `divnix/std-action` integration, need to agree on the
-meaning and compatibility impact. A snapshot match cannot make that decision.
+**Local decision, 2026-10-27:** the requesting user explicitly selected
+`object | null` and authorized the schema correction. `meta` remains optional,
+objects permit arbitrary properties, and `image` is not required globally. The
+[current registry contract](../reference/registry.md#current-ci-metadata-contract)
+implements that choice without changing the producer, extractor or proviso.
+This decision is separate from discovery approval and from passing tests.
+
+**Compatibility consequence:** strings admitted by the former schema no longer
+conform, including strings containing encoded JSON. Custom Block Types using
+strings need action-specific migration; no automatic conversion is introduced.
+The schema stays at `v0`; this correction does not resolve Q4's evolution policy
+or establish backward compatibility. No exhaustive inventory of custom producers
+or external consumers, and no end-to-end CI execution, has been completed.
+
+**Remaining validation owner:** unassigned. Framework/schema maintainers and CI
+consumers, including the external `divnix/std-action` integration, still need to
+assess migration and compatibility impact. The user's local decision does not
+represent those external consumers.
 
 ## Q2. Cell Block functions and attribute sets
 
@@ -130,8 +151,9 @@ versioning or backward-compatibility guarantee.
 
 ## Scenario-specific questions and operational gap
 
-These discovery identifiers remain **open**, alongside Q1/Q2/Q4. Acceptance of
-F1–F5 did not resolve them, assign owners or authorize implementation. The
+These discovery identifiers remain **open**, alongside Q2/Q4 and Q1's remaining
+compatibility review. Acceptance of F1–F5 did not resolve them, assign owners or
+authorize implementation. The
 [scenario review](scenario-review.md#open-decisions-and-accountable-perspectives)
 records the evidence, impact and necessary perspectives; these are not an
 authorized backlog.

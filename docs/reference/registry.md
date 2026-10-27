@@ -8,7 +8,9 @@ provides navigation to maintained sources; the [glossary](../glossary.md) owns t
 terms Cell, Cell Block, Block Type, Target and Action. The later
 [scenario review](../discovery/scenario-review.md), at `d0f1c75`, qualifies the
 single-layer identity and argument-guard observations below; accepting that
-discovery does not resolve the open contracts.
+discovery does not resolve the open contracts. The subsequently accepted local
+[`ci.meta` correction](#current-ci-metadata-contract) is identified separately
+from those historical observations.
 
 ## Producer and representation
 
@@ -58,18 +60,54 @@ statement of consumer expectations.
 
 [`newExtractFor.nix`][extract] emits:
 
-| Fields                                         | Observed meaning                                                                                                                                                                                            |
-| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `cell`, `block`, `blockType`, `name`, `action` | Cell, named Block, generic Block Type, Target name and selected action name.                                                                                                                                |
-| `actionDrv`                                    | `command.drvPath` of the action runnable.                                                                                                                                                                   |
-| `targetDrv`                                    | `command.targetDrv`, falling back to `target.drvPath`, otherwise `null`. A Target need not be a derivation.                                                                                                 |
-| `proviso`                                      | `action.proviso` or `null`, for a consumer's skip/discovery logic. It is not executed by extraction.                                                                                                        |
-| `meta`                                         | `action.meta` or `null`, passed through without translation. The schema's string/null restriction conflicts with container publish metadata; see [Q1](../discovery/open-questions.md#q1-ci-metadata-shape). |
+| Fields                                         | Observed meaning                                                                                                                                                                                                     |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cell`, `block`, `blockType`, `name`, `action` | Cell, named Block, generic Block Type, Target name and selected action name.                                                                                                                                         |
+| `actionDrv`                                    | `command.drvPath` of the action runnable.                                                                                                                                                                            |
+| `targetDrv`                                    | `command.targetDrv`, falling back to `target.drvPath`, otherwise `null`. A Target need not be a derivation.                                                                                                          |
+| `proviso`                                      | `action.proviso` or `null`, for a consumer's skip/discovery logic. It is not executed by extraction.                                                                                                                 |
+| `meta`                                         | `action.meta` or `null`, passed through without translation. The historical string/null schema discrepancy is recorded in [Q1](../discovery/open-questions.md#q1-ci-metadata-shape); see the current contract below. |
 
 The extractor iterates the attribute names of the Block's `ci` set and requires
 each to name an existing action; an unknown action raises an evaluation error.
 It does not filter entries by their boolean values. A candidate describes work
 for an automation consumer to consider, not permission to perform it.
+
+### Current CI metadata contract
+
+The local decision recorded in [Q1](../discovery/open-questions.md#q1-ci-metadata-shape)
+on 2026-10-27 changes candidate `meta` in the
+[current `registry.schema.json`][schema-current] to **`object | null`**:
+
+- The field remains optional. A candidate may omit it or use `null`.
+- Objects may have arbitrary properties, including nested JSON values; `{}` is
+  valid. The registry does not require `image` or prescribe a shared object shape
+  for every Action.
+- `containers.publish` supplies an object such as
+  `{"image":"example.invalid/image:tag"}`. Its consumer's `.meta.image`
+  expectation is Action-specific; schema conformance alone does not establish
+  usable metadata or a successful proviso decision.
+- Strings, arrays, numbers and booleans are rejected as the value of `meta`.
+  Encoding an object inside a JSON string does not make it conformant.
+
+This corrects the schema to admit the existing built-in producer, without changing
+extraction or adding runtime validation. The extractor still passes metadata
+through and uses `null` for Actions without it. Custom producers emitting strings
+now fail schema validation; their migration and external consumer compatibility
+have not been established. `__schema` remains `v0`; no general versioning or
+backward-compatibility policy is implied. Q4 remains open.
+
+The data-only [contract test][schema-test], packaged by
+[`src/tests/registry-schema.nix`][schema-check], validates representative complete
+registry objects, including accepted objects/null/omission and rejected scalar
+or array controls. From an isolated copy, run:
+
+```sh
+nix build --no-update-lock-file --no-write-lock-file --no-link .#checks.x86_64-linux.registry-schema
+```
+
+This check runs no Action or proviso. It is a flake check, not an additional
+`checks.check` candidate in the existing external CI discovery workflow.
 
 ## Observed invariants and limits
 
@@ -141,7 +179,8 @@ field shapes, readme paths or action executables can affect different consumers
 independently. The declared `v0` and permissive parts of the schema do not settle
 those compatibility expectations: [Q4](../discovery/open-questions.md#q4-registry-evolution-and-compatibility)
 records the missing decision, and [Q1](../discovery/open-questions.md#q1-ci-metadata-shape)
-records a concrete disagreement.
+records the historical discrepancy, the local metadata-shape decision and its
+remaining compatibility review.
 
 Existing evidence surfaces have narrower scopes than that policy:
 
@@ -163,6 +202,9 @@ page or that snapshots accept disputed semantics.
 [extract]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/core/grow/newExtractFor.nix
 [helpers]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/core/grow/newHelpers.nix
 [schema]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/core/registry.schema.json
+[schema-current]: https://github.com/nadanix/std/blob/main/src/std/core/registry.schema.json
+[schema-test]: https://github.com/nadanix/std/blob/main/tests/registry-schema.py
+[schema-check]: https://github.com/nadanix/std/blob/main/src/tests/registry-schema.nix
 [paths]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/core/paths.nix
 [types]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/core/types/default.nix
 [grow-on]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/core/grow/grow-on.nix

@@ -118,15 +118,16 @@
             displayPath,
             importPath,
           }: let
-            # since we're not really importing files within the framework
-            # the non-memoization of scopedImport doesn't have practical penalty
-            block =
-              Block "paisano/import: ${displayPath}"
-              (l.scopedImport signature importPath);
+            # Keep migration guidance even when ordinary import rejects a free
+            # `inputs`/`cell` reference before the Block's type can be checked.
+            block = l.addErrorContext ''
+              while importing Cell Block '${displayPath}':
+              Cell Blocks must be functions with the signature { inputs, cell }: { ... }.
+              Attribute-set Cell Blocks are no longer supported.
+              To migrate a legacy Block, prepend `{ inputs, cell }:` before the entire expression, including any `let`.
+            '' (Block "paisano/import: ${displayPath}" (import importPath));
           in
-            if l.typeOf block == "set"
-            then block
-            else block signature;
+            block signature;
           importPaths =
             if isFile
             then {

@@ -33,17 +33,16 @@
           currentSystem = false;
         });
       });
-  Block = log:
-    with yants log;
-      block: (
-        if l.typeOf block == "set"
-        then attrs any block
-        else
-          functionWithArgs {
-            inputs = false;
-            cell = false;
-          }
-          block
-      );
+  # Yants also accepts callable attrsets as functions; Cell Blocks do not.
+  Block = log: block:
+    if !l.isFunction block
+    then throw "${log}: expected a Cell Block function, got ${l.typeOf block}."
+    else
+      with yants log;
+        functionWithArgs {
+          inputs = false;
+          cell = false;
+        }
+        block;
   ActionCommand = log: with yants log; drv;
 }

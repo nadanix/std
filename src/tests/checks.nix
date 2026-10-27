@@ -1,4 +1,7 @@
-let
+{
+  inputs,
+  cell,
+}: let
   inherit (inputs) namaka self;
   inputs' = builtins.removeAttrs inputs ["self"];
 in {

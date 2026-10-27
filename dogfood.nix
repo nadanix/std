@@ -42,6 +42,7 @@ in
     checks = inputs.nixpkgs.lib.mapAttrs (system: checks:
       checks
       // {
+        core-block-interface = inputs.nixpkgs.legacyPackages.${system}.callPackage ./src/tests/core-block-interface.nix {frameworkInputs = inputs;};
         direnv = inputs.nixpkgs.legacyPackages.${system}.callPackage ./src/tests/direnv.nix {};
         registry-schema = inputs.nixpkgs.legacyPackages.${system}.callPackage ./src/tests/registry-schema.nix {};
         files-explore = inputs.nixpkgs.legacyPackages.${system}.callPackage ./src/tests/files-explore.nix {inherit std;};

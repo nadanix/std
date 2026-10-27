@@ -47,6 +47,7 @@ jobs:
             .#checks.x86_64-linux.files-explore \
             .#checks.x86_64-linux.adrgen \
             .#checks.x86_64-linux.registry-schema \
+            .#checks.x86_64-linux.core-block-interface \
             .#checks.x86_64-linux.direnv
       - name: Evaluate snapshots
         run: |

@@ -1,5 +1,8 @@
 # SPDX-FileCopyrightText: 2022 The Standard Authors
-let
+{
+  inputs,
+  cell,
+}: let
   version = nixpkgs.lib.fileContents (inputs.self + /VERSION);
 
   inherit (inputs) nixpkgs;

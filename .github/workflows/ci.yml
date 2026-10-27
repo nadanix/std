@@ -1,21 +1,61 @@
-name: CI
+name: Fork CI
 
 on:
   pull_request:
   push:
     branches:
       - main
-  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fork-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  mac:
-    uses: ./.github/workflows/std.yml
-    with:
-      runs-on: macOS-13
-    secrets: inherit
-
-  linux:
-    uses: ./.github/workflows/std.yml
-    with:
-      runs-on: ubuntu-latest
-    secrets: inherit
+  checks:
+    name: Linux checks
+    if: github.repository == 'nadanix/std'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      # Also applies to Nix processes started during evaluation.
+      NIX_CONFIG: |
+        experimental-features = nix-command flakes
+        accept-flake-config = false
+        builders =
+        max-jobs = 2
+        cores = 2
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install Nix
+        uses: nixbuild/nix-quick-install-action@2c9db80fb984ceb1bcaa77cdda3fdf8cfba92035 # v34
+        with:
+          nix_version: "2.29.2"
+          github_access_token: ""
+          enable_kvm: false
+      - name: Build explicit fork checks
+        run: |
+          nix build --no-update-lock-file --no-write-lock-file --no-link --print-build-logs \
+            .#checks.x86_64-linux.files-explore \
+            .#checks.x86_64-linux.adrgen \
+            .#checks.x86_64-linux.registry-schema \
+            .#checks.x86_64-linux.core-block-interface \
+            .#checks.x86_64-linux.direnv
+      - name: Evaluate snapshots
+        run: |
+          nix eval --no-update-lock-file --no-write-lock-file --json \
+            .#x86_64-linux.tests.checks.snapshots.check
+      - name: Verify source is unchanged
+        if: always()
+        run: |
+          git diff --exit-code
+          git diff --cached --exit-code
+          test -z "$(git ls-files --others --exclude-standard)"

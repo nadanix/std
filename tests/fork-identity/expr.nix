@@ -14,8 +14,8 @@
   upstreamDocs = "std.${upstreamOwner}.com";
   retiredBranch = "upstream" + "-main";
 
-  # Only attribution is allowed to name the old repository. Changelog entries
-  # retain historical commit/release URLs; std-action is a separate dependency.
+  # Only attribution and explicit historical evidence may name the old repository.
+  # Changelog entries retain old commit/release URLs; std-action is a dependency.
   attribution = {
     "README.md" = [
       "[`${upstream}`][upstream]"
@@ -23,6 +23,10 @@
     ];
     ".reuse/dep5" = [
       "Comment: Forked from https://github.com/${upstream}; upstream attribution is preserved."
+    ];
+    "docs/discovery/open-questions.md" = [
+      "[implicit-api-pr]: https://github.com/${upstream}/pull/147"
+      "[implicit-api-commit]: https://github.com/${upstream}/commit/4c9c29212983c55ff29b47d1ea1e5459fae51e03"
     ];
   };
   sources = prefix:

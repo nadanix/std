@@ -8,6 +8,9 @@ If the topics discussed herein are dear to you, please take it as an invitation 
 
 This design document shall be stable and amendments go through a proper process of consideration.
 
+For current implementation responsibilities, bootstrap and dogfooding, see the
+[repository map](https://github.com/nadanix/std/blob/main/docs/explain/repository-map.md).
+
 ## Overview
 
 Standard is a collection of functionality and best practices (_"framework"_) to bootstrap and sustain the automatable sections of the Software Development Lifecycle (SDLC) _efficiently_ with the power of Nix and Flakes.

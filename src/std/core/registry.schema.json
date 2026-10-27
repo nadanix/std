@@ -180,8 +180,9 @@
               "description": "A provisio which lets a CI cheaply decide whether running an action can be skipped."
             },
             "meta": {
-              "type": ["string", "null"],
-              "description": "Arbitrary metadata needed during the priviso or discovery."
+              "type": ["object", "null"],
+              "additionalProperties": true,
+              "description": "Action-specific metadata used during proviso evaluation or CI discovery."
             }
           }
         }

@@ -89,7 +89,12 @@ in {
       ];
     };
   };
-  adrgen = (mkNixago configs.adrgen) {};
+  adrgen = (mkNixago configs.adrgen) {
+    data = {
+      directory = "docs/explain/architecture-decision-records";
+      template_file = "docs/explain/architecture-decision-records/template.md.in";
+    };
+  };
   conform = (mkNixago configs.conform) {
     data = {inherit (inputs) cells;};
   };

@@ -14,17 +14,25 @@
 
 # How-To Guides
 
+- [Contributing](guides/contributing.md)
 - [Growing Cells](guides/growing-cells.md)
 - [Include Filter](guides/incl.md)
 - [Setup `.envrc`](guides/envrc.md)
 
 # Explanation
 
+- [Repository Map](explain/repository-map.md)
+
+- [Open Questions](discovery/open-questions.md)
+
+- [Scenario Review](discovery/scenario-review.md)
+
 - [Why `nix`?](explain/why-nix.md)
 
 - [Why `std`?](explain/why-std.md)
 
 - [Architecture Decisions](explain/architecture-decision-records/Readme.md)
+  - [ADR template](explain/architecture-decision-records/template.md)
 
 # Patterns
 
@@ -41,6 +49,7 @@
 
 - [TUI/CLI](reference/cli.md)
 - [Conventions](reference/conventions.md)
+- [Registry (`__std`)](reference/registry.md)
 - [Deprecations](reference/deprecations.md)
 - [Builtin Block Types](reference/blocktypes.md)
 - [Cell: lib](reference/lib.md)

@@ -16,9 +16,10 @@ artifact contains the evidence; `disputed` means relevant sources disagree;
 knowledge. `confirmed` is reserved for acceptance by an accountable validator
 within a stated scope, not for agreement between code and a snapshot.
 
-Q1's local shape decision is accepted; its external compatibility review remains
-**open**, as do Q2/Q3, P-F1–P-F3 and the B3 operational gap. Q4 is a future design
-consideration, and P-F4 is retired as a registry-contract question. Validation
+Q1's local shape decision and Q2's function-only Block contract are accepted.
+Q1's external compatibility review remains **open**, alongside Q3, P-F1–P-F3
+and the B3 operational gap. Q4 is a future design consideration, and P-F4 is
+retired as a registry-contract question. Validation
 owners for the remaining questions have not been assigned; roles listed below
 identify perspectives needed, not people who have accepted responsibility.
 Maintainer, downstream-consumer and upstream licensing perspectives are not
@@ -81,28 +82,62 @@ represent those external consumers.
 
 ## Q2. Cell Block functions and attribute sets
 
-**Knowledge status:** `disputed` public contract; `observed` permissive importer.
+**Resolution status:** resolved for this fork by the requesting user's explicit
+function-only decision on 2026-10-27; implemented separately in
+[`c340b06`][q2-implementation], without a transition period.
 
-- [Conventions](../reference/conventions.md#cell-block-file-arguments) says each
-  Block is a function with `{ inputs, cell }` arguments.
-- Accepted [ADR 0002][adr-interface] restricts the entry-level calling interface
-  for local reasoning; it does not document an attrset exception.
-- [`types/default.nix`][types] accepts an attribute set or the prescribed
-  function signature. [`grow/default.nix`][grow] returns imported sets directly
-  and calls functions with the signature.
+**Knowledge status:** `confirmed` local contract within that accepted scope;
+`observed` historical importer behavior, upstream discussion and bounded tooling
+results. This is not an upstream decision or external-consumer validation.
 
-**Question:** Is the attrset form a supported public alternative, a scoped
-exception, or implementation behavior that should not be relied on? How should
-that answer relate to the accepted calling-interface decision?
+**Original discrepancy:** [Conventions](../reference/conventions.md#cell-block-file-arguments)
+and accepted [ADR 0002][adr-interface] prescribed the function interface for local
+reasoning. At the historical baseline, [`types/default.nix`][types] also accepted
+attrsets and [`grow/default.nix`][grow] returned them directly using `scopedImport`.
+The question was whether that form was a public alternative, a scoped exception
+or behavior that should not be relied on.
 
-**Additional discovery evidence:** [A2](scenario-review.md#a2-function-versus-attribute-set-import)
+**Historical evidence:** [A2](scenario-review.md#a2-function-versus-attribute-set-import)
 observed equal values, serialized registry and Action derivation paths for one
-function/attrset pair using `scopedImport`. This does not establish general
-equivalence or accept the attrset form as a public alternative.
+function/attrset pair. That result remains historical, not proof of general
+equivalence or a rerun under the function-only contract. Upstream
+[PR #147][implicit-api-pr] explicitly proposed removing the signature boilerplate
+while retaining functions. David Arnold (`blaggacao`) initially objected on
+local-reasoning grounds, then deliberately introduced the feature in
+[`4c9c292`][implicit-api-commit] on 2022-10-30 (UTC); the PR closed without merging.
+Thus the old support was intentional, not an accidental permissive branch. The
+consulted discussion does not reconcile that change with ADR 0002.
 
-**Validation owner:** unassigned. Framework maintainers must validate intent with
-Cell authors/consumers. Do not silently weaken the convention to a recommendation
-or remove the supported code path as a documentation correction.
+**Tooling evidence, consulted on 2026-10-27:** bounded local LSP probes with
+`nil` 2026-07-23 and `nixd` 2.9.3 reported undefined `inputs`/`cell` for the
+implicitly scoped example; the explicit function form cleared those errors.
+Formatting success did not establish scope resolution. [nil #72][nil-scope]
+is an open request specifically about `scopedImport` globals. nixd uses real Nix
+evaluation, but its diagnostics in this probe did not resolve the injected names.
+The related [nixd #844 discussion][nixd-inference] explains that general inference via the
+real Nix evaluator was set aside because of interactive latency; it is not a
+`scopedImport`-specific issue. These observations are version- and case-bounded,
+not a claim that Nix cannot evaluate scoped imports or that every editor fails.
+
+**Accepted decision and implementation:** the requesting user chose the explicit
+function interface to preserve local reasoning and avoid tooling confusion,
+then authorized immediate rejection and migration of this repository's Blocks.
+The importer now uses ordinary `import`; the validator requires an actual Nix
+function with the existing `{ inputs, cell }` signature. Attrsets, including
+callable sets with `__functor`, are rejected with the file path and migration
+guidance. Six production Blocks and two fixtures were migrated. There is no
+warning-only period or compatibility flag. See the
+[migration instructions](../reference/conventions.md#migrating-an-attribute-set-block)
+and [focused regression check](../guides/contributing.md#cell-block-interface).
+The implementation and its tests are separate from the original discovery and
+this documentary update; passing tests did not authorize the decision.
+
+**Scope and compatibility:** this intentionally breaks legacy attribute-set
+Block entries. Attribute sets as Target values and function results remain
+valid, and `findTargets` retains its separate Target-file `scopedImport` behavior.
+No exhaustive external-consumer migration audit has been completed; the local
+migration is not a backward-compatibility claim or representation of upstream
+users. No registry-format change or new versioning policy is introduced.
 
 ## Q3. Preprocessor licensing
 
@@ -164,8 +199,9 @@ compatibility guarantee, migration obligation or implementation is introduced.
 
 ## Scenario-specific questions and operational gap
 
-The identifiers in the table remain **open**, alongside Q2/Q3 and Q1's remaining
-compatibility review. Acceptance of F1–F5 did not resolve them, assign owners or
+The identifiers in the table remain **open**, alongside Q3 and Q1's remaining
+compatibility review. Q2's local function-only decision is recorded above.
+Acceptance of F1–F5 did not resolve them, assign owners or
 authorize implementation. Q4 is a future design consideration, not part of this
 unresolved-scenario list. The
 [scenario review](scenario-review.md#open-decisions-and-accountable-perspectives)
@@ -201,3 +237,8 @@ Q3 remains open and outside the nine-scenario discovery scope.
 [preprocessor]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/data/mdbook-paisano-preprocessor/README.md#licensing
 [reuse]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/.reuse/dep5
 [unknown-license]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/LICENSES/LicenseRef-Unknown.txt
+[q2-implementation]: https://github.com/nadanix/std/commit/c340b06c84d3e2e5629186b187c271d63d2f9ebf
+[implicit-api-pr]: https://github.com/divnix/std/pull/147
+[implicit-api-commit]: https://github.com/divnix/std/commit/4c9c29212983c55ff29b47d1ea1e5459fae51e03
+[nil-scope]: https://github.com/oxalica/nil/issues/72
+[nixd-inference]: https://github.com/nix-community/nixd/issues/844#issuecomment-4799422415

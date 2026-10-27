@@ -23,11 +23,17 @@ of project-reference changes, not a schema-versioning problem. This changes the
 interpretation and question status, not the probe results or Q1's accepted shape
 decision. No new probe or consumer validation is claimed.
 
+Later on the same date, the requesting user separately accepted and authorized
+[Q2's function-only Block contract](open-questions.md#q2-cell-block-functions-and-attribute-sets),
+including immediate attrset rejection and migration of this repository. The
+historical A1/A2 results below are preserved, not rerun or relabeled as evidence
+for that new behavior. The implementation has its own regression check.
+
 This review uses the [glossary](../glossary.md),
 [registry reference](../reference/registry.md) and accepted
 [calling-interface][adr-interface] and [system-first][adr-system] decisions.
-It does not replace them. Questions remain in [Open questions](open-questions.md);
-validation owners are unassigned. A Cell is not, by its directory alone, a DDD
+It does not replace them. Remaining questions are listed in
+[Open questions](open-questions.md); their validation owners are unassigned. A Cell is not, by its directory alone, a DDD
 bounded context or an organizational ownership assignment.
 
 ### Provenance and reading the evidence
@@ -67,9 +73,10 @@ The F1 probe reduced [`tests/core-grow`][grow-test] to one system, Cell, Block,
 Target and Action. It supplied `self.sourceInfo.outPath = "constant-self"`, with
 revision `constant-rev`, used Target `self = "via foo-cell ${inputs.self}"` and
 enabled `ci.foo-action = true` only in the probe.
-[`grow/default.nix`][grow] uses `scopedImport`, calls function Blocks
-and checks the returned Target set; [`newExtractFor.nix`][extract] separately
-extracts metadata, commands and CI candidates.
+At the reviewed revision, [`grow/default.nix`][grow] used `scopedImport`, called
+function Blocks and checked the returned Target set;
+[`newExtractFor.nix`][extract] separately extracted metadata, commands and CI
+candidates.
 
 **Observed by evaluation/assertions (`passed`):**
 
@@ -89,17 +96,20 @@ under composition, exhaustive Target typing or cross-system behavior.
 
 **Prediction:** the same Block body, imported as an attrset instead of a function,
 can access the signature through `scopedImport` and produce the same result in
-this example. [`types/default.nix`][types] accepts both forms; [the importer][grow]
-calls functions but returns imported sets directly.
+this example. At the reviewed revision, [`types/default.nix`][types] accepted
+both forms; [the importer][grow] called functions but returned imported sets
+directly.
 
 **Observed by F2 evaluation/assertions (`passed`):** with the same F1 inputs and
 body, the two forms produced equal Target values, serialized registries and
 Action derivation paths. No Action was built or executed in F2.
 
 This is not proof of equivalence for arbitrary imports or support for attrsets
-as a public alternative. [Q2](open-questions.md#q2-cell-block-functions-and-attribute-sets)
-remains disputed against Conventions and ADR 0002; the accepted function interface
-is not weakened by the probe.
+as a public alternative. At discovery closure,
+[Q2](open-questions.md#q2-cell-block-functions-and-attribute-sets) remained disputed
+against Conventions and ADR 0002. The later, separately accepted function-only
+decision resolves Q2 for this fork without changing this historical result or
+retaining attrset compatibility.
 
 ### A3. Two Soil layers with the same identity
 
@@ -318,14 +328,14 @@ observations establish no obligation to implement aliases or a migration policy.
 The questions originated in discovery, when the original Q4/P-F4/C3 grouping
 was also open. The table now lists only unresolved follow-up: Q1's local shape
 decision is accepted, while its external compatibility review remains open;
-Q4 is a future design consideration and P-F4 is retired. See
+Q2 is resolved for the fork by the later function-only decision, Q4 is a future
+design consideration and P-F4 is retired. See
 [Open questions](open-questions.md) for the current statuses and accepted
 reframing. The roles below are needed perspectives, not assigned people, a
 validated contract or an authorized implementation backlog.
 
 | Question           | Decision and impact                                                                      | Needed perspectives / next human step                                                                                                          |
 | ------------------ | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| Q2 / A2            | Public status of attrset Blocks versus ADR 0002                                          | Framework maintainers and Cell authors/consumers: give an attributable answer for this import interface                                        |
 | P-F2 / A3          | Must every announcement/candidate identify its own selectable command under a collision? | Core/Soil maintainers, Cell authors and CLI/CI consumers: decide coherence requirements for A→B                                                |
 | P-F3 / B2          | Must `requiresArgs = true` reject missing arguments in direct CLI too?                   | Framework/CLI maintainers and Action authors: delimit the guarantee across both entry paths                                                    |
 | B3 operational gap | Who assesses per-tag evidence and authorizes recovery after partial/unknown effects?     | Authorized publication/destination operator and integration maintainers: establish ownership and authority for an actual case before retrying  |

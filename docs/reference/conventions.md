@@ -33,6 +33,47 @@ Each Cell Block is a function and expects the following standardized interface f
 { inputs, cell }: {}
 ```
 
+Both named parameters are required, without defaults, even when one is unused.
+The function returns an attribute set of Targets. The core uses ordinary
+`import`: `inputs` and `cell` are parameters, not implicitly injected globals.
+Attribute-set Blocks, including callable sets with `__functor`, are rejected.
+The fork's [Q2 decision](../discovery/open-questions.md#q2-cell-block-functions-and-attribute-sets)
+removed that alternative without a transition period or compatibility flag.
+
+### Migrating an attribute-set Block
+
+Prepend `{ inputs, cell }:` to the **whole expression**, before any `let`.
+For example, this legacy Block is no longer accepted:
+
+```nix
+let
+  inherit (inputs) nixpkgs;
+in {
+  default = nixpkgs.hello;
+}
+```
+
+Write it as a function instead:
+
+```nix
+{ inputs, cell }: let
+  inherit (inputs) nixpkgs;
+in {
+  default = nixpkgs.hello;
+}
+```
+
+The rule applies to both `${block}.nix` and `${block}/default.nix`. Import errors
+include the Block path and migration guidance, including when a free reference
+to `inputs` or `cell` fails before type validation. Keep any code depending on
+those parameters inside the function's scope.
+
+This restriction is on **Cell Block entry expressions**, not attribute sets in
+general. Target values and the returned Target set remain valid attribute sets.
+[`src/std/fwlib/findTargets.nix`](https://github.com/nadanix/std/blob/main/src/std/fwlib/findTargets.nix)
+still uses `scopedImport` for individual Target files; that separate loader is
+unchanged and is not a compatibility path for attribute-set Blocks.
+
 ## The `inputs` argument
 
 The `inputs` argument holds all the de-systemized flake inputs plus a few special inputs:

@@ -43,9 +43,9 @@ parallel planning system just to repeat it.
 
 Use [open questions](../discovery/open-questions.md) for unresolved meaning and its
 knowledge status. Code shows implemented behavior; it does not override an
-accepted decision or resolve conflicting documentation. Document approval does
-not resolve Q1–Q4. Directory layout alone assigns neither DDD boundaries nor
-validation ownership. Keep new functional corrections separate from documentation.
+accepted decision or resolve conflicting documentation. Document approval alone
+does not resolve a contract question. Directory layout alone assigns neither DDD
+boundaries nor validation ownership. Keep new functional corrections separate from documentation.
 
 ## Permissions and isolation
 
@@ -100,6 +100,9 @@ untested and blocked checks are not passes.
 | Go CLI/TUI                         | [CLI README][cli-readme], `src/std/cli/`; use [Go tests](#go-tests). Cache tests are not end-to-end action-execution coverage.                                                                                                                                                        |
 | direnv                             | [direnv README][direnv-readme], `src/std/direnv/lib.sh`, `.envrc`; use the [mocked check](#direnv-check), not live approvals.                                                                                                                                                         |
 | Rust preprocessor/book integration | [Preprocessor README][preprocessor-readme] and `book.toml`; distinguish the [protocol check](#preprocessor-protocol) from a [full book build](#documentation-checks).                                                                                                                 |
+
+For Cell Block import changes, also run the
+[interface regression check](#cell-block-interface).
 
 Commands below run from the root of the disposable copy, unless noted. They use
 existing surfaces, not new gates. Use Nix with flakes enabled (root minimum 2.13),
@@ -162,6 +165,25 @@ trace and failures. The existing [Namaka configuration][namaka-config] and
 write pending snapshots. Snapshot acceptance requires separate semantic review,
 not automatic regeneration to make the suite green.
 
+### Cell Block interface
+
+```sh
+nix build --no-update-lock-file --no-write-lock-file --no-link .#checks.x86_64-linux.core-block-interface
+```
+
+The [regression check][block-interface-check] exercises the real core importer
+with the locked Nix library, Yants and nosys, synthetic Cell fixtures and a dummy
+store. It checks function arguments and sibling Cell references, file/directory
+loading and precedence, immediate attrset rejection (including callable sets),
+free-variable migration diagnostics, signature validation and the returned
+Target set. Error assertions use ordinary output, without `--show-trace`.
+
+This check performs Nix evaluation, not Action builds or execution. It deliberately
+rejects private Cell flakes in its fixtures; it does not replace the aggregate's
+bootstrap/private-input coverage or establish downstream migration compatibility.
+The [migration instructions](../reference/conventions.md#migrating-an-attribute-set-block)
+describe the accepted function-only contract.
+
 ### Go tests
 
 The default shell supplies Go but not a C compiler for CGO. On Linux, add a
@@ -203,8 +225,8 @@ real registry reference chapters. It does not resolve the
 The [pre-commit hook][hook-config] runs treefmt on staged files; the commit-message
 hook runs Conform. The fork's [CI][ci-workflow] is deliberately explicit: on pull
 requests and pushes to `main` in `nadanix/std`, its Linux job builds
-`checks.x86_64-linux.{files-explore,adrgen,registry-schema,direnv}` and evaluates
-the existing Namaka aggregate. The final step checks that tracked files and
+`checks.x86_64-linux.{files-explore,adrgen,registry-schema,core-block-interface,direnv}`
+and evaluates the existing Namaka aggregate. The final step checks that tracked files and
 non-ignored untracked files are unchanged. Both lock guards are used; remote
 builders and automatic flake configuration acceptance are disabled.
 
@@ -282,6 +304,7 @@ report a blocked methodological lookup instead of silently switching revisions.
 [namaka-config]: https://github.com/nadanix/std/blob/main/namaka.toml
 [namaka-type]: https://github.com/nadanix/std/blob/main/src/std/fwlib/blockTypes/namaka.nix
 [direnv-check]: https://github.com/nadanix/std/blob/main/src/tests/direnv.nix
+[block-interface-check]: https://github.com/nadanix/std/blob/main/src/tests/core-block-interface.nix
 [ci-workflow]: https://github.com/nadanix/std/blob/main/.github/workflows/ci.yml
 [method-commit]: https://github.com/oneingan/design-context/commit/7f57f677da43a9cd9b5d3d264063b17d931cf150
 [method-readme]: https://github.com/oneingan/design-context/blob/7f57f677da43a9cd9b5d3d264063b17d931cf150/README.md

@@ -6,8 +6,9 @@ people, tools and CI. Its purpose and SDLC scope belong in
 [glossary](../glossary.md). This page maps that model to the implementation, not
 to a new set of architectural decisions.
 
-**View:** as-is. Implementation observations below were checked against
+**View:** as-is. The original implementation observations were checked against
 [`322921b`][baseline], not established as future compatibility guarantees.
+Later changes, including Q2's function-only import contract, are identified below.
 Source links navigate `main`; use the named paths when working in a different
 checkout. Historical evidence and unsettled meaning are recorded in
 [open questions](../discovery/open-questions.md).
@@ -35,9 +36,13 @@ cellsFrom + named Cell Blocks / Block Types + inputs / systems
    instantiated Nixpkgs and references to other Cells. `inputs.self` contains
    source information, not the full output flake; the importer supplies the
    current Cell as `cell`. A Cell's optional `flake.nix` supplies additional
-   inputs through `call-flake`. The function interface is an accepted decision
-   in [ADR 0002][adr-interface]; the importer's additional attrset support remains
-   [an open question](../discovery/open-questions.md#q2-cell-block-functions-and-attribute-sets).
+   inputs through `call-flake`. Following the fork's separately accepted
+   [Q2 decision](../discovery/open-questions.md#q2-cell-block-functions-and-attribute-sets),
+   the importer uses ordinary `import` and requires a function with the
+   `{ inputs, cell }` signature prescribed by [ADR 0002][adr-interface]. Attrset
+   Blocks are rejected immediately; see the
+   [migration instructions](../reference/conventions.md#migrating-an-attribute-set-block).
+   This does not change `findTargets`' separate loading of individual Target files.
 3. **Expose artifacts and actions.** Outputs are `system.cell.block.target`,
    following [ADR 0004][adr-system]. A Block Type supplies shared actions, not an
    exhaustive proof of each Target's type: [`types/default.nix`][types] checks
@@ -110,7 +115,9 @@ support; the physical bootstrap does not replace it.
   pin relationships. [`tests/fork-identity/expr.nix`][identity-test] checks fork
   identity while preserving external integration names.
 - For **discovery and Soil behavior**, see [`tests/core-grow`][grow-test] and
-  [`tests/core-soil`][soil-test]. These are snapshot fixtures, not evidence of
+  [`tests/core-soil`][soil-test], plus the
+  [Cell Block interface check](../guides/contributing.md#cell-block-interface)
+  for rejection and migration diagnostics. Snapshot matches are not evidence of
   remote action effects or acceptance of disputed semantics.
 - For **unresolved contracts or authority**, use
   [open questions](../discovery/open-questions.md), rather than inferring a

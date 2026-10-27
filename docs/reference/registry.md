@@ -107,7 +107,8 @@ nix build --no-update-lock-file --no-write-lock-file --no-link .#checks.x86_64-l
 ```
 
 This check runs no Action or proviso. It is a flake check, not an additional
-`checks.check` candidate in the existing external CI discovery workflow.
+`checks.check` discovery candidate. The fork's [current CI][ci-current] builds it
+directly; the inherited external discovery workflow described below is historical.
 
 ## Observed invariants and limits
 
@@ -133,7 +134,7 @@ This check runs no Action or proviso. It is a flake check, not an additional
 | Go CLI/TUI                 | [`flake/load.go`][go-load] evaluates `init` for the current system; [`load.go`][go-json] decodes into [`data/data.go`][go-data]. Names become `//cell/block/target:action` selectors.                                                                 | [`flake/run.go`][go-run] builds the selected action, creates a state output link and executes it with the project environment. It can select another system explicitly.                                                                             |
 | Rust mdBook preprocessor   | [`lib.rs`][rust-lib] evaluates the configured registry plus the current system; [`reference.rs`][rust-schema] deserializes the Cell list and reads companion files. [`book.toml`][book] points it at `.#__std.init` for the `lib` and `std` chapters. | Generates documentation, not action execution. This path performs Nix evaluation and reads files; building the book writes rendered output.                                                                                                         |
 | direnv shell library       | [`lib.sh`][direnv-lib] reads `cellsFrom` and builds `actions.<system>.<cell>.<block>.<target>.enter`. It does not select a shell by decoding `init`.                                                                                                  | Evaluates the resulting shell script, maintains profiles in `PRJ_DATA_HOME` and watches selected files. [`README.md`][direnv-readme] documents a local `cellsFrom` override for filtered sources whose basename does not match the checkout layout. |
-| GitHub Actions integration | [`ci.yml`][ci-workflow] calls [`std.yml`][std-workflow], which uses external `divnix/std-action/discover@main` and `run@main`. Local jobs consume discovery `hits` for `cli.build`, `shells.build` and `checks.check`.                                | The registry's `ci` is the producer-side automation surface. The external action implementation is not in-tree; these workflows establish the local wiring, not its complete validation, retry or compatibility behavior.                           |
+| GitHub Actions, historical | At the cited baseline, [`ci.yml`][ci-workflow] calls [`std.yml`][std-workflow], using external `divnix/std-action/discover@main` and `run@main` with discovery `hits` for `cli.build`, `shells.build` and `checks.check`.                             | The registry's `ci` is the producer-side automation surface. This inherited orchestration has since been removed from the fork; its [current CI][ci-current] selects checks directly and does not consume `__std.ci` or execute provisos.           |
 
 The Go and Rust paths above decode their own shapes without validating the full
 JSON Schema or negotiating `__schema`. Successful decoding therefore does not
@@ -217,6 +218,7 @@ page or that snapshots accept disputed semantics.
 [book]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/book.toml
 [direnv-lib]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/direnv/lib.sh
 [direnv-readme]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/direnv/README.md
+[ci-current]: https://github.com/nadanix/std/blob/main/.github/workflows/ci.yml
 [ci-workflow]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/.github/workflows/ci.yml
 [std-workflow]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/.github/workflows/std.yml
 [mkcommand]: https://github.com/nadanix/std/blob/322921ba8adda373f1a4bb57b78fc201322c8b93/src/std/fwlib/_mkCommand.nix

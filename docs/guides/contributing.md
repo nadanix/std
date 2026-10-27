@@ -201,12 +201,28 @@ real registry reference chapters. It does not resolve the
 ### Existing automation and gates
 
 The [pre-commit hook][hook-config] runs treefmt on staged files; the commit-message
-hook runs Conform. [CI][ci-workflow] calls the [reusable workflow][std-workflow]
-for Linux and macOS, discovering `checks.check`, `cli.build` and `shells.build`
-through external `divnix/std-action`. Its subflake synchronization is not a step
-to copy into unrelated local validation. Local checks do not certify remote CI
-or branch-protection requirements: retain any required checks as pending until
-observed. Do not trigger the Pages or release workflows to validate documentation.
+hook runs Conform. The fork's [CI][ci-workflow] is deliberately explicit: on pull
+requests and pushes to `main` in `nadanix/std`, its Linux job builds
+`checks.x86_64-linux.{files-explore,adrgen,registry-schema,direnv}` and evaluates
+the existing Namaka aggregate. The final step checks that tracked files and
+non-ignored untracked files are unchanged. Both lock guards are used; remote
+builders and automatic flake configuration acceptance are disabled.
+
+The inherited FlakeHub and Pages publication workflows and external
+`divnix/std-action` orchestration have been removed. CI does not synchronize
+subflake locks, execute discovered Actions or provisos, publish artifacts, deploy,
+inherit secrets or request write permissions. Only checkout and Nix installation
+remain external actions, pinned by commit; dependency downloads and ordinary Nix
+store/cache use are still needed. The maintenance helper
+`.github/workflows/update-subflake.sh` remains available for separately authorized
+dependency updates, not as a CI step.
+
+This minimal workflow does not run Go tests, CLI/devshell builds, the full book,
+formatting, macOS checks or end-to-end registry-driven CI. Select those checks
+locally by the affected surface; their omission is not a pass. Local checks and
+workflow source review do not certify remote CI or branch-protection requirements:
+retain required checks as pending until observed. Changing files locally neither
+enables Actions in GitHub's fork settings nor triggers a remote run.
 
 ## Handoff and orientation pilots
 
@@ -267,7 +283,6 @@ report a blocked methodological lookup instead of silently switching revisions.
 [namaka-type]: https://github.com/nadanix/std/blob/main/src/std/fwlib/blockTypes/namaka.nix
 [direnv-check]: https://github.com/nadanix/std/blob/main/src/tests/direnv.nix
 [ci-workflow]: https://github.com/nadanix/std/blob/main/.github/workflows/ci.yml
-[std-workflow]: https://github.com/nadanix/std/blob/main/.github/workflows/std.yml
 [method-commit]: https://github.com/oneingan/design-context/commit/7f57f677da43a9cd9b5d3d264063b17d931cf150
 [method-readme]: https://github.com/oneingan/design-context/blob/7f57f677da43a9cd9b5d3d264063b17d931cf150/README.md
 [method-map]: https://github.com/oneingan/design-context/blob/7f57f677da43a9cd9b5d3d264063b17d931cf150/context/00-map.md

@@ -66,7 +66,11 @@ semantic ownership.
 | [`src/std/direnv/`][direnv]                                                  | Shell adapter: select the devshell `enter` action, manage profiles and watch files. Depends on direnv and the pinned `numtide/prj-spec` helper, not on the Go UI.                                                    |
 | [`src/data/mdbook-paisano-preprocessor/`][preprocessor]                      | Rust consumer of discovery metadata; renders Cell reference chapters. [`src/data/flake.nix`][data-flake] builds it from local sources with Nixpkgs.                                                                  |
 | [`src/local/`][local], [`src/tests/`][tests-cell] and [`tests/`][tests]      | This repository's own development configuration and validation, rather than the framework's discovery engine.                                                                                                        |
-| [`docs/SUMMARY.md`][summary], [`book.toml`][book] and [workflows][workflows] | Book navigation, registry-backed documentation generation and CI integration. External `divnix/std-action` remains a separate integration.                                                                           |
+| [`docs/SUMMARY.md`][summary], [`book.toml`][book] and [workflows][workflows] | Book navigation, registry-backed documentation generation and direct Linux CI checks. See the [current gates](../guides/contributing.md#existing-automation-and-gates).                                              |
+
+The fork's current CI selects checks and snapshots directly, without external
+`divnix/std-action` orchestration or publication. This replaces the inherited
+workflow wiring at the cited baseline, not the framework's registry interface.
 
 Core, CLI and preprocessor retain Paisano names and provenance in their linked
 READMEs. Those names do not make them external flake dependencies. In particular,

@@ -3,10 +3,11 @@
 This page tracks unresolved questions and explicitly scoped decisions about the
 implementation and its contracts. The original static review was checked against
 [`322921b`][baseline]. The later
-[nine-scenario review](scenario-review.md), at `d0f1c75`, adds bounded evidence
-for Q1/Q2/Q4 and preserves scenario-specific questions below. Its discovery
-closure was accepted on 2026-10-26, not its unresolved contracts. The
-[repository map](../explain/repository-map.md) provides orientation and the
+[nine-scenario review](scenario-review.md), at `d0f1c75`, records bounded probes
+and their original questions. Its discovery closure was accepted on 2026-10-26,
+not its unresolved contracts. Subsequent decisions and the Q4/P-F4 reframing
+are identified separately below. The [repository map](../explain/repository-map.md)
+provides orientation and the
 [registry reference](../reference/registry.md) describes the observed boundary.
 
 Knowledge status is separate from resolution status: `observed` means a cited
@@ -15,11 +16,13 @@ artifact contains the evidence; `disputed` means relevant sources disagree;
 knowledge. `confirmed` is reserved for acceptance by an accountable validator
 within a stated scope, not for agreement between code and a snapshot.
 
-Q1 now records a local shape decision; its external compatibility review remains
-**open**, as do the other questions. Validation owners for the remaining questions
-have not been assigned; roles listed below identify perspectives needed, not
-people who have accepted responsibility. Maintainer, downstream-consumer and
-upstream licensing perspectives are not replaced by this source review.
+Q1's local shape decision is accepted; its external compatibility review remains
+**open**, as do Q2/Q3, P-F1–P-F3 and the B3 operational gap. Q4 is a future design
+consideration, and P-F4 is retired as a registry-contract question. Validation
+owners for the remaining questions have not been assigned; roles listed below
+identify perspectives needed, not people who have accepted responsibility.
+Maintainer, downstream-consumer and upstream licensing perspectives are not
+replaced by this source review.
 
 ## Q1. CI metadata shape
 
@@ -66,9 +69,10 @@ This decision is separate from discovery approval and from passing tests.
 **Compatibility consequence:** strings admitted by the former schema no longer
 conform, including strings containing encoded JSON. Custom Block Types using
 strings need action-specific migration; no automatic conversion is introduced.
-The schema stays at `v0`; this correction does not resolve Q4's evolution policy
-or establish backward compatibility. No exhaustive inventory of custom producers
-or external consumers, and no end-to-end CI execution, has been completed.
+The schema stays at `v0`; this correction establishes neither a general versioning
+policy nor backward compatibility. Q4's future design topic does not reopen the
+accepted local shape decision. No exhaustive inventory of custom producers or
+external consumers, and no end-to-end CI execution, has been completed.
 
 **Remaining validation owner:** unassigned. Framework/schema maintainers and CI
 consumers, including the external `divnix/std-action` integration, still need to
@@ -120,51 +124,66 @@ must not be replaced with an inferred license.
 
 ## Q4. Registry evolution and compatibility
 
-**Knowledge status:** `unknown` accepted evolution policy; `observed` consumer
-coupling.
+**Resolution status:** future design consideration, not an active defect or a
+merge prerequisite for PR #1. On 2026-10-27, the requesting user accepted narrowing
+Q4 to registry-format versioning and retiring P-F4 as a registry-contract
+question. This reframing selects no versioning policy and authorizes no schema
+version bump or consumer changes.
+
+**Knowledge status:** `observed` version label and consumer behavior; `unknown`
+accepted evolution policy beyond the reviewed sources. An undocumented policy is
+not evidence of a broken commitment.
 
 [`grow`][grow] and the [schema][schema] declare `v0`. The
 [consumer paths](../reference/registry.md#consumers-and-translations) read selected
 registers using their own shapes: Go and Rust do not negotiate the schema
-version, direnv selects an action path, and CI delegates to an external action.
-No migration or compatibility commitment is established by those reviewed
-sources. This is a knowledge gap, not proof that no agreement exists elsewhere.
+version, and direnv selects an action path. The historical external CI integration
+consumes CI candidates; the fork's current CI selects checks directly. These
+observations do not establish a general versioning or migration commitment.
 
-**Question:** What compatibility expectations do maintainers accept for registry
-fields, names and executable paths, and how should a future change coordinate
-in-tree and external consumers? The `cellsFrom` basename/checkout distinction
-and Q1 are concrete cases a policy must account for, not silently normalize.
+**Optional future question:** What does `__schema` identify, which changes to the
+registry's structure or field semantics would require a new version, and how
+should affected consumers support that transition? Revisit this when a concrete
+format change or support commitment requires a policy, not as a generic blocker.
 
-**Additional discovery evidence:** [C3 / P-F4](scenario-review.md#c3-same-derivable-target-different-name)
-renamed a Target from `old` to `new`: its derivation and build command stayed the
-same, while the old selector disappeared, `enter` changed its profile path and
-the `old.md` association was lost. Both registries conformed to schema v0; this
-does not answer whether losing `old:enter` is compatible. The data-only jq
-follow-up observed the rename in `jobName` and rendered runner fields, without
-executing those strings. Go/Rust/direnv and end-to-end CI impacts remain inferred
-rather than executed.
+**Scope boundary:** changing a field's type or meaning concerns the registry
+contract. Renaming a project's Target changes data and project references, not
+that contract. In [C3](scenario-review.md#c3-same-derivable-target-different-name),
+both `old` and `new` registries conformed to `v0`. Losing `old:enter` does not by
+itself violate `v0` or require a schema version change. Changing the general
+selector syntax or resolution mechanism would be a separate interface change;
+C3 did neither.
 
-**Validation owner:** unassigned. Framework maintainers and maintainers of the
-Go, Rust, direnv and CI consumers need to establish the intended scope. Until
-then, the registry reference documents observations, not a newly accepted
-versioning or backward-compatibility guarantee.
+The accepted Q1 shape decision remains in force. Its schema-conformance impact
+and remaining external compatibility review are recorded under Q1; this future
+design topic neither reopens that decision nor supplies the missing validation.
+
+**Ownership if pursued:** unassigned. Framework/schema maintainers and affected
+consumer maintainers would need to define and accept a concrete scope. No new
+compatibility guarantee, migration obligation or implementation is introduced.
 
 ## Scenario-specific questions and operational gap
 
-These discovery identifiers remain **open**, alongside Q2/Q4 and Q1's remaining
+The identifiers in the table remain **open**, alongside Q2/Q3 and Q1's remaining
 compatibility review. Acceptance of F1–F5 did not resolve them, assign owners or
-authorize implementation. The
+authorize implementation. Q4 is a future design consideration, not part of this
+unresolved-scenario list. The
 [scenario review](scenario-review.md#open-decisions-and-accountable-perspectives)
 records the evidence, impact and necessary perspectives; these are not an
 authorized backlog.
 
-| Identifier                                                                                  | Unresolved question                                                                                                         | Needed perspectives (owners unassigned)                                 |
-| ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| [P-F1 / C1](scenario-review.md#c1-different-consumers-different-projections)                | Should `foo-action` be admissible in CI discovery with `ci.foo-action` enabled?                                             | Framework/external CI maintainers and Block author                      |
-| [P-F2 / A3](scenario-review.md#a3-two-soil-layers-with-the-same-identity)                   | Must all announcements/candidates of a colliding identity correspond to their own selectable command?                       | Core/Soil maintainers, Cell authors and CLI/CI consumers                |
-| [P-F3 / B2](scenario-review.md#b2-required-arguments-in-tui-and-direct-cli)                 | Must `requiresArgs = true` reject missing arguments in direct CLI as well as TUI?                                           | Framework/CLI maintainers and Action authors                            |
-| [P-F4 / C3](scenario-review.md#c3-same-derivable-target-different-name)                     | Is renaming under v0 compatible when `old:enter` stops resolving? A concrete instance of Q4, not a separate accepted policy | Framework and consumer maintainers with Cell authors/consumers          |
-| [B3 operational gap](scenario-review.md#b3-partial-publication-and-unknown-remote-outcomes) | Who may assess per-tag evidence and authorize recovery after partial/unknown publication?                                   | Authorized publication/destination operator and integration maintainers |
+| Identifier                                                                                  | Unresolved question                                                                                   | Needed perspectives (owners unassigned)                                 |
+| ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| [P-F1 / C1](scenario-review.md#c1-different-consumers-different-projections)                | Should `foo-action` be admissible in CI discovery with `ci.foo-action` enabled?                       | Framework/external CI maintainers and Block author                      |
+| [P-F2 / A3](scenario-review.md#a3-two-soil-layers-with-the-same-identity)                   | Must all announcements/candidates of a colliding identity correspond to their own selectable command? | Core/Soil maintainers, Cell authors and CLI/CI consumers                |
+| [P-F3 / B2](scenario-review.md#b2-required-arguments-in-tui-and-direct-cli)                 | Must `requiresArgs = true` reject missing arguments in direct CLI as well as TUI?                     | Framework/CLI maintainers and Action authors                            |
+| [B3 operational gap](scenario-review.md#b3-partial-publication-and-unknown-remote-outcomes) | Who may assess per-tag evidence and authorize recovery after partial/unknown publication?             | Authorized publication/destination operator and integration maintainers |
+
+**P-F4 is retired**, following the user-accepted reframing recorded under Q4.
+Its original question conflated project-reference changes with registry-format
+compatibility. [C3's observations](scenario-review.md#c3-same-derivable-target-different-name)
+remain useful evidence about selectors, profiles and readme associations; they
+are not evidence of a schema defect or a requirement to implement aliases.
 
 The B3 mock is not a real incident or recovery test. Identify operational
 authority before any real retry; no generic retry or rollback rule is inferred.

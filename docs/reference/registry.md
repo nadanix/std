@@ -95,7 +95,8 @@ extraction or adding runtime validation. The extractor still passes metadata
 through and uses `null` for Actions without it. Custom producers emitting strings
 now fail schema validation; their migration and external consumer compatibility
 have not been established. `__schema` remains `v0`; no general versioning or
-backward-compatibility policy is implied. Q4 remains open.
+backward-compatibility policy is implied. Q4 is a future design consideration,
+not a reopening of the accepted local shape decision.
 
 The data-only [contract test][schema-test], packaged by
 [`src/tests/registry-schema.nix`][schema-check], validates representative complete
@@ -175,15 +176,25 @@ remote success. Inspect the specific action body before treating it as a check.
 ## Compatibility and evidence
 
 The accepted [system-first decision][adr-system] explains output organization;
-it does not specify a registry migration policy. Changes to names, nesting,
-field shapes, readme paths or action executables can affect different consumers
-independently. The declared `v0` and permissive parts of the schema do not settle
-those compatibility expectations: [Q4](../discovery/open-questions.md#q4-registry-evolution-and-compatibility)
-records the missing decision, and [Q1](../discovery/open-questions.md#q1-ci-metadata-shape)
-records the historical discrepancy, the local metadata-shape decision and its
-remaining compatibility review.
+it does not specify a registry migration policy. Changes to registry structure,
+field types or field semantics concern the format contract.
+[Q4](../discovery/open-questions.md#q4-registry-evolution-and-compatibility)
+is now a future design consideration about what `__schema` identifies and when
+that format might need a new version, not a demonstrated defect or a merge
+prerequisite for PR #1. Missing policy documentation alone does not establish a
+broken commitment. [Q1](../discovery/open-questions.md#q1-ci-metadata-shape) retains
+the accepted local metadata-shape decision and its external compatibility gap;
+Q4 does not reopen that decision.
 
-Existing evidence surfaces have narrower scopes than that policy:
+Project data changes are distinct. Renaming a Target can change selectors,
+profiles and companion readme associations without changing the registry
+contract. [C3](../discovery/scenario-review.md#c3-same-derivable-target-different-name)
+retains those observations: both registries conformed to `v0`. P-F4 is retired as
+a registry-contract question; the disappearance of the old selector is not by
+itself a schema violation or a reason to bump `__schema`. No alias requirement
+or project migration policy follows from the probe.
+
+Existing evidence surfaces have bounded scopes:
 
 - [`tests/core-grow`][grow-test] records discovery/output shape;
   [`tests/core-soil`][soil-test] exercises hoisting and composition helpers.

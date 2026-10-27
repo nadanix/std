@@ -5,15 +5,23 @@
 **Discovery is closed for these nine scenarios; the model is not declared
 validated.** On 2026-10-26, the requesting user, acting as reviewer of the discovery
 delivery, accepted blocks F1–F4 (records R1–R4) and the final synthesis F5 (R5).
-R5 explicitly retains Q1/Q2/Q4, P-F1–P-F4, the B3 operational gap and all mechanical
-limits, including F4's then-unexecuted jq filters. This is acceptance of a bounded
-discovery delivery, not representation of external consumers or approval of new
-contracts. Documentary promotion was authorized separately. A separately
+At discovery closure, R5 explicitly retained Q1/Q2/Q4, P-F1–P-F4, the B3 operational
+gap and all mechanical limits, including F4's then-unexecuted jq filters. This is
+acceptance of a bounded discovery delivery, not representation of external
+consumers or approval of new contracts. Documentary promotion was authorized separately. A separately
 authorized data-only follow-up on 2026-10-27 completed the jq checks described in
 C2/C3 below; it does not rewrite the original failed run or resolve contracts.
 The subsequent local `ci.meta` shape decision and schema correction are recorded
 separately in [Q1](open-questions.md#q1-ci-metadata-shape); the historical results
 below remain unchanged.
+
+On 2026-10-27, the requesting user also accepted the
+[Q4/P-F4 reframing](open-questions.md#q4-registry-evolution-and-compatibility):
+Q4 is a future registry-format versioning consideration, not a merge prerequisite
+for PR #1; P-F4 is retired as a registry-contract question. C3 remains evidence
+of project-reference changes, not a schema-versioning problem. This changes the
+interpretation and question status, not the probe results or Q1's accepted shape
+decision. No new probe or consumer validation is claimed.
 
 This review uses the [glossary](../glossary.md),
 [registry reference](../reference/registry.md) and accepted
@@ -293,27 +301,36 @@ The data-only follow-up also observed `build //demo/shells/old` and
 runner fields rendering `target='old'` versus `target='new'`. These strings were
 not executed; no proviso filtered the candidates. Go/Rust/direnv and end-to-end
 CI impacts remain `inferred`, not executions of the renamed scenario.
-Schema conformance and equal Target derivations do not establish compatibility.
-P-F4 refines [Q4](open-questions.md#q4-registry-evolution-and-compatibility): is the
-rename compatible when `old:enter` stops resolving? No aliases, migration policy
-or compatibility guarantee were accepted.
+
+These are changes to project data, references and name-derived artifacts, not to
+the registry format. Both registries conform to the same `v0` structure. Losing
+the old selector can require project users to update their references, but does
+not by itself violate `v0` or require a new schema version.
+
+The original P-F4 question treated this rename as a case of Q4. That conflation
+was retired by the later user-accepted
+[reframing](open-questions.md#q4-registry-evolution-and-compatibility). Q4 now
+concerns possible future registry-format versioning, independently of C3. These
+observations establish no obligation to implement aliases or a migration policy.
 
 ## Open decisions and accountable perspectives
 
-All rows were **open at discovery closure**. Q1's later local shape decision is
-recorded separately in [Open questions](open-questions.md#q1-ci-metadata-shape);
-its compatibility review remains open. The roles below are needed perspectives,
-not assigned people, a validated contract or an authorized implementation backlog.
+The questions originated in discovery, when the original Q4/P-F4/C3 grouping
+was also open. The table now lists only unresolved follow-up: Q1's local shape
+decision is accepted, while its external compatibility review remains open;
+Q4 is a future design consideration and P-F4 is retired. See
+[Open questions](open-questions.md) for the current statuses and accepted
+reframing. The roles below are needed perspectives, not assigned people, a
+validated contract or an authorized implementation backlog.
 
-| Question           | Decision and impact                                                                      | Needed perspectives / next human step                                                                                                           |
-| ------------------ | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| Q2 / A2            | Public status of attrset Blocks versus ADR 0002                                          | Framework maintainers and Cell authors/consumers: give an attributable answer for this import interface                                         |
-| P-F2 / A3          | Must every announcement/candidate identify its own selectable command under a collision? | Core/Soil maintainers, Cell authors and CLI/CI consumers: decide coherence requirements for A→B                                                 |
-| P-F3 / B2          | Must `requiresArgs = true` reject missing arguments in direct CLI too?                   | Framework/CLI maintainers and Action authors: delimit the guarantee across both entry paths                                                     |
-| B3 operational gap | Who assesses per-tag evidence and authorizes recovery after partial/unknown effects?     | Authorized publication/destination operator and integration maintainers: establish ownership and authority for an actual case before retrying   |
-| P-F1 / C1          | Is `foo-action` admissible when `ci.foo-action` is enabled?                              | Framework/external CI maintainers and Block author: answer for this name and integration revision                                               |
-| Q1 / C2            | Shape/meaning of `ci.meta` and compatibility impact                                      | Framework/schema/container maintainers and CI consumers: reconcile the rejected instance and `.meta.image` expectation                          |
-| Q4 / P-F4 / C3     | Compatibility of renaming under v0 when `old:enter` disappears                           | Framework and Go/Rust/direnv/CI maintainers with Cell authors/consumers: accept an explicit scope, not compatibility inferred from a derivation |
+| Question           | Decision and impact                                                                      | Needed perspectives / next human step                                                                                                          |
+| ------------------ | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| Q2 / A2            | Public status of attrset Blocks versus ADR 0002                                          | Framework maintainers and Cell authors/consumers: give an attributable answer for this import interface                                        |
+| P-F2 / A3          | Must every announcement/candidate identify its own selectable command under a collision? | Core/Soil maintainers, Cell authors and CLI/CI consumers: decide coherence requirements for A→B                                                |
+| P-F3 / B2          | Must `requiresArgs = true` reject missing arguments in direct CLI too?                   | Framework/CLI maintainers and Action authors: delimit the guarantee across both entry paths                                                    |
+| B3 operational gap | Who assesses per-tag evidence and authorizes recovery after partial/unknown effects?     | Authorized publication/destination operator and integration maintainers: establish ownership and authority for an actual case before retrying  |
+| P-F1 / C1          | Is `foo-action` admissible when `ci.foo-action` is enabled?                              | Framework/external CI maintainers and Block author: answer for this name and integration revision                                              |
+| Q1 / C2            | Remaining external compatibility review of the accepted `ci.meta` shape                  | Framework/schema/container maintainers and CI consumers: assess migration and compatibility impact, without reopening the local shape decision |
 
 Q3 remains open but outside the nine scenarios. Building documentation does not
 resolve [preprocessor licensing](open-questions.md#q3-preprocessor-licensing).

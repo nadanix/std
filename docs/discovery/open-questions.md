@@ -22,7 +22,8 @@ perspectives are not replaced by this source review.
 
 ## Q1. CI metadata shape
 
-**Knowledge status:** `disputed` contract; `observed` static discrepancy.
+**Knowledge status:** `disputed` contract; `observed` producer/schema discrepancy
+and bounded jq behavior.
 
 - [`registry.schema.json`][schema], `definitions.ci` → candidate `meta`, permits
   only a string or `null`.
@@ -39,11 +40,15 @@ or consumer changes, if any, should follow?
 **Additional discovery evidence:** [C2](scenario-review.md#c2-ci-metadata-schema-and-consumer-expectations)
 subsequently evaluated the real producer with a synthetic Target and ran a Draft
 2020-12 validator. It rejected exactly `ci.x86_64-linux[0].meta`; null/string
-controls conformed but were not accepted as solutions. The overall F4 verifier
-still `failed` later, and its jq filters remain `not-run`. Consumer expectations
-are based on reading the pinned integration, not executing it. Neither the
-original static mismatch nor this schema result establishes a live CI failure
-or decides which side should change.
+controls conformed but were not accepted as solutions. The original F4 verifier
+`failed` before executing its jq filters. A separately authorized data-only
+follow-up on 2026-10-27 repaired the copied extractor and completed the verifier
+on the retained JSON: the image expression reads the object, rejects the string
+(exit 5) and emits `image=null` for null (exit 0). Data transport, grouping and
+runner-field rendering were also exercised; the resulting shell strings were
+not executed. Provisos and full CI remain unexecuted. The original failed run is
+preserved, and neither the schema nor these bounded filter results establish a
+live CI failure or decide which side should change.
 
 **Validation owner:** unassigned. Framework/schema maintainers and CI consumers,
 including the external `divnix/std-action` integration, need to agree on the
@@ -113,8 +118,10 @@ and Q1 are concrete cases a policy must account for, not silently normalize.
 renamed a Target from `old` to `new`: its derivation and build command stayed the
 same, while the old selector disappeared, `enter` changed its profile path and
 the `old.md` association was lost. Both registries conformed to schema v0; this
-does not answer whether losing `old:enter` is compatible. Consumer impacts remain
-inferred rather than executed.
+does not answer whether losing `old:enter` is compatible. The data-only jq
+follow-up observed the rename in `jobName` and rendered runner fields, without
+executing those strings. Go/Rust/direnv and end-to-end CI impacts remain inferred
+rather than executed.
 
 **Validation owner:** unassigned. Framework maintainers and maintainers of the
 Go, Rust, direnv and CI consumers need to establish the intended scope. Until

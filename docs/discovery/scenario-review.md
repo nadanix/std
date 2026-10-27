@@ -6,9 +6,11 @@
 validated.** On 2026-10-26, the requesting user, acting as reviewer of the discovery
 delivery, accepted blocks F1–F4 (records R1–R4) and the final synthesis F5 (R5).
 R5 explicitly retains Q1/Q2/Q4, P-F1–P-F4, the B3 operational gap and all mechanical
-limits, including F4's unexecuted jq filters. This is acceptance of a bounded
+limits, including F4's then-unexecuted jq filters. This is acceptance of a bounded
 discovery delivery, not representation of external consumers or approval of new
-contracts. Documentary promotion was authorized separately.
+contracts. Documentary promotion was authorized separately. A separately
+authorized data-only follow-up on 2026-10-27 completed the jq checks described in
+C2/C3 below; it does not rewrite the original failed run or resolve contracts.
 
 This review uses the [glossary](../glossary.md),
 [registry reference](../reference/registry.md) and accepted
@@ -28,6 +30,10 @@ bounded context or an organizational ownership assignment.
   nixpkgs [`01a4873`][nixpkgs]. Each probe used a disposable copy of the baseline,
   separate HOME/XDG/TMP directories, a clean process environment and no lock
   updates. The Nix store, daemon and system configuration remained shared.
+- Data-only follow-up: 2026-10-27, using the retained F4 JSON and the same pinned
+  source bytes, verified against their original hashes. Nix resolved cached tools
+  offline; Python/jq ran in a separate network namespace with read-only inputs
+  and fresh outputs. No new Standard evaluation/build or remote source lookup.
 - `observed` distinguishes source reading from probe execution; `inferred`
   marks consequences not exercised. Q1/Q2 remain `disputed` public contracts;
   Q4 and the P-F questions remain `unknown` commitments. No contract is promoted
@@ -198,7 +204,8 @@ The result neither defines a new naming restriction nor proves a fork CI failure
 
 **Prediction:** `publish` supplies an object `meta.image`, core preserves it,
 and the resulting record conflicts with the schema's string/null restriction.
-The proviso expects `.meta.image` by source reading.
+The proviso expects `.meta.image`; its extracted jq expression, not the proviso
+process, was exercised in the data-only follow-up below.
 
 F4 evaluated the real `containers` Block Type against a synthetic, non-OCI Target
 and inert dependency; no Action or proviso was built or run. Python jsonschema
@@ -215,11 +222,48 @@ that does not select either as an operational solution. Source evidence:
 [producer][containers], [extraction][extract], [schema][schema] and
 [proviso][proviso]. [Q1](open-questions.md#q1-ci-metadata-shape) remains disputed.
 
-F4's global verifier later failed while extracting jq filters with a regex that
-matched `json=(` rather than `json=$(`. Its exit was **1 (`failed`)**; all F4 jq
-filters are **`not-run`**. No fourth attempt or repair followed. This is a probe
-error, not a `std-action` failure. Consumer transport/parsing remains static
-analysis at the pinned external revision, not observed execution or a CI result.
+**Original F4 run, 2026-10-26:** the global verifier failed while extracting jq
+filters with a regex that matched `json=(` rather than `json=$(`. Its exit was
+**1 (`failed`)**; the jq filters were **`not-run` in that run**. This was a probe
+error, not a `std-action` failure. That script, log and failed outcome are retained.
+
+**Data-only follow-up, 2026-10-27:** a copied verifier changed only the extraction
+regex from `json=\(` to `json=\$\(`. No assertion was removed or weakened. It
+reread the preserved `eval.json`, rechecked the data/schema assertions and ran
+jq 1.8.2 on extracted expressions, without sourcing external scripts. Python
+3.14.8/jsonschema 4.26.0 were unchanged; bubblewrap 0.12.0 isolated the execution.
+The copied verifier completed with **exit 0 (`passed`)**, including the expected
+negative string control. This is a new check, not a successful rerun of the Nix
+producer or retroactive success for the original F4 command.
+
+Retained input JSON SHA-256:
+
+```text
+5cbc8108fa7b385a5a2bfad9afcf194af2a167cf7ac77947e2ac925d157dc525
+```
+
+Observed output of the proviso's extracted `@sh "image=\(.meta.image)"` expression:
+
+| Candidate `meta`                                     | jq exit | Output / error                              |
+| ---------------------------------------------------- | ------- | ------------------------------------------- |
+| Object with `image = "example.invalid/f4/image:tag"` | 0       | `image='example.invalid/f4/image:tag'`      |
+| String `"example.invalid/f4/image:tag"`              | 5       | `Cannot index string with string ("image")` |
+| `null`                                               | 0       | `image=null`                                |
+
+The outputs are **strings, not executed shell assignments**. Null's exit 0 does
+not establish a usable image or a correct proviso decision. Conversely, the
+schema-admissible string fails this consumer expression. These observations
+sharpen Q1; they do not choose a replacement contract or a fix.
+
+The five extracted programs cover grouping by Action, `jobName`, grouping by
+Block/Action, image parsing and runner-field rendering. The follow-up also
+checked base64 candidate round-trips and preservation of `meta` for C2 and both
+C3 records. For C2 it produced `publish //demo/images/default` under
+`images.publish` and rendered the runner fields as strings. **Only these data
+projections are now observed.** Provisos, the real discovery/run workflow and
+remote CI remain unexecuted; no successful discovery hit or publication is
+claimed. The tested Action names were `publish`, `build` and `enter`, not C1's
+`foo-action`; P-F1 and its separate failed fragment are unchanged.
 
 ### C3. Same derivable Target, different name
 
@@ -239,7 +283,11 @@ is name-based. **Assertions completed before the later F4 verifier failure:**
 | `old.md` association                         | Present for old; absent for new   |
 | Both full registries against schema v0       | Conformant                        |
 
-Go/Rust/direnv/CI impacts are `inferred`, not executions of the renamed scenario.
+The data-only follow-up also observed `build //demo/shells/old` and
+`enter //demo/shells/old` becoming their `new` counterparts in `jobName`, with
+runner fields rendering `target='old'` versus `target='new'`. These strings were
+not executed; no proviso filtered the candidates. Go/Rust/direnv and end-to-end
+CI impacts remain `inferred`, not executions of the renamed scenario.
 Schema conformance and equal Target derivations do not establish compatibility.
 P-F4 refines [Q4](open-questions.md#q4-registry-evolution-and-compatibility): is the
 rename compatible when `old:enter` stops resolving? No aliases, migration policy
@@ -266,22 +314,25 @@ No tenth scenario or implicit F6 is introduced.
 
 ## Mechanical evidence and remaining limits
 
-This table records the historical discovery runs, **not the checks performed
-when editing or rendering this page**. Documentation checks have their own
+This table records the historical discovery runs and the separately authorized
+data-only follow-up, **not the checks performed when editing or rendering this
+page**. Documentation checks have their own
 [validation route](../guides/contributing.md#documentation-checks).
 
-| Block / accepted discovery    | Executed evidence                                                                                    | Limits retained                                                              |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| F1: A1/B1/C1, accepted in R1  | Evaluation/assertions, build and direct echo `passed`; jq selection fragment `failed` (3)            | No JSON Schema validation; no Go/Rust/direnv/full CI execution               |
-| F2: A2/A3, accepted in R2     | Evaluations and equality/collision assertions `passed`                                               | No build/Action execution, consumer execution or schema validation           |
-| F3: B2/B3, accepted in R3     | Mock control/failure, syntax and network-namespace assertions `passed`                               | B2 static; no real publication, signal test or recovery validation           |
-| F4: C2/C3, accepted in R4     | Final eval completed; C2 rejected, controls/C3 conformant; assertions completed before later failure | Global verifier `failed` (1); jq filters `not-run`; consumer by reading only |
-| F5: synthesis, accepted in R5 | Traceability, note/link and integrity review                                                         | No new model execution or changed status for any earlier check               |
+| Block / evidence stage        | Executed evidence                                                                                         | Limits retained                                                                                                       |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| F1: A1/B1/C1, accepted in R1  | Evaluation/assertions, build and direct echo `passed`; jq selection fragment `failed` (3)                 | No JSON Schema validation; no Go/Rust/direnv/full CI execution                                                        |
+| F2: A2/A3, accepted in R2     | Evaluations and equality/collision assertions `passed`                                                    | No build/Action execution, consumer execution or schema validation                                                    |
+| F3: B2/B3, accepted in R3     | Mock control/failure, syntax and network-namespace assertions `passed`                                    | B2 static; no real publication, signal test or recovery validation                                                    |
+| F4: C2/C3, accepted in R4     | Final eval completed; C2 rejected, controls/C3 conformant; assertions completed before later failure      | Global verifier `failed` (1); jq filters `not-run`; consumer by reading only                                          |
+| F5: synthesis, accepted in R5 | Traceability, note/link and integrity review                                                              | No new model execution or changed status for any earlier check                                                        |
+| F4-jq follow-up, 2026-10-27   | Copied data verifier `passed` (0); jq projections observed; string image control `failed` (5) as expected | Original F4 remains `failed` with jq `not-run` in that run; no new Nix evaluation, proviso or end-to-end CI execution |
 
 F4 also retained two earlier preparation failures: an import outside the copied
 Cell root, then a capture assertion affected by attrset-to-string JSON coercion.
 Bounded recovery reached the final evaluation described above; the subsequent
-regex failure was not repaired. Partial assertions do not make the whole run pass.
+regex failure ended that investigation. Its later repair and new output are
+recorded separately. Partial assertions never made the original run pass.
 
 The discovery did not run the repository's aggregate Nix/Go/direnv suites,
 preprocessor protocol/full-book checks, remote CI or an independent orientation
@@ -289,8 +340,8 @@ pilot. A later book build cannot retroactively exercise the nine probes or
 validate their contracts. No publication, load, profile modification, deployment
 or remote recovery was performed as discovery validation.
 
-To strengthen an execution claim, scope the missing consumer/fragment check
-explicitly; approval of discovery does not waive it for future uses. To validate
+Beyond the observed data projections, stronger consumer-execution claims still
+require explicitly scoped checks; discovery approval does not waive them. To validate
 a contract, obtain acceptance from its accountable perspectives; another schema
 check or mock cannot replace that judgment. Revisit only affected evidence when
 its source, inputs, consumer revision or asserted scope changes.
